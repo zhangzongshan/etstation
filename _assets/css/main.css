@@ -93,10 +93,14 @@ textarea {
     height: 107px;
     width: 100%;
 }
-#head .head{
+#head .head_container{
     height: 90px;
     width: 100%;
     background-color: rgba(24,24,24,.8);
+}
+#head .head .head_content{
+    width: 1000px;
+    margin: 0px auto;
 }
 
 
