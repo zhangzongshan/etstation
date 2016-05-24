@@ -435,7 +435,7 @@
             };
         },
         addTitle: function (notykit) {
-            var obj = notykit.obj.find("#" + notykit.id);
+            var obj = $("#" + notykit.id);
             var titleItem = notykit.title;
             var titleObj = null;
             if (obj.length > 0) {
@@ -470,7 +470,7 @@
             return titleObj;
         },
         addText: function (notykit) {
-            var obj = notykit.obj.find("#" + notykit.id);
+            var obj = $("#" + notykit.id);
             var textItem = notykit.text;
             var textObj = null;
             if (obj.length > 0) {
@@ -504,9 +504,9 @@
             return textObj;
         },
         addCloseEvent: function (notykit) {
-            var obj = notykit.obj.find("#" + notykit.id);
+            var obj = $("#" + notykit.id);
             var closeItem = notykit.closeItem;
-            notykit.obj.find(".close" + notykit.id).remove();
+            $(".close" + notykit.id).remove();
             var closeObj = null;
             if (obj.length > 0) {
                 $.each(closeItem, function (index, item) {
@@ -571,9 +571,9 @@
             return closeObj;
         },
         addBtnEvent: function (notykit) {
-            var obj = notykit.obj.find("#" + notykit.id);
+            var obj = $("#" + notykit.id);
             var buttonsItem = notykit.buttons;
-            notykit.obj.find(".btn" + notykit.id).remove();
+            $(".btn" + notykit.id).remove();
             var btnObj = null;
             if (obj.length > 0) {
                 $.each(buttonsItem, function (index, item) {
