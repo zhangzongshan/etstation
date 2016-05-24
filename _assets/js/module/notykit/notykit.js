@@ -334,7 +334,7 @@
                         callback();
                     }
                 }
-                , AutoSize: function () {
+                , AutoSize: function (callback) {
                     var width = 0;
                     var height = 0;
                     this.notyKitObj.find(".notykit_content > *").each(function () {
@@ -367,6 +367,9 @@
                     $(window).on("resize", function () {
                         NotyKitObj.resize_noty(this.notyKitConfig);
                     });
+                    if (typeof callback === "function") {
+                        callback();
+                    }
                 }
                 , Resize: function (width, height) {
                     if (width > 0) {
