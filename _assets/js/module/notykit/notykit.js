@@ -94,7 +94,7 @@
             , left: _left
         };
     }
-    
+
     function getJqueryEventString(arrayObj) {
         var s = "";
         $.each(arrayObj, function (index, item) {
@@ -274,19 +274,21 @@
                 onShowFn(options);
             }
             var _html = $("<div class='notykit_container'><div class='notykit_content'></div></div>");
-            options.obj.append(_html.attr("id", options.id));
-            options.obj.find("#" + options.id + " .notykit_content").html(options.template);
+            $('body').append(_html.attr("id", options.id));
+            $("#" + options.id + " .notykit_content").html(options.template);
 
             var titleObj = this.addTitle(options);
             var textObj = this.addText(options);
             var btnObj = this.addBtnEvent(options);
 
-            options.obj.find("#" + options.id).css({
+            $("#" + options.id).css({
                 "position": "absolute"
+                , "top": options.obj.offset().top
+                , "left": options.obj.offset().left
                 , "z-index": getmaxZindex() + 1
                 , "background-color": options.background
             });
-            options.obj.find("#" + options.id + " .notykit_content").css({
+            $("#" + options.id + " .notykit_content").css({
                 "position": "relative"
                 , "width": options.width + "px"
                 , "height": options.height + "px"
@@ -308,7 +310,7 @@
             }
 
             return {
-                notyKitObj: options.obj.find("#" + options.id)
+                notyKitObj: $("#" + options.id)
                 , notyKitConfig: options
                 , titleObj: titleObj
                 , textObj: textObj
@@ -633,7 +635,7 @@
                 var obj = options.obj;
 
                 if (!obj.is($('body'))) {
-                    obj.find("#" + _id).css({
+                    $("#" + _id).css({
                         width: obj.outerWidth() + "px"
                         , height: obj.outerHeight() + "px"
                         , top: obj.offset().top + "px"
@@ -680,7 +682,7 @@
                     _left = _left < 0 ? 0 : _left;
                 }
 
-                obj.find("#" + _id + " .notykit_content").css({
+                $("#" + _id + " .notykit_content").css({
                     "top": _top + "px"
                     , "left": _left + "px"
                 });
