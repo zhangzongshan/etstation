@@ -690,7 +690,7 @@
         },
         close: function (notykit) {
             var id = notykit.id;
-            var obj = notykit.obj;
+            var obj = $("#" + notykit.id);
             var callbackObj = (typeof notykit.callback === "object" && notykit.callback != null) ? notykit.callback : null;
             var onCloseFn = (typeof callbackObj.onClose === "function") ? callbackObj.onClose : function () {
 
@@ -709,7 +709,7 @@
                 var hasNotykitIndex = hasNotykitObj.index;
                 if (hasNotykitIndex != -1) {
                     notykitDate.splice(hasNotykitIndex, hasNotykitIndex + 1);
-                    obj.find("#" + id).remove();
+                    obj.remove();
                     if (typeof afterCloseFn === "function") {
                         afterCloseFn(notykit);
                     }
@@ -718,13 +718,13 @@
         },
         destroy: function (notykit) {
             var id = notykit.id;
-            var obj = notykit.obj;
+            var obj = $("#" + notykit.id);
             if (obj.length > 0) {
                 var hasNotykitObj = getArrJsonItem(notykitDate, "id", id);
                 var hasNotykitIndex = hasNotykitObj.index;
                 if (hasNotykitIndex != -1) {
                     notykitDate.splice(hasNotykitIndex, hasNotykitIndex + 1);
-                    obj.find("#" + id).remove();
+                    obj.remove();
                 }
             }
         },
