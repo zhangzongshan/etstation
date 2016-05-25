@@ -152,6 +152,7 @@
         var _background = (typeof (options.background) != "undefined" && options.background.indexOf("rgba(") != -1) ? options.background : _options.background;
         var _shade = (typeof (options.shade) != "undefined" && !options.shade) ? false : _options.shade;
         var _layout = (typeof (options.layout) != "undefined" && options.layout !== "") ? options.layout : _options.layout;
+        var _zIndex = (typeof (options.zIndex) === "number") ? options.zIndex : _options.zIndex;
         var _template = (typeof (options.template) != "undefined" && options.template !== "") ? options.template : _options.template;
         var _title = (typeof (options.title) != "undefined" && typeof (options.title) === "object") ? {
             text: (typeof (options.title.text) != "undefined" && options.title.text !== "") ? options.title.text : _options.title.text,
@@ -177,6 +178,7 @@
         thisOptions.background = (!_shade) ? 'transparent' : _background;
         thisOptions.shade = _shade;
         thisOptions.layout = _layout;
+        thisOptions.zIndex = _zIndex;
         thisOptions.template = _template;
         thisOptions.title = _title;
         thisOptions.text = _text;
@@ -209,6 +211,7 @@
             , background: "rgba(0,0,0,.1)"
             , shade: true
             , layout: 'center'
+            , zIndex: getmaxZindex() + 1
             , template: template
             , title: {
                 container: '.noty_title'
@@ -285,7 +288,7 @@
                 "position": "absolute"
                 , "top": options.obj.offset().top
                 , "left": options.obj.offset().left
-                , "z-index": getmaxZindex() + 1
+                , "z-index": options.zIndex
                 , "background-color": options.background
             });
             $("#" + options.id + " .notykit_content").css({
@@ -387,6 +390,14 @@
                     Object.create(NotyKitObj).resize_noty(this.notyKitConfig);
                     this.notyKitObj.find(".close" + this.notyKitConfig.id).remove();
                     Object.create(NotyKitObj).addCloseEvent(this.notyKitConfig);
+                    $(window).on("resize", function () {
+                        NotyKitObj.resize_noty(this.notyKitConfig);
+                    });
+                }
+                , SetLayOut: function (layout) {
+                    var _layout = (typeof (layout) != "undefined" && layout !== "") ? layout : this.notyKitConfig.layout;
+                    this.notyKitConfig.layout = _layout;
+                    Object.create(NotyKitObj).resize_noty(this.notyKitConfig);
                     $(window).on("resize", function () {
                         NotyKitObj.resize_noty(this.notyKitConfig);
                     });
