@@ -146,21 +146,25 @@
 
     var _default = {
         spin: "circle"
+        , container: $('body')
         , size: 40
         , position: "center"
         , background: "rgba(0,0,0,.1)"
         , color: "#999"
         , shade: true
+        , zIndex: getmaxZindex() + 1
     };
 
-    function resize(obj) {
-        var thisSpinnerObj = getArrJsonItem(spinnerArr, "obj", obj).item;
-        var _id = thisSpinnerObj.id;
+    function resize(id) {
+        var _id = id;
+        var thisSpinnerObj = getArrJsonItem(spinnerArr, "id", id).item;
+        var _container = thisSpinnerObj.configs.container;
+        var obj = _container;
         if (thisSpinnerObj != null) {
             var options = thisSpinnerObj.configs;
 
             if (!obj.is($('body'))) {
-                obj.find("#" + _id).css({
+                $("#" + _id).css({
                     width: obj.outerWidth() + "px"
                     , height: obj.outerHeight() + "px"
                     , top: obj.offset().top + "px"
@@ -180,7 +184,7 @@
                         : (options.size))
                     : (obj.outerHeight() > options.size ? obj.outerHeight() : options.size);
 
-                obj.find("#" + _id).css({
+                $("#" + _id).css({
                     width: _width + "px"
                     , height: _height + "px"
                     , top: 0 + "px"
@@ -193,7 +197,7 @@
             var thisPosition = null;
             if (!obj.is($('body'))) {
 
-                thisPosition = getObjPosition(obj, options.position, options.size, options.size);
+                thisPosition = getObjPosition($("#" + _id), options.position, options.size, options.size);
                 _top = thisPosition.top;
                 _left = thisPosition.left;
 
@@ -202,7 +206,7 @@
             }
             else {
 
-                thisPosition = getObjPosition(obj.find("#" + _id), options.position, options.size, options.size);
+                thisPosition = getObjPosition($("#" + _id), options.position, options.size, options.size);
                 _top = thisPosition.top;
                 _left = thisPosition.left;
 
@@ -210,38 +214,28 @@
                 _left = _left < 0 ? 0 : _left;
             }
 
-            obj.find("#" + _id + " .spinner").css({
+            $("#" + _id + " .spinner").css({
                 "top": _top + "px"
                 , "left": _left + "px"
             });
         }
     }
 
-    function creatSpin(obj, configs, callback) {
-        var _container = obj ? obj : $('body');
-        var hasSpinnerObj = getArrJsonItem(spinnerArr, "obj", _container);
-        var hasSpinnerIndex = hasSpinnerObj.index;
-
-        if (hasSpinnerIndex != -1) {
-            var hasSpinnerObjID = hasSpinnerObj.item.id;
-            _container.remove("#" + hasSpinnerObjID);
-            spinnerArr.splice(hasSpinnerIndex, hasSpinnerIndex + 1);
-        }
+    function creatSpin(configs, callback) {
         configs = (typeof (configs) == "object" && configs != null) ? configs : _default;
-
         var _id = "spinner_" + (new Date().getTime() * Math.floor(Math.random() * 1000000));
         var _spin = (typeof (configs.spin) != "undefined" && configs.spin != "") ? configs.spin : _default.spin;
+        var _container = configs.container ? configs.container : _default.container;
         var _size = configs.size > 0 ? configs.size : _default.size;
         var _position = (typeof (configs.position) != "undefined" && configs.position != "") ? configs.position : _default.position;
         var _background = (typeof (configs.background) != "undefined" && configs.background.indexOf("rgba(") != -1) ? configs.background : _default.background;
         var _color = (typeof (configs.color) != "undefined" && configs.color.indexOf("#") != -1) ? configs.color : _default.color;
         var _hexColor = hex2Rgb(_color).match(/RGB\((\S*)\)/)[1];
         var _shade = (typeof (configs.shade) != "undefined" && !configs.shade) ? false : _default.shade;
-
+        var _zIndex = (typeof (configs.zIndex) === "number") ? configs.zIndex : _default.zIndex;
 
         var thisConfigs = {
-            "obj": _container
-            , "id": _id
+            "id": _id
             , "configs": {
                 spin: _spin
                 , size: _size
@@ -249,6 +243,8 @@
                 , background: (!_shade) ? 'transparent' : _background
                 , color: _color
                 , shade: _shade
+                , zIndex: _zIndex
+                , container: _container
             }
         }
 
@@ -271,16 +267,16 @@
             : (typeof (configs.spin) === "object" && configs.spin.images != "") ? configs.spin.images
             : getArrJsonItem(spinObj, _default.spin).item;
 
-        _container.append($(_html).attr("id", _id));
+        $('body').append($(_html).attr("id", _id));
 
-        _container.find("#" + _id).css({
+        $('body').find("#" + _id).css({
             "position": "absolute"
-            , "z-index": getmaxZindex() + 1
+            , "z-index": _zIndex
             , "background-color": _background
         });
 
-        _container.find("#" + _id).addClass('animated fadeIn');
-        _container.find("#" + _id + " .spinner").css({
+        $('body').find("#" + _id).addClass('animated fadeIn');
+        $('body').find("#" + _id + " .spinner").css({
             "width": _size + "px"
             , "height": _size + "px"
             , "position": "relative"
@@ -298,10 +294,10 @@
             _spinnerHtml = _spinnerHtml.replace(/{SpinnerObjSizeValue}/g, _size);
         }
 
-        _container.find("#" + _id + " .spinner").html(_spinnerHtml);
+        $('body').find("#" + _id + " .spinner").html(_spinnerHtml);
 
-        if (_container.find("#" + _id + "_img").length > 0) {
-            _container.find("#" + _id + "_img").css({
+        if ($('body').find("#" + _id + "_img").length > 0) {
+            $('body').find("#" + _id + "_img").css({
                 "width": "100%"
                 , "height": "100%"
                 , "background-image": "url(" + _spinObj + ")"
@@ -311,7 +307,7 @@
             });
         }
 
-        _container.find("#" + _id + " .spinner").css({
+        $('body').find("#" + _id + " .spinner").css({
             "width": _size + "px"
             , "height": _size + "px"
             , "position": "relative"
@@ -319,27 +315,70 @@
             , "text-align": "center"
         });
 
-        resize(_container);
+        resize(_id);
 
         $(window).on("resize", function () {
             $.each(spinnerArr, function (index, item) {
-                resize(item.obj);
+                resize(item.id);
             });
         });
 
         if (typeof (callback) === "function") {
-            callback(get(_container));
+            callback();
         }
 
-        return thisConfigs;
+        return {
+            configs: {
+                spin: _spin
+                , size: _size
+                , position: _position
+                , background: _background
+                , color: _color
+                , shade: _shade
+                , container: _container
+            }
+            , id: _id
+            , obj: _container.find("#" + _id)
+            , show: function (callback) {
+                this.obj.show();
+                if (typeof callback === "function") {
+                    callback();
+                }
+            }
+            , hidden: function (callback) {
+                this.obj.hide();
+                if (typeof callback === "function") {
+                    callback();
+                }
+            }
+            , remove: function (callback) {
+                remove(this, callback);
+            }
+            , position: function (position) {
+                this.configs.position = position;
+                var hasSpinnerObj = getArrJsonItem(spinnerArr, "id", this.id);
+                spinnerArr.splice(hasSpinnerObj.index, hasSpinnerObj.index + 1);
+                spinnerArr.push({
+                    id: this.id
+                    , configs: this.configs
+                });
+                resize(this.id);
+            }
+        }
     }
 
-    function get(obj) {
-        var hasSpinnerObj = getArrJsonItem(spinnerArr, "obj", obj);
+    function remove(spinnerObj, callback) {
+        var hasSpinnerObj = getArrJsonItem(spinnerArr, "id", spinnerObj.id);
         if (hasSpinnerObj.index != -1) {
-            return hasSpinnerObj.item;
+            spinnerArr.splice(hasSpinnerObj.index, hasSpinnerObj.index + 1);
+            spinnerObj.obj.removeClass('animated fadeIn').addClass('animated fadeOut');
+            setTimeout(function () {
+                spinnerObj.obj.remove();
+                if (typeof (callback) === "function") {
+                    callback();
+                }
+            }, 500);
         }
-        return null;
     }
 
     var spinObj = [
@@ -1292,24 +1331,17 @@
         }
     ];
 
-    exports.show = function (obj, configs, callback) {
-        return creatSpin(obj, configs, callback);
+    exports.Create = function (configs, callback) {
+        return creatSpin(configs, callback);
     }
-    exports.hidden = function (obj, callback) {
-        var hasSpinnerObj = getArrJsonItem(spinnerArr, "obj", obj);
-        if (hasSpinnerObj.index != -1) {
-            spinnerArr.splice(hasSpinnerObj.index, hasSpinnerObj.index + 1);
-            obj.find("#" + hasSpinnerObj.item.id).removeClass('animated fadeIn').addClass('animated fadeOut');
-            setTimeout(function () {
-                obj.find("#" + hasSpinnerObj.item.id).remove();
-                if (typeof (callback) === "function") {
-                    callback();
-                }
-            }, 500);
+    exports.Destroy = function (callback) {
+        $.each(spinnerArr, function (index, item) {
+            $('#' + item.id).remove();
+        });
+        spinnerArr = [];
+        if (typeof (callback) === "function") {
+            callback();
         }
-    }
-    exports.get = function (obj) {
-        return get(obj);
     }
     exports.version = "1.0.0";
 }));
