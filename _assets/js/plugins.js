@@ -31,43 +31,19 @@
             , 'html5media': '_assets/js/public/html5media/html5media-1.1.8.min.js'//多媒体
             , 'moment': '_assets/js/public/moment/moment-local-2.1.3.min.js'//日期
             , 'validator': '_assets/js/public/validator/validator-5.2.0.min.js'//验证
-            , 'common': '_assets/js/module/common/common.js'//加载动画
+            , 'common': '_assets/js/module/common/common.js'//加载通用函数
             , 'spink': '_assets/js/module/spinkit/spinkit.js'//加载动画
             , 'noty': '_assets/js/module/notykit/notykit.js'//对话框
+            , 'dataload': '_assets/js/module/dataload/dataload.js'//数据请求
+            , 'seajs': '_assets/js/frame/seajs/sea.js'//
+            , 'seajs-css': '_assets/js/frame/seajs/seajs-css.js'//
+            , 'seajs-preload': '_assets/js/frame/seajs/seajs-preload.js'//数据请求
         },
         callback: function (url, result, key) {
             //alert(url);
         },
         complete: function () {
-            moment.locale('zh-cn');
-
-            // SpinKit.show($("#3"), {
-            //     size: 200
-            // });
-
-            // var aaaa1 = NotyKit.Create({
-            //     title: {
-            //         text: "title数据aaa"
-            //     }
-            //     , obj: $("#4")
-            //     , text: {
-            //         text: "哈啥说哈是的是的发撒发撒旦法撒旦法打算发"
-            //     }
-            //     ,
-            //     closeItem: [{
-            //         container: 'noty_title'//noty_message,noty_title,noty_text,noty_foot,notykit_content,notykit_container
-            //         , closeWith: ['click']
-            //         , text: '<span class="icon-remove" style="color:#ff0000;"></span>'//当 text 不为空时候下面配置生效
-            //         , layout: 'topright'
-            //         , addClass: 'close'
-            //     }]
-            //     ,
-            //     callback: {
-            //         onClose: function (obj) {
-            //             //alert(obj.id);
-            //         }
-            //     }
-            // });
+            pageInit();
         }
     }]);
 }());

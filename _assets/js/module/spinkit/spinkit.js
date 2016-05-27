@@ -75,16 +75,18 @@
         var v = (typeof (value) != "undefined") ? value : null;
         if (typeof (obj) == "object" && obj != null && k != null) {
             for (var item in obj) {
-                if (v != null) {
-                    if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
-                        return {index: parseInt(item), item: obj[item]};
-                        break;
+                if (typeof (obj[item]) === 'object' && obj[item] != null) {
+                    if (v != null) {
+                        if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
+                            return {index: parseInt(item), item: obj[item]};
+                            break;
+                        }
                     }
-                }
-                else {
-                    if (obj[item].hasOwnProperty(k)) {
-                        return {index: parseInt(item), item: obj[item]};
-                        break;
+                    else {
+                        if (obj[item].hasOwnProperty(k)) {
+                            return {index: parseInt(item), item: obj[item]};
+                            break;
+                        }
                     }
                 }
             }

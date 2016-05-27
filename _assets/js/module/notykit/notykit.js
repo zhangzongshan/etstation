@@ -1,6 +1,7 @@
 /**
  * Created by zhangzongshan on 16/5/10.
  */
+"use strict";
 (function (factory) {
     if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
         var target = module['exports'] || exports; // module.exports is for Node.js
@@ -47,16 +48,18 @@
         var v = (typeof (value) != "undefined") ? value : null;
         if (typeof (obj) == "object" && obj != null && k != null) {
             for (var item in obj) {
-                if (v != null) {
-                    if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
-                        return {index: parseInt(item), item: obj[item]};
-                        break;
+                if (typeof (obj[item]) === 'object' && obj[item] != null) {
+                    if (v != null) {
+                        if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
+                            return {index: parseInt(item), item: obj[item]};
+                            break;
+                        }
                     }
-                }
-                else {
-                    if (obj[item].hasOwnProperty(k)) {
-                        return {index: parseInt(item), item: obj[item]};
-                        break;
+                    else {
+                        if (obj[item].hasOwnProperty(k)) {
+                            return {index: parseInt(item), item: obj[item]};
+                            break;
+                        }
                     }
                 }
             }
@@ -126,8 +129,8 @@
     }
 
     function setParentsStyle(obj, exprClass) {
-        parentsObj = obj.parents(exprClass);
-        parentObj = obj.parent();
+        var parentsObj = obj.parents(exprClass);
+        var parentObj = obj.parent();
         parentsObj.find("*").each(function () {
             if (!$(this).is(parentObj)) {
                 $(this).css({

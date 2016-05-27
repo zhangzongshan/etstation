@@ -352,21 +352,53 @@
             var v = (typeof (value) != "undefined") ? value : null;
             if (typeof (obj) == "object" && obj != null && k != null) {
                 for (var item in obj) {
-                    if (v != null) {
-                        if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
-                            return {index: parseInt(item), item: obj[item]};
-                            break;
+                    if (typeof (obj[item]) === 'object' && obj[item] != null) {
+                        if (v != null) {
+                            if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
+                                return {index: parseInt(item), item: obj[item]};
+                                break;
+                            }
                         }
-                    }
-                    else {
-                        if (obj[item].hasOwnProperty(k)) {
-                            return {index: parseInt(item), item: obj[item]};
-                            break;
+                        else {
+                            if (obj[item].hasOwnProperty(k)) {
+                                return {index: parseInt(item), item: obj[item]};
+                                break;
+                            }
                         }
                     }
                 }
             }
             return {index: -1, item: null};
+        },
+        /*
+         * 根据key,value删除对象obj:[{key1,values},{key2,values}]的值
+         * @obj:对象
+         * @key:键
+         * @value:值
+         * @return:{index,item}
+         * */
+        removeArrJsonItem: function (obj, key, value) {
+            var k = (typeof (key) == "string" && key != "") ? key : null;
+            var v = (typeof (value) != "undefined") ? value : null;
+            if (typeof (obj) == "object" && obj != null && k != null) {
+                for (var item in obj) {
+                    if (typeof (obj[item]) === 'object' && obj[item] != null) {
+                        if (v != null) {
+                            if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
+                                delete obj[item];
+                                break;
+                            }
+                        }
+                        else {
+                            if (obj[item].hasOwnProperty(k)) {
+                                delete obj[item];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return obj;
         },
         getInputMoney: function (money, n) {
             money = money.toString();
@@ -478,7 +510,7 @@
          * @obj:对象
          * @return{bool}
          * */
-        isArray:function (obj) {
+        isArray: function (obj) {
             return Object.prototype.toString.call(obj) === '[object Array]';
         }
     }

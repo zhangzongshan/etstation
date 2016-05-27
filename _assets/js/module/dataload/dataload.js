@@ -1,6 +1,7 @@
 /**
  * Created by zhangzongshan on 16/5/24.
  */
+"use strict";
 (function (factory) {
     if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
         var target = module['exports'] || exports; // module.exports is for Node.js
@@ -23,16 +24,18 @@
         var v = (typeof (value) != "undefined") ? value : null;
         if (typeof (obj) == "object" && obj != null && k != null) {
             for (var item in obj) {
-                if (v != null) {
-                    if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
-                        return {index: parseInt(item), item: obj[item]};
-                        break;
+                if (typeof (obj[item]) === 'object' && obj[item] != null) {
+                    if (v != null) {
+                        if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
+                            return {index: parseInt(item), item: obj[item]};
+                            break;
+                        }
                     }
-                }
-                else {
-                    if (obj[item].hasOwnProperty(k)) {
-                        return {index: parseInt(item), item: obj[item]};
-                        break;
+                    else {
+                        if (obj[item].hasOwnProperty(k)) {
+                            return {index: parseInt(item), item: obj[item]};
+                            break;
+                        }
                     }
                 }
             }
@@ -45,16 +48,18 @@
         var v = (typeof (value) != "undefined") ? value : null;
         if (typeof (obj) == "object" && obj != null && k != null) {
             for (var item in obj) {
-                if (v != null) {
-                    if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
-                        delete obj[item][k];
-                        break;
+                if (typeof (obj[item]) === 'object' && obj[item] != null) {
+                    if (v != null) {
+                        if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
+                            delete obj[item];
+                            break;
+                        }
                     }
-                }
-                else {
-                    if (obj[item].hasOwnProperty(k)) {
-                        delete obj[item];
-                        break;
+                    else {
+                        if (obj[item].hasOwnProperty(k)) {
+                            delete obj[item];
+                            break;
+                        }
                     }
                 }
             }
@@ -103,7 +108,7 @@
             tempDataStorge = dataStorge;
         }
         else {
-            tempDataStorge = getstorage('_data_temp_system-DataLoad');
+            tempDataStorge = getstorage('_data_storge_system-DataLoad');
             if (tempDataStorge !== null) {
                 tempDataStorge = JSON.parse(tempDataStorge);
             }
@@ -132,7 +137,7 @@
                 id: id
                 , value: data
             });
-            writestorage('_data_temp_system-DataLoad', JSON.stringify(dataStorge));
+            writestorage('_data_storge_system-DataLoad', JSON.stringify(dataStorge));
         }
     }
 
@@ -189,6 +194,44 @@
     function _callback(callback, result) {
         if (typeof callback === 'function' && callback != null) {
             callback(result);
+        }
+    }
+
+    exports.Clear = function () {
+        dataStorge = [];
+        delstorage('_data_storge_system-DataLoad');
+    }
+
+    exports.RemoveStorge = function (id) {
+        id = (typeof id === 'string' && id != '' && id != 'null') ? id : '';
+        if (id !== '') {
+            var tempDataStorge = null;
+            if (dataStorge.length > 0) {
+                tempDataStorge = dataStorge;
+            }
+            else {
+                tempDataStorge = getstorage('_data_storge_system-DataLoad');
+                if (tempDataStorge !== null) {
+                    tempDataStorge = JSON.parse(tempDataStorge);
+                }
+            }
+
+            if (tempDataStorge != null) {
+                dataStorge = tempDataStorge;
+                tempDataStorge = null;
+            }
+
+            var getDataByIDObj = getArrJsonItem(dataStorge, 'id', id);
+            if (getDataByIDObj.index != -1) {
+                dataStorge = removeArrJsonItem(dataStorge, 'id', id);
+            }
+            if(dataStorge.length>0){
+                writestorage('_data_storge_system-DataLoad', JSON.stringify(dataStorge));
+            }
+            else
+            {
+                delstorage('_data_storge_system-DataLoad');
+            }
         }
     }
 
