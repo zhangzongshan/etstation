@@ -18,6 +18,7 @@
     var DataLoad = typeof exports !== 'undefined' ? exports : {};
 
     var dataStorge = [];
+    var debug = false;
 
     function getArrJsonItem(obj, key, value) {
         var k = (typeof (key) == "string" && key != "") ? key : null;
@@ -150,8 +151,10 @@
         if (url != '') {
             $.get(url, function (data) {
                 _callback(callback, data);
-                if (id != '') {
-                    writeDataStorge(id, data);
+                if (!debug) {
+                    if (id != '') {
+                        writeDataStorge(id, data);
+                    }
                 }
             });
         }
@@ -189,8 +192,10 @@
                 : 'json';
             $.post(url, pars, function (data) {
                 _callback(callback, data);
-                if (id != '') {
-                    writeDataStorge(id, data);
+                if (!debug) {
+                    if (id != '') {
+                        writeDataStorge(id, data);
+                    }
                 }
             }, type);
         }
@@ -246,16 +251,20 @@
         id = (typeof id === 'string' && id != '' && id != 'null') ? id : '';
         url = (typeof url === 'string' && url != '' && url != 'null') ? url : '';
         callback = (typeof callback === 'function' && callback != null) ? callback : null;
-        if (id != '') {
-            var dataObj = getDataStorge(id);
-            if (dataObj != null) {
-                _callback(callback, dataObj);
+        if (!debug) {
+            if (id != '') {
+                var dataObj = getDataStorge(id);
+                if (dataObj != null) {
+                    _callback(callback, dataObj);
+                }
+                else {
+                    getfile(id, url, callback);
+                }
             }
             else {
                 getfile(id, url, callback);
             }
-        }
-        else {
+        } else {
             getfile(id, url, callback);
         }
     }
@@ -265,10 +274,15 @@
         url = (typeof url === 'string' && url != '' && url != 'null') ? url : '';
         callback = (typeof callback === 'function' && callback != null) ? callback : null;
         type = (typeof type === 'string' && type != '') ? type : 'json';
-        if (id != '') {
-            var dataObj = getDataStorge(id);
-            if (dataObj != null) {
-                _callback(callback, dataObj);
+        if (!debug) {
+            if (id != '') {
+                var dataObj = getDataStorge(id);
+                if (dataObj != null) {
+                    _callback(callback, dataObj);
+                }
+                else {
+                    postfile(id, url, parameters, callback, type);
+                }
             }
             else {
                 postfile(id, url, parameters, callback, type);
@@ -276,6 +290,13 @@
         }
         else {
             postfile(id, url, parameters, callback, type);
+        }
+    }
+    //设置调式模式
+    exports.Debug = function (contig) {
+        contig = contig.toString().toLowerCase() === 'true' ? true : false;
+        if (contig) {
+            debug = true;
         }
     }
 
