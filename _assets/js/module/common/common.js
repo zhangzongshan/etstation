@@ -398,6 +398,11 @@
                     }
                 }
             }
+            if(typeof (obj)==='object' && obj!=null){
+                if(JSON.stringify(obj)==='[null]'){
+                    obj=null;
+                }
+            }
             return obj;
         },
         getInputMoney: function (money, n) {

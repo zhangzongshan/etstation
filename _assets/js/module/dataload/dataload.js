@@ -64,6 +64,11 @@
                 }
             }
         }
+        if (typeof (obj) === 'object' && obj != null) {
+            if (JSON.stringify(obj) === '[null]') {
+                obj = null;
+            }
+        }
         return obj;
     }
 
@@ -224,12 +229,14 @@
             var getDataByIDObj = getArrJsonItem(dataStorge, 'id', id);
             if (getDataByIDObj.index != -1) {
                 dataStorge = removeArrJsonItem(dataStorge, 'id', id);
+                if (dataStorge === null) {
+                    dataStorge = [];
+                }
             }
-            if(dataStorge.length>0){
+            if (dataStorge.length > 0) {
                 writestorage('_data_storge_system-DataLoad', JSON.stringify(dataStorge));
             }
-            else
-            {
+            else {
                 delstorage('_data_storge_system-DataLoad');
             }
         }
