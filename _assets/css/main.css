@@ -15,6 +15,12 @@ html {
     background-color: #202020;
 }
 
+.clear{
+    clear: both;
+    width: 0px;
+    height: 0px;
+}
+
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301

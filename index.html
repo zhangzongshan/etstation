@@ -7,9 +7,9 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="apple-touch-icon" href="/etstation.png">
-        <link rel="shortcut icon" href="/etstation.ico" mce_href=”/etstation.ico” title="Favicon" type=”image/x-icon”/>
-        <link rel=”icon” href=”/etstation.ico” mce_href=”/etstation.ico” type=”image/x-icon”>
+        <link rel="apple-touch-icon" href="etstation.png">
+        <link rel="shortcut icon" href="etstation.ico" mce_href=”etstation.ico” title="Favicon" type=”image/x-icon”/>
+        <link rel=”icon” href=”etstation.ico” mce_href=”etstation.ico” type=”image/x-icon”>
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="stylesheet" href="_assets/css/bootstrap.min.css">
@@ -33,7 +33,11 @@
         <script src="_assets/js/plugins.js"></script>
         <script>
             function pageInit() {
+                var spinkit=SpinKit.Create({
+                    color:'#fff'
+                });
                 seajs.use(['script/index'],function (index) {
+                    spinkit.remove();
                     index.init();
                 });
             }
