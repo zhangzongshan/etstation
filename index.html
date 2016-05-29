@@ -37,8 +37,10 @@
                     color:'#fff'
                 });
                 seajs.use(['script/index'],function (index) {
-                    spinkit.remove();
-                    index.init();
+                    $(function(){
+                        spinkit.remove();
+                        index.init();
+                    });
                 });
             }
         </script>
