@@ -44,21 +44,32 @@
         return {index: -1, item: null};
     }
 
-    function removeArrJsonItem(obj, key, value) {
+    function removeArrJsonItem(obj, key, value, newsItem) {
         var k = (typeof (key) == "string" && key != "") ? key : null;
         var v = (typeof (value) != "undefined") ? value : null;
+        var itemObj = (typeof (newsItem) != "undefined") ? newsItem : null;
         if (typeof (obj) == "object" && obj != null && k != null) {
             for (var item in obj) {
                 if (typeof (obj[item]) === 'object' && obj[item] != null) {
                     if (v != null) {
                         if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
-                            obj.splice(obj.indexOf(item),1);
+                            if (itemObj != null) {
+                                obj.splice(obj.indexOf(item), 1, itemObj);
+                            }
+                            else {
+                                obj.splice(obj.indexOf(item), 1);
+                            }
                             break;
                         }
                     }
                     else {
                         if (obj[item].hasOwnProperty(k)) {
-                            obj.splice(obj.indexOf(item),1);
+                            if (itemObj != null) {
+                                obj.splice(obj.indexOf(item), 1, itemObj);
+                            }
+                            else {
+                                obj.splice(obj.indexOf(item), 1);
+                            }
                             break;
                         }
                     }
@@ -79,10 +90,10 @@
     function writestorage(key, value) {
         var storage = window.localStorage;
         if (storage) {
-            try{
+            try {
                 storage.setItem(key, value);
-            }catch(oException){
-                if(oException.name == 'QuotaExceededError'){
+            } catch (oException) {
+                if (oException.name == 'QuotaExceededError') {
                     console.log('超出本地存储限额！');
                     //如果历史信息不重要了，可清空后再设置
                     clearstorage();
