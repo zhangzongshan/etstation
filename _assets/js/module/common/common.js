@@ -294,7 +294,16 @@
         writestorage: function (key, value) {
             var storage = window.localStorage;
             if (storage) {
-                storage.setItem(key, value);
+                try{
+                    storage.setItem(key, value);
+                }catch(oException){
+                    if(oException.name == 'QuotaExceededError'){
+                        console.log('超出本地存储限额！');
+                        //如果历史信息不重要了，可清空后再设置
+                        this.clearstorage();
+                        storage.setItem(key, value);
+                    }
+                }
                 return true;
             }
             return false;
@@ -385,22 +394,17 @@
                     if (typeof (obj[item]) === 'object' && obj[item] != null) {
                         if (v != null) {
                             if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
-                                delete obj[item];
+                                obj.splice(obj.indexOf(item),1);
                                 break;
                             }
                         }
                         else {
                             if (obj[item].hasOwnProperty(k)) {
-                                delete obj[item];
+                                obj.splice(obj.indexOf(item),1);
                                 break;
                             }
                         }
                     }
-                }
-            }
-            if(typeof (obj)==='object' && obj!=null){
-                if(JSON.stringify(obj)==='[null]'){
-                    obj=null;
                 }
             }
             return obj;
