@@ -380,11 +380,48 @@
             return {index: -1, item: null};
         },
         /*
+         * 根据key,value指定的位置添加新对象obj:[{key1,values},{key2,values}]的值
+         * @obj:对象
+         * @key:键
+         * @value:值
+         * @newsItem:新增加
+         * @return:{obj}
+         * */
+        addArrJosnItem: function (obj, key, value, newsItem) {
+            var k = (typeof (key) == "string" && key != "") ? key : null;
+            var v = (typeof (value) != "undefined") ? value : null;
+            var itemObj = (typeof (newsItem) != "undefined") ? newsItem : null;
+            if (typeof (obj) == "object" && obj != null && k != null) {
+                for (var item in obj) {
+                    if (typeof (obj[item]) === 'object' && obj[item] != null) {
+                        if (v != null) {
+                            if (obj[item][k] === v || (typeof (v) === "object" && obj[item][k].is(v))) {
+                                if (itemObj != null) {
+                                    obj.splice(obj.indexOf(item), 0, itemObj);
+                                }
+                                break;
+                            }
+                        }
+                        else {
+                            if (obj[item].hasOwnProperty(k)) {
+                                if (itemObj != null) {
+                                    obj.splice(obj.indexOf(item), 0, itemObj);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return obj;
+        },
+        /*
          * 根据key,value删除对象obj:[{key1,values},{key2,values}]的值
          * @obj:对象
          * @key:键
          * @value:值
-         * @return:{index,item}
+         * @newsItem:新增加
+         * @return:{obj}
          * */
         removeArrJsonItem: function (obj, key, value, newsItem) {
             var k = (typeof (key) == "string" && key != "") ? key : null;
