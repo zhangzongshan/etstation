@@ -567,11 +567,11 @@
                     var normalClass = (typeof item.normal === 'string' && item.normal != '') ? item.normal : '';
                     var activeClass = (typeof item.active === 'string' && item.active != '') ? item.active : '';
                     var fn = (typeof item.fn === 'function' && item.fn != null) ? item.fn : null;
-                    var content = item.content != null ? item.content : '';
+                    var content = item.content != null ? item.content : null;
 
                     if (thisTabsId === id) {
                         tabsContainer.find('#tabsLi' + id).removeClass(normalClass).removeClass('_tabs_normal').addClass(activeClass).addClass('_tabs_active');
-                        if (_container !== null && content !== '') {
+                        if (_container !== null && content !== null) {
                             _container.html(content);
                         }
                         if (fn !== null) {

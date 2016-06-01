@@ -6,6 +6,7 @@
     top:0px;
     height: 50px;
     width: 100%;
+    z-index: 1000;
 }
 #head .head_container{
     height: 45px;

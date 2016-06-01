@@ -214,3 +214,32 @@
     -o-background-position: center center;
 }
 
+.tabs_normal{
+    width: 100px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    color: #fff;
+    border: 1px solid #666;
+    text-align: center;
+    cursor: pointer;
+}
+.tabs_active{
+    width: 100px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    color: #fff;
+    border: 1px solid #666;
+    background-color: #666;
+    text-align: center;
+    cursor: pointer;
+}
+
+.about_item_about_content{
+    padding-top: 20px;
+    font-size: 10px;
+    line-height: 2.5;
+    text-indent: 24px;
+}
+
