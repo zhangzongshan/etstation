@@ -38,6 +38,7 @@
             , 'seajs': '_assets/js/frame/seajs/sea.js'//
             , 'seajs-css': '_assets/js/frame/seajs/seajs-css.js'//
             , 'seajs-preload': '_assets/js/frame/seajs/seajs-preload.js'//数据请求
+            , 'baiduMao': 'http://api.map.baidu.com/api?v=2.0&ak=e35biu9blkyBwcyfYBXaI5zfwyMRjLSU&callback=mapinit'//数据请求
         },
         callback: function (url, result, key) {
             //alert(url);

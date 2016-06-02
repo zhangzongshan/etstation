@@ -214,7 +214,7 @@
     -o-background-position: center center;
 }
 
-.tabs_normal{
+#content .about .tabs_normal{
     width: 100px;
     height: 24px;
     line-height: 24px;
@@ -224,7 +224,7 @@
     text-align: center;
     cursor: pointer;
 }
-.tabs_active{
+#content .about .tabs_active{
     width: 100px;
     height: 24px;
     line-height: 24px;
@@ -236,10 +236,419 @@
     cursor: pointer;
 }
 
-.about_item_about_content{
+#content .about .about_item_about_content{
     padding-top: 20px;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 2.5;
     text-indent: 24px;
 }
+
+#content .product{
+    width: 100%;
+    height: 500px;
+
+    background-image:url('../images/big_bg/product.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: cover;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: cover;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: cover;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: cover;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+#content .product .product_container{
+    width: 1000px;
+    height: 500px;
+    margin: auto;
+}
+
+#content .product .product_container .product_title{
+    padding: 80px 0px 30px 0px;
+    height: 160px;
+    width: 100%;
+
+    background-image:url('../images/index/product_title.png');
+    background-size: auto 30px;
+    background-repeat: no-repeat;
+    background-position: left 90px;
+
+    -moz-background-size: auto 30px;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: left 90px;
+
+    -ms-background-size: auto 30px;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: left 90px;
+
+    -webkit-background-size: auto 30px;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: left 90px;
+
+    -o-background-size: auto 30px;
+    -o-background-repeat: no-repeat;
+    -o-background-position: left 90px;
+}
+#content .product .product_container .product_cate{
+    min-height: 180px;
+    width: 100%;
+    text-align: center;
+}
+
+#content .product .product_cate .product_item{
+    display: inline-block;
+    min-height: 180px;
+    margin: 0 5px;
+}
+#content .product .product_cate .product_XPEL{
+    border: 1px solid #edaa04;
+}
+#content .product .product_cate .product_3M{
+    border: 1px solid #bb1815;
+}
+#content .product .product_cate .product_PWF{
+    border: 1px solid #156daf;
+}
+
+#content .product .product_cate_logo{
+    width: 100%;
+    height: 90px;
+    background-color: rgba(0,0,0,.6);
+}
+
+.logo_XPEL{
+    background-image:url('../images/index/logo_XPEL.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: 50%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: 50%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: 50%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: 50%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+.logo_3M{
+    background-image:url('../images/index/logo_3M.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: 50%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: 50%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: 50%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: 50%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+.logo_PWF{
+    background-image:url('../images/index/logo_PWF.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: 50%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: 50%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: 50%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: 50%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+#content .product .product_cate_content{
+    width: 100%;
+    height: 110px;
+}
+
+#content .product .content_XPEL{
+    background-color: #edaa04;
+}
+#content .product .content_3M{
+    background-color: #bb1815;
+}
+#content .product .content_PWF{
+    background-color: #156daf;
+}
+
+#content .product .content_title{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+#content .product .content_text{
+    width: 100%;
+    height: 50px;
+    line-height: 1.5;
+    font-size: 12px;
+    color: #fff;
+    text-align: left;
+    padding: 0px 10px;
+}
+
+#content .product .content_btn{
+    width: 100%;
+    height: 30px;
+    padding-top: 5px;
+    text-align: right;
+    padding: 0px 10px;
+}
+#content .product .btn{
+    height: 20px;
+    line-height: 20px;
+    background-color: #fff;
+    padding: 0px 10px;
+    font-size: 9px;
+    color: #666;
+    text-align: center;
+    border-radius:2px;
+}
+
+#content .product .btn:hover{
+    background-color: #333;
+    color: #fff;
+}
+
+#content .link{
+    width: 100%;
+    height: 600px;
+
+    background-image:url('../images/big_bg/link.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: cover;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: cover;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: cover;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: cover;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+#content .link .link_container{
+    width: 1000px;
+    height: 600px;
+    padding: 150px 0px 100px 0px;
+    margin: auto;
+}
+
+#content .link .link_container .link_content{
+    width: 360px;
+    height: 350px;
+    float: left;
+    background-color: rgba(24,24,24,.8);
+    color: #fff;
+}
+
+#content .link .link_container .link_content_title{
+    width: 100%;
+    height: 50px;
+
+    background-image:url('../images/about/link_ch.png');
+    background-size: auto 25px;
+    background-repeat: no-repeat;
+    background-position: left 10px;
+
+    -moz-background-size: auto 25px;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: left 10px;
+
+    -ms-background-size: auto 25px;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: left 10px;
+
+    -webkit-background-size: auto 25px;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: left 10px;
+
+    -o-background-size: auto 25px;
+    -o-background-repeat: no-repeat;
+    -o-background-position: left 10px;
+}
+
+#content .link .link_container .link_content_comName{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding: 0px 25px;
+    background-color: rgba(255,255,255,.2);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#content .link .link_container .link_content_text{
+    width: 100%;
+    height: 140px;
+    line-height: 25px;
+    padding: 20px 25px;
+    font-size: 12px;
+}
+
+#content .link .link_container .link_map{
+    width: 630px;
+    height: 350px;
+    float: left;
+    margin-left: 10px;
+}
+
+#content .link .link_container .link_map_title{
+    width: 100%;
+    height: 50px;
+
+    background-image:url('../images/about/link_en.png');
+    background-size: auto 20px;
+    background-repeat: no-repeat;
+    background-position: left 15px;
+
+    -moz-background-size: auto 20px;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: left 15px;
+
+    -ms-background-size: auto 20px;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: left 15px;
+
+    -webkit-background-size: auto 20px;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: left 15px;
+
+    -o-background-size: auto 20px;
+    -o-background-repeat: no-repeat;
+    -o-background-position: left 15px;
+}
+
+#content .link .link_container .link_map_content{
+    border: 5px solid rgba(24,24,24,.8);
+    width: 100%;
+    height: 300px;
+
+}
+
+#content .link .link_container .link_content_QRCode{
+    padding: 0px 25px;
+    width: 100%;
+    height: 120px;
+}
+
+#content .link .link_container .link_content_QRCode_item{
+    display: inline-block;
+    width: 80px;
+    height: 120px;
+    margin-right: 40px;
+}
+
+#content .link .link_container .link_content_QRCode_img{
+    width: 80px;
+    height: 80px;
+}
+
+#content .link .link_container .weixin_friends{
+    background-image:url('../images/about/qrcode_friends.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: cover;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: cover;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: cover;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: cover;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+#content .link .link_container .weixin_subscribe{
+    background-image:url('../images/about/qrcode_subscribe.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: cover;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: cover;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: cover;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: cover;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+#content .link .link_container .link_content_QRCode_text{
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 12px;
+}
+
+
+
 

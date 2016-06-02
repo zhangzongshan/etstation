@@ -7,6 +7,11 @@
     height: 50px;
     width: 100%;
     z-index: 1000;
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
 }
 #head .head_container{
     height: 45px;
