@@ -134,7 +134,7 @@
     color: #999;
 }
 #product .product_content .product_text_btn{
-    height: 20px;
+    height: 22px;
     text-align: right;
 }
 #product .product_content .btn{
@@ -153,93 +153,26 @@
     color: #fff;
 }
 
-.small_XPEL{
-    background-image:url('../../images/index/logo_XPEL.png');
-    background-size: auto 30%;
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    -moz-background-size: auto 30%;
-    -moz-background-repeat: no-repeat;
-    -moz-background-position: center center;
-
-    -ms-background-size: auto 30%;
-    -ms-background-repeat: no-repeat;
-    -ms-background-position: center center;
-
-    -webkit-background-size: auto 30%;
-    -webkit-background-repeat: no-repeat;
-    -webkit-background-position: center center;
-
-    -o-background-size: auto 30%;
-    -o-background-repeat: no-repeat;
-    -o-background-position: center center;
+#product .product_content .product_cate_list{
+    margin: 0px 20px;
+    border-bottom: 2px solid #999;
 }
 
-.small_3M{
-    background-image:url('../../images/index/logo_3M.png');
-    background-size: auto 30%;
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    -moz-background-size: auto 30%;
-    -moz-background-repeat: no-repeat;
-    -moz-background-position: center center;
-
-    -ms-background-size: auto 30%;
-    -ms-background-repeat: no-repeat;
-    -ms-background-position: center center;
-
-    -webkit-background-size: auto 30%;
-    -webkit-background-repeat: no-repeat;
-    -webkit-background-position: center center;
-
-    -o-background-size: auto 30%;
-    -o-background-repeat: no-repeat;
-    -o-background-position: center center;
+#product .product_content .product_cate_name{
+    min-width: 80px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #999;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
 }
 
-.small_PWF{
-    background-image:url('../../images/index/logo_PWF.png');
-    background-size: auto 30%;
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    -moz-background-size: auto 30%;
-    -moz-background-repeat: no-repeat;
-    -moz-background-position: center center;
-
-    -ms-background-size: auto 30%;
-    -ms-background-repeat: no-repeat;
-    -ms-background-position: center center;
-
-    -webkit-background-size: auto 30%;
-    -webkit-background-repeat: no-repeat;
-    -webkit-background-position: center center;
-
-    -o-background-size: auto 30%;
-    -o-background-repeat: no-repeat;
-    -o-background-position: center center;
+#product .product_content .product_img_container{
+    height: 100px;
 }
-.small_ETPD{
-    background-image:url('../../images/index/logo_ETPD.png');
-    background-size: auto 30%;
-    background-repeat: no-repeat;
-    background-position: center center;
 
-    -moz-background-size: auto 30%;
-    -moz-background-repeat: no-repeat;
-    -moz-background-position: center center;
-
-    -ms-background-size: auto 30%;
-    -ms-background-repeat: no-repeat;
-    -ms-background-position: center center;
-
-    -webkit-background-size: auto 30%;
-    -webkit-background-repeat: no-repeat;
-    -webkit-background-position: center center;
-
-    -o-background-size: auto 30%;
-    -o-background-repeat: no-repeat;
-    -o-background-position: center center;
+.swiper-button-prev{
+    background-image:
 }

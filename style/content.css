@@ -327,75 +327,6 @@
     background-color: rgba(0,0,0,.6);
 }
 
-.logo_XPEL{
-    background-image:url('../images/index/logo_XPEL.png');
-    background-size: 50%;
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    -moz-background-size: 50%;
-    -moz-background-repeat: no-repeat;
-    -moz-background-position: center center;
-
-    -ms-background-size: 50%;
-    -ms-background-repeat: no-repeat;
-    -ms-background-position: center center;
-
-    -webkit-background-size: 50%;
-    -webkit-background-repeat: no-repeat;
-    -webkit-background-position: center center;
-
-    -o-background-size: 50%;
-    -o-background-repeat: no-repeat;
-    -o-background-position: center center;
-}
-
-.logo_3M{
-    background-image:url('../images/index/logo_3M.png');
-    background-size: 50%;
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    -moz-background-size: 50%;
-    -moz-background-repeat: no-repeat;
-    -moz-background-position: center center;
-
-    -ms-background-size: 50%;
-    -ms-background-repeat: no-repeat;
-    -ms-background-position: center center;
-
-    -webkit-background-size: 50%;
-    -webkit-background-repeat: no-repeat;
-    -webkit-background-position: center center;
-
-    -o-background-size: 50%;
-    -o-background-repeat: no-repeat;
-    -o-background-position: center center;
-}
-
-.logo_PWF{
-    background-image:url('../images/index/logo_PWF.png');
-    background-size: 50%;
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    -moz-background-size: 50%;
-    -moz-background-repeat: no-repeat;
-    -moz-background-position: center center;
-
-    -ms-background-size: 50%;
-    -ms-background-repeat: no-repeat;
-    -ms-background-position: center center;
-
-    -webkit-background-size: 50%;
-    -webkit-background-repeat: no-repeat;
-    -webkit-background-position: center center;
-
-    -o-background-size: 50%;
-    -o-background-repeat: no-repeat;
-    -o-background-position: center center;
-}
-
 #content .product .product_cate_content{
     width: 100%;
     height: 110px;
@@ -647,6 +578,168 @@
     line-height: 40px;
     text-align: center;
     font-size: 12px;
+}
+
+
+
+.logo_XPEL{
+    background-image:url('../images/index/logo_XPEL.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: 50%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: 50%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: 50%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: 50%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+.logo_3M{
+    background-image:url('../images/index/logo_3M.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: 50%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: 50%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: 50%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: 50%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+.logo_PWF{
+    background-image:url('../images/index/logo_PWF.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: 50%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: 50%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: 50%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: 50%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+.small_XPEL{
+    background-image:url('../images/index/logo_XPEL.png');
+    background-size: auto 30%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: auto 30%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: auto 30%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: auto 30%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: auto 30%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+.small_3M{
+    background-image:url('../images/index/logo_3M.png');
+    background-size: auto 30%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: auto 30%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: auto 30%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: auto 30%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: auto 30%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+.small_PWF{
+    background-image:url('../images/index/logo_PWF.png');
+    background-size: auto 30%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: auto 30%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: auto 30%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: auto 30%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: auto 30%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+.small_ETPD{
+    background-image:url('../images/index/logo_ETPD.png');
+    background-size: auto 30%;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: auto 30%;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: auto 30%;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: auto 30%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: auto 30%;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
 }
 
 

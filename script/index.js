@@ -8,8 +8,10 @@ define(function (require, exports, module) {
         'style/head/head.css'
         , 'style/content.css'
         , 'style/foot/foot.css'
+        , '_assets/js/public/swiper/swiper-3.3.1.min.css'
     ]);
     var tabsKit = require('_assets/js/module/tabskit/tabskit');
+    var swiper = require('_assets/js/public/swiper/swiper-3.3.1.jquery.min')
     DataLoad.Debug(true);
     var headObj = {
         init: function (container) {
@@ -85,21 +87,23 @@ define(function (require, exports, module) {
 
             $(window).scroll(function () {
                 console.log($(window).scrollTop());
-                var currentScroll=$(window).scrollTop();
+                if ($("#content").css('display') !== 'none') {
+                    var currentScroll = $(window).scrollTop();
 
-                if(currentScroll>0 && currentScroll<400){
-                    $("#head .index").closest('.menu').children().removeClass('active');
-                    $("#head .index").addClass('active');
-                }else if(currentScroll>400 && currentScroll<990){
-                    $("#head .about").closest('.menu').children().removeClass('active');
-                    $("#head .about").addClass('active');
-                }else if(currentScroll>990 && currentScroll<1360){
-                    $("#head .product").closest('.menu').children().removeClass('active');
-                    $("#head .product").addClass('active');
-                    contenObj.loadProduct();
-                }else if(currentScroll>1360){
-                    $("#head .link").closest('.menu').children().removeClass('active');
-                    $("#head .link").addClass('active');
+                    if (currentScroll > 0 && currentScroll < 400) {
+                        $("#head .index").closest('.menu').children().removeClass('active');
+                        $("#head .index").addClass('active');
+                    } else if (currentScroll > 400 && currentScroll < 990) {
+                        $("#head .about").closest('.menu').children().removeClass('active');
+                        $("#head .about").addClass('active');
+                    } else if (currentScroll > 990 && currentScroll < 1360) {
+                        $("#head .product").closest('.menu').children().removeClass('active');
+                        $("#head .product").addClass('active');
+                        contenObj.loadProduct();
+                    } else if (currentScroll > 1360) {
+                        $("#head .link").closest('.menu').children().removeClass('active');
+                        $("#head .link").addClass('active');
+                    }
                 }
             });
 
@@ -158,9 +162,9 @@ define(function (require, exports, module) {
                     container.find('.product_item').css({
                         'width': (container.find('.product_cate').width() - 40) / 3 + 'px'
                     });
-                    
+
                     $('#content .product .btn').off('click');
-                    $('#content .product .btn').on('click',function () {
+                    $('#content .product .btn').on('click', function () {
                         contenObj.showProduct($(this).attr('id'));
                     });
 
@@ -169,28 +173,27 @@ define(function (require, exports, module) {
                 }
             });
         },
-        showIndex:function () {
+        showIndex: function () {
             $('#content').show();
             $('#product').hide();
         },
-        loadProduct:function (callback) {
+        loadProduct: function (callback) {
             seajs.use(['style/product/product.css']);
             DataLoad.GetFile('ProductHtml', 'html/content/product.html', function (html) {
-                if(html!=''){
+                if (html != '') {
                     $('#product').html(html);
-                    if(typeof callback==='function'){
+                    if (typeof callback === 'function') {
                         callback();
                     }
                 }
             });
         },
-        showProduct:function (productCate) {
+        showProduct: function (productCate) {
             $("html,body").animate({scrollTop: 0}, 100);
-            if($('#product').html()!==''){
+            if ($('#product').html() !== '') {
                 $('#content').hide();
                 $('#product').show();
-            }else
-            {
+            } else {
                 this.loadProduct(function () {
                     $('#content').hide();
                     $('#product').show();
