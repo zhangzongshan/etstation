@@ -11,7 +11,7 @@ define(function (require, exports, module) {
         , '_assets/js/public/swiper/swiper-3.3.1.min.css'
     ]);
     var tabsKit = require('_assets/js/module/tabskit/tabskit');
-    var swiper = require('_assets/js/public/swiper/swiper-3.3.1.jquery.min')
+    var swiper = require('_assets/js/public/swiper/swiper-3.3.1.jquery.min');
     DataLoad.Debug(true);
     var headObj = {
         init: function (container) {
@@ -78,8 +78,8 @@ define(function (require, exports, module) {
             $("#head .link").on('click', function () {
                 contenObj.showIndex();
                 $("html,body").animate({scrollTop: $("#content .link").offset().top + 50}, 500);
-                $("#content .link").addClass('animated bounce').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-                    $(this).removeClass('animated bounce');
+                $("#content .link").addClass('animated bounceInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                    $(this).removeClass('animated bounceInDown');
                 });
                 $(this).closest('.menu').children().removeClass('active');
                 $(this).addClass('active');
@@ -182,6 +182,7 @@ define(function (require, exports, module) {
             DataLoad.GetFile('ProductHtml', 'html/content/product.html', function (html) {
                 if (html != '') {
                     $('#product').html(html);
+
                     if (typeof callback === 'function') {
                         callback();
                     }
@@ -189,16 +190,60 @@ define(function (require, exports, module) {
             });
         },
         showProduct: function (productCate) {
+            $('#content').hide();
+            var spinkit_Product = SpinKit.Create({
+                color: '#fff'
+            });
             $("html,body").animate({scrollTop: 0}, 100);
             if ($('#product').html() !== '') {
-                $('#content').hide();
                 $('#product').show();
+                contenObj.productList(productCate,spinkit_Product);
             } else {
                 this.loadProduct(function () {
-                    $('#content').hide();
                     $('#product').show();
+                    contenObj.productList(productCate,spinkit_Product);
                 })
             }
+        }
+        ,productList:function (productCate,spinkit_Product) {
+            spinkit_Product.remove()
+            var _xpelSwiper = new swiper('#swiper-XPEL', {
+                loop: true,
+                nextButton: '.swiper_button_xpel_right',
+                prevButton: '.swiper_button_xpel_left',
+                slidesPerView:parseInt($('#swiper-XPEL').width()/200),
+                centeredSlides: false,
+                spaceBetween: 0,
+            });
+
+            var _3mSwiper = new swiper('#swiper-3M', {
+                loop: true,
+                nextButton: '.swiper_button_3m_right',
+                prevButton: '.swiper_button_3m_left',
+                slidesPerView:parseInt($('#swiper-3M').width()/200),
+                centeredSlides: false,
+                spaceBetween: 0,
+            });
+
+            var _pwfSwiper = new swiper('#swiper-PWF', {
+                loop: true,
+                nextButton: '.swiper_button_pwf_right',
+                prevButton: '.swiper_button_pwf_left',
+                slidesPerView:parseInt($('#swiper-PWF').width()/200),
+                centeredSlides: false,
+                spaceBetween: 0,
+            });
+
+            var _etpdSwiper = new swiper('#swiper-ETPD', {
+                loop: true,
+                nextButton: '.swiper_button_etpd_right',
+                prevButton: '.swiper_button_etpd_left',
+                slidesPerView:parseInt($('#swiper-PWF').width()/200),
+                centeredSlides: false,
+                spaceBetween: 0,
+            });
+
+
         }
     }
 

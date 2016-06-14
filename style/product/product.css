@@ -69,7 +69,7 @@
     -moz-background-repeat: no-repeat;
     -moz-background-position: left;
 
-    -ms-background-size: cover;
+    -ms-background-size: auto 30px;
     -ms-background-repeat: no-repeat;
     -ms-background-position: left;
 
@@ -170,9 +170,77 @@
 }
 
 #product .product_content .product_img_container{
-    height: 100px;
+    height: 200px;
+
+}
+.swiper_button_container{
+     float: left;
+     width: 20px;
+     height: 170px;
+     line-height: 170px;
+     font-size: 30px;
+     color: #888;
+     cursor: pointer;
+     margin: 0px 0px 20px 0px;
+ }
+.swiper_button_container:hover{
+    color: #fff;
+}
+.swiper-container {
+    margin: 10px 0px;
+    float: left;
+    width: 860px;
+    height: 170px;
 }
 
-.swiper-button-prev{
-    background-image:
+.swiper-slide{
+    height: 170px;
+    text-align: center;
+
+    /*display: -webkit-box;*/
+    /*display: -ms-flexbox;*/
+    /*display: -webkit-flex;*/
+    /*display: flex;*/
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+.swiper_img{
+    width: 200px;
+    height: 140px;
+    border: 1px solid rgba(136,136,136,0.2);
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: cover;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: cover;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: cover;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: cover;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+
+}
+.swiper_text{
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
 }
