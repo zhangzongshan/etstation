@@ -28,22 +28,18 @@
 <![endif]-->
 <div id="head"></div>
 <div id="content"></div>
-<div id="foot"></div>
 <script src="../_assets/js/plugins.js"></script>
 <script>
-    var maplaodTimer = null;
-    var indexFn=null;
     function pageInit() {
-//        var spinkit = SpinKit.Create({
-//            color: '#fff'
-//        });
-//        seajs.use(['script/index'], function (index) {
-//            $(function () {
-//                spinkit.remove();
-//                index.init();
-//                indexFn=index;
-//            });
-//        });
+        var spinkit = SpinKit.Create({
+            color: '#444'
+        });
+        seajs.use(['../script/admin/index'], function (index) {
+            $(function () {
+                spinkit.remove();
+                index.init();
+            });
+        });
     }
 </script>
 </body>

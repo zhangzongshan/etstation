@@ -1,7 +1,7 @@
 /**
  * Created by zhangzongshan on 16/5/27.
  */
-'use stice';
+'use strict';
 define(function (require, exports, module) {
 
     seajs.use([

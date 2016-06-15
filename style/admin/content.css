@@ -1,0 +1,19 @@
+.content_container{
+    width: 100%;
+    overflow: hidden;
+}
+.content_left{
+    width: 180px;
+    float: left;
+    background: #1f548a;
+    overflow: hidden;
+}
+.content_right{
+    width: auto;
+    float: left;
+    overflow: auto;
+}
+.admin_content{
+    padding: 20px;
+    width: 1000px;
+}
