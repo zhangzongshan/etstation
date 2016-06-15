@@ -63,7 +63,7 @@
             , 'moment': rootpath + '_assets/js/public/moment/moment-local-2.1.3.min.js'//日期
             , 'validator': rootpath + '_assets/js/public/validator/validator-5.2.0.min.js'//验证
             , 'common': rootpath + '_assets/js/module/common/common.js'//加载通用函数
-            , 'basil': rootpath + '_assets/js/public/basil/basil.js'//验证
+            , 'basil': rootpath + '_assets/js/public/basil/basil.js'//数据统一储存
             , 'noty': rootpath + '_assets/js/module/notykit/notykit.js'//对话框
             , 'dataload': rootpath + '_assets/js/module/dataload/dataload.js'//数据请求
             , 'seajs': rootpath + '_assets/js/frame/seajs/sea.js'//
