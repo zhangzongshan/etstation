@@ -1,5 +1,6 @@
 // Avoid `console` errors in browsers that lack a console.
 //解决的console调试的时候报错
+var apiRoot = "http://192.168.0.8/EtsationApi";
 (function () {
     var method;
     var noop = function () {
@@ -34,6 +35,7 @@
         }
         return "";
     }
+
     var sysSpinkit = null;
     var rootpath = getScriptRoot('plugins').replace('_assets/js/', '');
     var loadMapUrl = '';
@@ -78,7 +80,7 @@
             sysSpinkit.remove();
             sysSpinkit = null;
         }
-    },{
+    }, {
         test: loadMapFlg,
         yep: loadMapUrl,
         callback: function (url, result, key) {
