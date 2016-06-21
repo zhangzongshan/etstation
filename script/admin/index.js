@@ -38,11 +38,7 @@ define(function (require, exports, module) {
                         'width': $(window).width() - container.find('.content_left').outerWidth(true) + 'px'
                     });
                 });
-                setTimeout(function () {
-                    container.find('.admin_content').css({
-                        'height': '1500px'
-                    });
-                }, 2000);
+
             });
         }
     }
@@ -58,8 +54,10 @@ define(function (require, exports, module) {
         }
         else
         {
+            $('#head').html('');
+            $('#content').html('');
             var login=require('../admin/login');
-            login.login(function (result) {
+            login.login($('#content'),function (result) {
                 headObj.init($('#head'), function () {
                     contentObj.init($('#content'));
                 });

@@ -16,7 +16,7 @@
     }
 }(function (require, exports, module) {
     var DataLoad = typeof exports !== 'undefined' ? exports : {};
-
+    var basil = new window.Basil();
     var dataStorge = [];
     var debug = false;
 
@@ -164,6 +164,13 @@
 
     function getfile(id, url, callback) {
         if (url != '') {
+            var sessionkey = basil.get("sessionkey");
+            if (url.indexOf("?") !== -1) {
+                url += "&sessionkey=" + sessionkey
+            }
+            else {
+                url += "?sessionkey=" + sessionkey
+            }
             $.get(url, function (data) {
                 _callback(callback, data);
                 if (!debug) {
@@ -175,8 +182,15 @@
         }
     }
 
-    function postfile(id, url, parameters, callback, type) {
+    function postfile(id, url, parameters, callback, async, type, dataType) {
         if (url != '') {
+            var sessionkey = basil.get("sessionkey");
+            if (url.indexOf("?") !== -1) {
+                url += "&sessionkey=" + sessionkey
+            }
+            else {
+                url += "?sessionkey=" + sessionkey
+            }
             var pars = "";
             parameters = (parameters == null || parameters == "") ? {} : parameters;
             $.each(Object.keys(parameters), function (index, item) {
@@ -200,19 +214,39 @@
                 }
             });
 
-            type = type.toLowerCase() === 'json' ? 'json'
-                : type.toLowerCase() === 'xml' ? 'xml'
-                : type.toLowerCase() === 'html' ? 'html'
-                : type.toLowerCase() === 'script' ? 'script'
+            dataType = dataType.toLowerCase() === 'json' ? 'json'
+                : dataType.toLowerCase() === 'jsonp' ? 'jsonp'
+                : dataType.toLowerCase() === 'xml' ? 'xml'
+                : dataType.toLowerCase() === 'html' ? 'html'
+                : dataType.toLowerCase() === 'script' ? 'script'
                 : 'json';
-            $.post(url, pars, function (data) {
-                _callback(callback, data);
-                if (!debug) {
-                    if (id != '') {
-                        writeDataStorge(id, data);
+
+            type = type.toLowerCase() === 'post' ? 'POST'
+                : type.toLowerCase() === 'get' ? 'GET'
+                : type.toLowerCase() === 'put' ? 'PUT'
+                : type.toLowerCase() === 'delete' ? 'DELETE'
+                : 'POST';
+            pars = $.param(parameters, true);
+            $.ajax({
+                url: url
+                , type: type
+                , cache: false
+                , data: pars
+                , async: async
+                , dataType: dataType
+                , success: function (result, status, xhr) {
+                    _callback(callback, result);
+                    if (!debug) {
+                        if (id != '') {
+                            writeDataStorge(id, result);
+                        }
                     }
                 }
-            }, type);
+                , error: function (xhr, status, error) {
+                    _callback(callback, error);
+                    console.log(error);
+                }
+            });
         }
     }
 
@@ -284,11 +318,13 @@
         }
     }
 
-    exports.PostFile = function (id, url, parameters, callback, type) {
+    exports.GetData = function (id, url, parameters, callback, async, type, dataType) {
         id = (typeof id === 'string' && id != '' && id != 'null') ? id : '';
         url = (typeof url === 'string' && url != '' && url != 'null') ? url : '';
         callback = (typeof callback === 'function' && callback != null) ? callback : null;
-        type = (typeof type === 'string' && type != '') ? type : 'json';
+        async = (typeof async === 'boolean') ? async : true;
+        type = (typeof type === 'string' && type != '') ? type : 'POST';
+        dataType = (typeof dataType === 'string' && dataType != '') ? dataType : 'json';
         if (!debug) {
             if (id != '') {
                 var dataObj = getDataStorge(id);
@@ -296,17 +332,18 @@
                     _callback(callback, dataObj);
                 }
                 else {
-                    postfile(id, url, parameters, callback, type);
+                    postfile(id, url, parameters, callback, async, type, dataType);
                 }
             }
             else {
-                postfile(id, url, parameters, callback, type);
+                postfile(id, url, parameters, callback, async, type, dataType);
             }
         }
         else {
-            postfile(id, url, parameters, callback, type);
+            postfile(id, url, parameters, callback, async, type, dataType);
         }
     }
+
     //设置调式模式
     exports.Debug = function (contig) {
         contig = contig.toString().toLowerCase() === 'true' ? true : false;

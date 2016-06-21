@@ -731,6 +731,9 @@
                         afterCloseFn(notykit);
                     }
                 }
+                else {
+                    obj.remove();
+                }
             }
         },
         destroy: function (notykit) {
@@ -743,12 +746,16 @@
                     notykitDate.splice(hasNotykitIndex, hasNotykitIndex + 1);
                     obj.remove();
                 }
+                else {
+                    obj.remove();
+                }
             }
         },
         destroyAll: function () {
             $.each(notykitDate, function (index, item) {
                 NotyKitObj.destroy(item.notykit);
             });
+            notykitDate = [];
         }
     }
 

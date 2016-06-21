@@ -1,10 +1,163 @@
-.login_container{
+.login_container {
     width: 100%;
     height: 100%;
     background-color: #eee;
 }
-.login_bg{
+
+.login_bg {
     height: 50%;
     width: 100%;
     background-color: #2888c5;
+}
+
+.login_content {
+    position: relative;
+    top: -200px;
+    width: 300px;
+    height: 300px;
+    border-top: 1px solid rgba(255, 255, 255, .4);
+    border-radius: 10px;
+    margin: auto;
+    background-color: #4cabe7;
+}
+
+.login_title {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    line-height: 30px;
+    top: -20px;
+    border-top: 1px solid rgba(255, 255, 255, .4);
+    border-radius: 10px;
+    background-color: #4cabe7;
+    margin: auto;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+}
+
+.login_com_name {
+    position: relative;
+    color: #fff;
+    font-size: 18px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.login_form {
+    width: 100%;
+    padding: 10px 20px;
+    margin-top: 10px;
+}
+
+.login_item {
+    height: 36px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 2px solid transparent;
+}
+
+.login_item_left, .login_item_right {
+    float: left;
+}
+
+.login_item_left {
+    min-width: 60px;
+    text-align: center;
+    font-size: 16px;
+    height: 36px;
+    line-height: 36px;
+    color: #2888c5;
+}
+
+.login_input {
+    margin-top: 8px;
+    border: 0px;
+    outline: none;
+    height: 20px;
+    line-height: 20px;
+    padding-left: 10px;
+    color: #666;
+    border-left: 1px solid #cbd8e4;
+    width: 180px;
+}
+
+.login_btn {
+    background-color: #f89e1d;
+    width: 260px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    height: 36px;
+    line-height: 36px;
+    cursor: pointer;
+    user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.login_btn:hover {
+    background-color: #fc9503;
+}
+
+.check_code_left, .check_code_input {
+    width: 80px;
+    border: 0px;
+    font-size: 12px;
+}
+
+.check_code_right {
+    width: 170px;
+    text-align: center;
+}
+
+.check_code_image {
+    float: left;
+    width: 120px;
+    height: 32px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: contain;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: contain;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: contain;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: contain;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+    cursor: pointer;
+}
+
+.check_code_refresh {
+    float: left;
+    width: 30px;
+    line-height: 36px;
+    font-size: 10px;
+    color: #2888c5;
+    cursor: pointer;
+}
+
+.check_code_refresh:hover {
+    color: #fc9503;
+}
+.login_err{
+    /*background-color: #ff0000;*/
+    height: 20px;
+    line-height: 20px;
+    padding-left: 10px;
+    margin-top: 8px;
+    color: #fc9503;
 }

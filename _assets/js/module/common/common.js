@@ -483,6 +483,13 @@
                 return ""
             }
         },
+        uuid:function () {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+            });
+        }
+        
 
 
     }
@@ -569,6 +576,17 @@
          * */
         isArray: function (obj) {
             return Object.prototype.toString.call(obj) === '[object Array]';
+        },
+        /*
+         * 判断字符串是否有汉字
+         * @ str:字符串
+         * @return{bool}
+         * */
+        isContainCN:function (str) {
+            if(/.*[\u4e00-\u9fa5]+.*$/.test(str)){
+                return true;
+            }
+            return false;
         }
     }
 
