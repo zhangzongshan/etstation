@@ -1,6 +1,6 @@
 // Avoid `console` errors in browsers that lack a console.
 //解决的console调试的时候报错
-var apiRoot = "http://192.168.0.8/EtsationApi";
+var apiRoot = "http://192.168.0.11/EtsationApi";
 (function () {
     var method;
     var noop = function () {
@@ -44,10 +44,10 @@ var apiRoot = "http://192.168.0.8/EtsationApi";
         loadMapUrl = 'http://api.map.baidu.com/api?v=2.0&ak=e35biu9blkyBwcyfYBXaI5zfwyMRjLSU&callback=mapinit';
         loadMapFlg = true;
     }
-    console.log(loadMapUrl);
     Modernizr.load([{
         load: {
             'jquery': rootpath + '_assets/js/public/jquery/jquery-1.12.3.min.js'//jquery
+            , 'jqueryForm': rootpath + '_assets/js/public/jquery/jquery.form.js'//jquery
             , 'spink': rootpath + '_assets/js/module/spinkit/spinkit.js'//加载动画
         },
         callback: function (url, result, key) {

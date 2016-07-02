@@ -250,10 +250,12 @@
     function tabsStorgeRestore(data) {
         var newData = [];
         $.each(data, function (index, item) {
-            item.config.obj = $(item.config.obj.selector);
-            item.config.container = $(item.config.container.selector);
-            item = tabsFnToFun(item);
-            newData.push(item);
+            if(item.config!=null && item.config.obj!=null && item.config.container!=null){
+                item.config.obj = $(item.config.obj.selector);
+                item.config.container = $(item.config.container.selector);
+                item = tabsFnToFun(item);
+                newData.push(item);
+            }
         })
         return newData
     }
@@ -592,9 +594,8 @@
             }
         }
     }
-
+    //为了保证数据正确,config一定要设置唯一的id
     function init(config) {
-        clearstorage();
         var _config = tabsObj.default;
         config = (typeof (config) == "object" && config != null) ? config : _config;
         var initIdFlg = (typeof config.id === 'string' && config.id !== '') ? true : false;

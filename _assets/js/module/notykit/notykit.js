@@ -280,7 +280,7 @@
                 onShowFn(options);
             }
             var _html = $("<div class='notykit_container'><div class='notykit_content'></div></div>");
-            $('body').append(_html.attr("id", options.id));
+            $('body>:first').before(_html.attr("id", options.id));
             $("#" + options.id + " .notykit_content").html(options.template);
 
             var titleObj = this.addTitle(options);

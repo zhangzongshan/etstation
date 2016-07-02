@@ -16,7 +16,6 @@
     }
 }(function (require, exports, module) {
     var DataLoad = typeof exports !== 'undefined' ? exports : {};
-    var basil = new window.Basil();
     var dataStorge = [];
     var debug = false;
 
@@ -164,7 +163,7 @@
 
     function getfile(id, url, callback) {
         if (url != '') {
-            var sessionkey = basil.get("sessionkey");
+            var sessionkey = getstorage("sessionkey");
             if (url.indexOf("?") !== -1) {
                 url += "&sessionkey=" + sessionkey
             }
@@ -184,7 +183,7 @@
 
     function postfile(id, url, parameters, callback, async, type, dataType) {
         if (url != '') {
-            var sessionkey = basil.get("sessionkey");
+            var sessionkey = getstorage("sessionkey");
             if (url.indexOf("?") !== -1) {
                 url += "&sessionkey=" + sessionkey
             }
@@ -342,6 +341,35 @@
         else {
             postfile(id, url, parameters, callback, async, type, dataType);
         }
+    }
+
+    exports.PostForm=function (url,form,callback) {
+        var sessionkey = getstorage("sessionkey");
+        if (url.indexOf("?") !== -1) {
+            url += "&sessionkey=" + sessionkey
+        }
+        else {
+            url += "?sessionkey=" + sessionkey
+        }
+        var formData=new FormData(form[0]);
+        var options = {
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+            contentType:false,
+            processData:false,
+            cache:false
+            , success: function (result, status, xhr) {
+                _callback(callback, result);
+            }
+            , error: function (xhr, status, error) {
+                _callback(callback, error);
+                console.log(error);
+            }
+        };
+        $.ajax(options);
+        return false;
     }
 
     //设置调式模式

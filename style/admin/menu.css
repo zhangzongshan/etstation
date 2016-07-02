@@ -1,0 +1,30 @@
+.tabs_menu_normal{
+    height: 40px;
+    line-height: 40px;
+    background-color: #2b76c1;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #185b9f;
+    padding: 0px 0px 0px 10px;
+}
+.tabs_menu_normal:hover{
+    background-color: #478ed7;
+}
+
+.tabs_menu_active{
+    height: 40px;
+    line-height: 40px;
+    background-color: #53a4f6;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #185b9f;
+    padding: 0px 0px 0px 10px;
+}
+.tabs_menu_active::after{
+    content: '\25c4';
+    float: right;
+    margin-right: -5px;
+    font-size: 16px;
+}

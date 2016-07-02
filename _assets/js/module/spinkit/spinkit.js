@@ -340,7 +340,7 @@
                 , container: _container
             }
             , id: _id
-            , obj: _container.find("#" + _id)
+            , obj: $('body').find("#" + _id)
             , show: function (callback) {
                 this.obj.show();
                 if (typeof callback === "function") {

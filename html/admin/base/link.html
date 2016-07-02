@@ -1,0 +1,73 @@
+<form name="submitForm" id="submitForm" enctype="multipart/form-data">
+    <div class="title">基础信息>联系方式</div>
+    <div class="content">
+        <div class="item">
+            <div class="item_left">公司名称:</div>
+            <div class="item_right">
+                <input class="item_input" id="company" name="company" type="text" style="width: 300px">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">联系人:</div>
+            <div class="item_right">
+                <input class="item_input" id="linkname" name="linkname" type="text">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">电话:</div>
+            <div class="item_right">
+                <input class="item_input" id="tell" name="tell" type="text">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">手机:</div>
+            <div class="item_right">
+                <input class="item_input" id="moblie" name="moblie" type="text">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">Email:</div>
+            <div class="item_right">
+                <input class="item_input" id="email" name="email" type="text">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">详细地址:</div>
+            <div class="item_right">
+                <input class="item_input" id="address" name="address" type="text" style="width: 350px">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">地图标注:</div>
+            <div class="item_right">
+                <input class="item_input" id="map" name="map" type="text" readonly="readonly">
+                <span class="map_btn"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">公司二维码:</div>
+            <div class="item_right">
+                <div class="addQrCode" id="qrCode1">添加</div>
+                <div class="addQrCode" id="qrCode2">添加</div>
+                <input type="file" name="ecode1" id="ecode1" accept="image/*" multiple="multiple" style="display:none;"/>
+                <input type="file" name="ecode2" id="ecode2" accept="image/*" multiple="multiple" style="display:none;"/>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+    <div class="bottom" style="margin-top: 20px;">
+        <div class="item">
+            <div class="item_left"></div>
+            <div class="item_right" id="about_btn"><span class="base_btn hidden_btn">保存</span></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</form>

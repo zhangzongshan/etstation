@@ -5,17 +5,16 @@
 define(function (require, exports, module) {
     var scriptPath = common.fn.getScriptRoot('common');
     var rootPath = scriptPath.substr(0, scriptPath.indexOf('_assets/'));
-    var basil = new window.Basil();
     var err = require('../../script/public/input_dialog_info');
     seajs.use([
         rootPath + 'style/admin/login.css'
     ]);
 
     function uuid() {
-        var client_uuid = basil.get('client_uuid');
+        var client_uuid = common.fn.getstorage('client_uuid');
         if (client_uuid === null) {
             client_uuid = common.fn.uuid();
-            basil.set('client_uuid', client_uuid);
+            common.fn.writestorage('client_uuid', client_uuid);
         }
         return client_uuid;
     }
@@ -24,6 +23,7 @@ define(function (require, exports, module) {
         _callback: null
         , validationCodeApi: apiRoot + '/api/ValidationCode'
         , loginApi: apiRoot + '/api/accounts/account/login'
+        ,loginOutApi:apiRoot + '/api/accounts/account/loginOut'
         , login: {
             username: null
             , password: null
@@ -33,7 +33,7 @@ define(function (require, exports, module) {
         }
         , errMessage: []
         , init: function (container, callback) {
-            this._callback = callback;
+            loginObj._callback = callback;
             DataLoad.GetFile('Login_html', rootPath + 'html/admin/login/login.html', function (html) {
                 container.html(html);
                 container.css({
@@ -92,16 +92,24 @@ define(function (require, exports, module) {
             this.errMessage = [];
             $(".login_errmessage_container").closest('.notykit_container').remove();
             if (this.verify(container)) {
-                DataLoad.GetData(null,this.loginApi,this.login,function (result) {
-                    if(result.status==='success' && (result.resultObject!==null || result.resultObject!=='')){
-                        basil.set('sessionkey', result.resultObject.SessionKey.sessionkey);
-                        basil.set('LoginObj',result.resultObject.Userinfo);
+                DataLoad.GetData(null, this.loginApi, this.login, function (result) {
+                    if (result.status === 'success' && (result.resultObject !== null || result.resultObject !== '')) {
+                        common.fn.writestorage('sessionkey', result.resultObject.SessionKey.sessionkey);
+                        common.fn.writestorage('userinfo', JSON.stringify(result.resultObject.Userinfo));
+                        if (typeof loginObj._callback === 'function') {
+                            loginObj._callback();
+                        }
                     }
-                    else
-                    {
-                        
+                    else {
+                        loginObj.getCode(container);
+                        var errDialog = err.dialog(result.message, {
+                            width: 400
+                            , callback: function (notykit) {
+                                errDialog.Close();
+                            }
+                        });
                     }
-                },true,"post","json");
+                }, true, "post", "json");
             }
         }
         , verify: function (container) {
@@ -161,10 +169,31 @@ define(function (require, exports, module) {
                 });
             }
             return verifyFlg;
+        },
+        loginOut:function (container,callback) {
+            DataLoad.GetData(null, loginObj.loginOutApi, null, function (result) {
+                common.fn.delstorage('sessionkey');
+                common.fn.delstorage('userinfo');
+                if (result.status === 'success' && (result.resultObject !== null || result.resultObject !== '')) {
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
+                }
+                else {
+                    var errDialog = err.dialog(result.message, {
+                        width: 400
+                        ,obj:container
+                        , callback: function (notykit) {
+                            errDialog.Close();
+                        }
+                    });
+                }
+            });
         }
     }
 
     return {
         login: loginObj.init
+        ,loginOut:loginObj.loginOut
     }
 });

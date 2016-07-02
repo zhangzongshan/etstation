@@ -337,8 +337,11 @@
          生成数据链接
          */
         createObjectURL: function (blob) {
-            return window[window.webkitURL ? 'webkitURL' : 'URL']['createObjectURL'](blob);
-            this.resolveObjectURL(blob);
+            if(blob){
+                return window[window.webkitURL ? 'webkitURL' : 'URL']['createObjectURL'](blob);
+                this.resolveObjectURL(blob);
+            }
+            return null;
         },
 
         /*
