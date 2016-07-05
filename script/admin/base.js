@@ -7,19 +7,25 @@ define(function (require, exports, module) {
     var rootPath = scriptPath.substr(0, scriptPath.indexOf('_assets/'));
     seajs.use([
         rootPath + '/style/admin/base.css'
-        // ,rootPath + '_assets/js/public/ueditor/ueditor.all.js'
-        // ,rootPath + '_assets/js/public/ueditor/ueditor.config.js'
+        , rootPath + '_assets/js/module/page/page.css'
     ]);
+    var page = require('../../_assets/js/module/page/page');
     var basetabsKit = require('../../_assets/js/module/tabskit/tabskit');
     var login = require('../admin/login');
     var dialog = require('../../script/public/input_dialog_info');
-    var ueditorConfig = require('../../script/admin/ueditor_config');
+    var ueditorConfig = require('../public/ueditor_config');
     var index = require('../../script/admin/index');
     var baiduMap = require('../../script/admin/set_map_pointer');
+    var tables = require('../public/tables_config');
 
     var getApi = apiRoot + '/api/commpanys/get';
+    var getTeamApi = apiRoot + '/api/commpanys/teamlist';
     var updateApi = apiRoot + '/api/commpanys/update';
-    var imageApi = apiRoot + '/api/commpanys/image';
+    var updateTeamApi = apiRoot + '/api/commpanys/teamUpdate';
+
+    var imageApi = apiRoot + '/api/Images';
+
+    var bdEditor = null;
     DataLoad.Debug(true);
     var baseObj = {
         init: function (menu_container, content_container) {
@@ -67,6 +73,11 @@ define(function (require, exports, module) {
                     about.init(content_container);
                     break;
                 }
+                case "team":
+                {
+                    team.init(content_container);
+                    break;
+                }
                 case "link":
                 {
                     link.init(content_container);
@@ -76,8 +87,7 @@ define(function (require, exports, module) {
         }
     }
     var about = {
-        editor: null
-        , sumbit_content: {
+        sumbit_content: {
             about: null
         }
         , init: function (container) {
@@ -97,18 +107,18 @@ define(function (require, exports, module) {
                         container.find('#about_content').html(htmlContent);
 
                         //必须销毁
-                        if (about.editor !== null) {
-                            about.editor.destroy();
-                            about.editor = null;
+                        if (bdEditor !== null) {
+                            bdEditor.destroy();
+                            bdEditor = null;
                         }
-                        about.editor = UE.getEditor('editor', ueditorConfig.config);
-                        about.editor.ready(function () {
-                            about.editor.setContent(content);
-                            about.editor.addListener('contentChange', function () {
+                        bdEditor = UE.getEditor('editor', ueditorConfig.config);
+                        bdEditor.ready(function () {
+                            bdEditor.setContent(common.fn.htmlDecode(content));
+                            bdEditor.addListener('contentChange', function () {
                                 container.find(".base_btn").removeClass("hidden_btn").addClass("sumbit_btn");
                                 container.find(".base_btn").off('click');
                                 container.find(".base_btn").on('click', function () {
-                                    var content = about.editor.getContent();
+                                    var content = bdEditor.getContent();
                                     if (content !== '') {
                                         var confirmDialog = dialog.confirm("确定现在提交吗?", {
                                             width: 400
@@ -155,6 +165,7 @@ define(function (require, exports, module) {
             var spinkit = SpinKit.Create({
                 color: '#1f548a'
             });
+            content = common.fn.htmlEncode(content);
             DataLoad.GetData(null, updateApi, {about: content}, function (result) {
                 spinkit.remove();
                 if (result.status === "success") {
@@ -219,7 +230,7 @@ define(function (require, exports, module) {
                                 if (item != "") {
                                     container.find("#qrCode" + (index + 1)).html("");
                                     container.find("#qrCode" + (index + 1)).css({
-                                        "background-image": "url(" + imageApi + "?img=" + item + ")"
+                                        "background-image": "url(" + imageApi + "?img=CommpanyImg/" + item + ")"
                                     });
                                 }
                             });
@@ -296,7 +307,11 @@ define(function (require, exports, module) {
         },
         sumbit: function (container) {
             var form = container.find("#submitForm");
+            var spinkit = SpinKit.Create({
+                color: '#1f548a'
+            });
             DataLoad.PostForm(updateApi, form, function (result) {
+                spinkit.remove();
                 if (result.status === "success") {
                     var infoDialog = dialog.notify("操作成功!", {
                         width: 400
@@ -370,6 +385,294 @@ define(function (require, exports, module) {
                     });
                 });
             });
+        }
+    }
+
+    var team = {
+        errMessage: [],
+        search: {
+            current: 1
+            , pageSize: 10
+        },
+        table: null,
+        init: function (container) {
+            container = typeof container === 'string' ? $(container) : container;
+            var spinkit = SpinKit.Create({
+                color: '#1f548a'
+            });
+            DataLoad.GetFile("teamInfo_Html", rootPath + "/html/admin/base/team_list.html", function (html) {
+                spinkit.remove();
+                container.html(html);
+
+                container.find(".add_sumbit_btn").off('click');
+                container.find(".add_sumbit_btn").on('click', function () {
+                    team.add(container);
+                });
+
+                team.list(container);
+            });
+        },
+        list: function (container) {
+            var spinkit = SpinKit.Create({
+                color: '#1f548a'
+            });
+            DataLoad.GetData(null, getTeamApi, team.search, function (result) {
+                spinkit.remove();
+                if (result.status === "success") {
+                    var tabledata = [];
+                    var tableColumns = [
+                        {data: "teampic", class: "dt-center", width: "100px"}
+                        , {data: "info", class: "dt-left", width: "200px"}
+                        , {data: "detail", class: "dt-left"}
+                        , {data: "option", class: "dt-center", width: "120px"}
+                    ];
+
+                    if (result.resultObject != null && result.resultObject.data != null) {
+                        var listData = result.resultObject.data;
+                        $.each(listData, function (index, item) {
+                            var photo = item.photo;
+                            var username = item.username;
+                            var name = item.name;
+                            var email = item.email;
+                            var mobile = item.mobile;
+                            var job = item.job;
+                            var detailed = common.string.removeHtml(common.fn.htmlDecode(item.detailed));
+
+                            var orginData = {
+                                photo: photo
+                                , username: username
+                                , name: name
+                                , email: email
+                                , mobile: mobile
+                                , job: job
+                                , detailed: detailed
+                            };
+
+
+                            var teampic = '<div class="list_team_photo" style="background-image: url(' + imageApi + '?img=TeamImg/' + photo + ');"></div>'
+                            var info = '<div class="list_team_info">'
+                                + '<div class="list_team_info_item">' + common.string.subString(name + '(' + username + ')', 24, '...') + '</div>'
+                                + '<div class="list_team_info_item">' + job + '</div>'
+                                + '<div class="list_team_info_item">' + mobile + '</div>'
+                                + '</div>';
+                            var detailed = common.string.subString(detailed, 180, '...');
+                            var option = '<div class="list_team_option">'
+                                + '<span class="list_team_edit">编辑</span>'
+                                + '<span class="list_team_del">删除</span>'
+                                + '</div>';
+
+                            tabledata.push({
+                                teampic: teampic
+                                , info: info
+                                , detail: detailed
+                                , option: option
+                                , orginData: orginData
+                            });
+
+
+                            // pageCount: option.totalPage,//总页码数
+                            //     showCount: option.showCount,//每页显示数据
+                            //     current: option.currentPage,//当前页码
+                            //     totalResult: option.totalResult,//总记录数据
+                            //     input: option.option === true ? true : false,//是否显示页面输入框和详细信息
+                            //     backFn: option.callback//回调信息
+
+                            // page.createPage($(".tcdPageCode"), {
+                            //         totalPage: pagination.totalPage
+                            //         , currentPage: pagination.currentPage
+                            //         , showCount: pagination.showCount
+                            //         , totalResult: pagination.totalResult
+                            //     }, function (params) {
+                            //         account_audit_list.searchData.showCount = params.showCount;
+                            //         account_audit_list.searchData.currentPage = params.currentPage;
+                            //         account_audit_list.list(list_container_obj, containerObj);
+                            //     }
+                            // );
+
+                        });
+
+                        page.create({
+                            obj: container.find(".page_container")
+                            , pageSize: team.search.pageSize
+                            , current: team.search.current
+                            , totalPage: result.resultObject.totalPage
+                            , totalRecord: result.resultObject.totalRecord
+                            , input: true
+                            , callback: function (pageation) {
+                                team.search.pageSize = pageation.pageSize;
+                                team.search.current = pageation.current;
+
+                                team.list(container);
+                            }
+                        });
+                    }
+
+                    if (team.table != null) {
+                        team.table.destroy();
+                    }
+                    team.table = tables.init(container.find("#table_id"), tabledata, tableColumns, function () {
+                        //alert("aa");
+                    });
+                }
+                else {
+                    spinkit.remove();
+                    var errDialog = dialog.dialog(result.message, {
+                        width: 400
+                        , callback: function (notykit) {
+                            if (parseInt(result.code) <= -100005 && parseInt(result.code) >= -100011) {
+                                login.loginOut(null, function () {
+                                    index.init();
+                                })
+                            }
+                            errDialog.Close();
+                        }
+                    });
+                }
+            }, true, 'post', 'json');
+        },
+        add: function (container) {
+            DataLoad.GetFile("addteam_Html", rootPath + "/html/admin/base/team_add.html", function (html) {
+                container.html($(html));
+
+
+                container.find("#photo_btn").off("click");
+                container.find("#photo_btn").on("click", function () {
+                    container.find("#photo").trigger("click");
+                });
+
+                container.find("#photo").change(function () {
+                    var objUrl = common.fn.createObjectURL(this.files[0]);
+                    container.find("#photo_btn").css({
+                        "background-image": "url(" + objUrl + ")"
+                    });
+                    container.find("#photo_btn").html("");
+                });
+
+                var htmlContent = ''
+                    + '<div class="editor" id="editor" name="editor" type="text/plain">'
+                    + '</div>';
+                container.find('#team_content').html(htmlContent);
+                if (bdEditor !== null) {
+                    bdEditor.destroy();
+                    bdEditor = null;
+                }
+                bdEditor = UE.getEditor('editor', ueditorConfig.config);
+                bdEditor.ready(function () {
+                    bdEditor.addListener('contentChange', function () {
+                        var content = bdEditor.getContent();
+                        container.find("#detailed").val(content);
+                    });
+                });
+
+                container.find(".sumbit_btn").off("click");
+                container.find(".sumbit_btn").on("click", function () {
+                    var confirmDialog = dialog.confirm("确定现在提交吗?", {
+                        width: 400
+                        , submit: function () {
+                            team.sumbit(container);
+                            confirmDialog.Close();
+                        }
+                    });
+                });
+
+                container.find(".cancle_btn").off("click");
+                container.find(".cancle_btn").on("click", function () {
+                    var confirmDialog = dialog.confirm("确定现在返回列表吗?<br>如果返回,数据将不保存.", {
+                        width: 400
+                        , submit: function () {
+                            confirmDialog.Close();
+                            container.html("");
+                            team.init(container);
+                        }
+                    });
+                });
+            });
+        },
+        sumbit: function (container) {
+            if (this.verify(container)) {
+                container.find("#detailed").val(common.fn.htmlEncode(container.find("#detailed").val()));
+                var form = container.find("#submitForm");
+                var spinkit = SpinKit.Create({
+                    color: '#1f548a'
+                });
+                DataLoad.PostForm(updateTeamApi, form, function (result) {
+                    spinkit.remove();
+                    if (result.status === "success") {
+                        var infoDialog = dialog.notify("操作成功!", {
+                            width: 400
+                            , callback: function (notykit) {
+                                container.html("");
+                                team.init(container);
+                                infoDialog.Close();
+                            }
+                        });
+                    }
+                    else {
+                        var errDialog = dialog.dialog(result.message, {
+                            width: 400
+                            , callback: function (notykit) {
+                                if (parseInt(result.code) <= -100005 && parseInt(result.code) >= -100011) {
+                                    login.loginOut(null, function () {
+                                        container.html("");
+                                        index.init();
+                                    })
+                                }
+                                errDialog.Close();
+                            }
+                        });
+                    }
+                });
+            }
+
+        },
+        verify: function (container) {
+            var verifyFlg = true;
+            var username = container.find("#username").val();
+            if (username === null || username === '') {
+                this.errMessage.push({
+                    obj: container.find("#username")
+                    , message: "用户名不能为空!"
+                });
+                verifyFlg = false;
+            }
+            else {
+                if (common.is.isContainCN(username)) {
+                    this.errMessage.push({
+                        obj: container.find("#username")
+                        , message: "用户名不能包括汉字!"
+                    });
+                    verifyFlg = false;
+                }
+                else {
+                    if (username.length < 5) {
+                        this.errMessage.push({
+                            obj: container.find("#username")
+                            , message: "用户名必须大于4个字符!"
+                        });
+                        verifyFlg = false;
+                    }
+                }
+            }
+
+            var name = container.find("#name").val();
+            if (name === '') {
+                this.errMessage.push({
+                    obj: container.find("#name")
+                    , message: "姓名不能为空!"
+                });
+                verifyFlg = false;
+            }
+
+            if (!verifyFlg) {
+                dialog.err(this.errMessage, {
+                    width: 200
+                    , height: 20
+                    , msgClass: 'login_err'
+                    , layout: 'centerleft'
+                    , background: 'rgba(255,255,255,1)'
+                });
+            }
+            return verifyFlg;
         }
     }
 

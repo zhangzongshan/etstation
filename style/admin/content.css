@@ -137,6 +137,38 @@
     background-color: #53a4f6;
 }
 
+.sumbit_btn{
+    display: inline-block;
+    border-radius: 3px;
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    text-align: center;
+    background-color: #83be71;
+    cursor: pointer;
+
+}
+.sumbit_btn:hover{
+    background-color: #91d47d;
+}
+
+.cancle_btn{
+    display: inline-block;
+    border-radius: 3px;
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    text-align: center;
+    background-color: #a8b2bc;
+    cursor: pointer;
+}
+
+.cancle_btn:hover{
+    background-color: #bfcad5;
+}
+
 .cancle_sumbit {
     display: inline-block;
     width: 90px;
@@ -236,4 +268,16 @@
 }
 .map_sumbit:hover{
     background-color: #53a4f6;
+}
+
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+/*表格样式*/
+.tableContent{
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
 }

@@ -107,9 +107,8 @@
         }
         return maxZ;
     }
-
+    
     function getObjPosition(obj, position, width, height) {
-
         var _top = (typeof (position) == "string" && (position).toLowerCase() == "top") ? 0
             : (typeof (position) == "string" && (position).toLowerCase() == "center") ? (obj.outerHeight() - height) / 2
             : (typeof (position) == "string" && (position).toLowerCase() == "bottom") ? obj.outerHeight() - height
@@ -119,6 +118,9 @@
             : (typeof (position) == "string" && (position).toLowerCase() == "topright") ? 0
             : (typeof (position) == "string" && (position).toLowerCase() == "centerright") ? (obj.outerHeight() - height) / 2
             : (typeof (position) == "string" && (position).toLowerCase() == "bottomright") ? obj.outerHeight() - height
+            : (typeof (position) == "string" && (position).toLowerCase() == "windowscenter") ? $(document).scrollTop() + ($(window).height() - height) / 2
+            : (typeof (position) == "string" && (position).toLowerCase() == "windowsleft") ? $(document).scrollTop() + ($(window).height() - height) / 2
+            : (typeof (position) == "string" && (position).toLowerCase() == "windowsright") ? $(document).scrollTop() + ($(window).height() - height) / 2
             : (typeof (position) == "object" && position != null) ? (position.top > 0 ? position.top : 0)
             : (obj.outerHeight() - height) / 2;
 
@@ -131,6 +133,9 @@
             : (typeof (position) == "string" && (position).toLowerCase() == "topright") ? obj.outerWidth() - width
             : (typeof (position) == "string" && (position).toLowerCase() == "centerright") ? obj.outerWidth() - width
             : (typeof (position) == "string" && (position).toLowerCase() == "bottomright") ? obj.outerWidth() - width
+            : (typeof (position) == "string" && (position).toLowerCase() == "windowscenter") ? $(document).scrollLeft() + (obj.outerWidth() - width) / 2
+            : (typeof (position) == "string" && (position).toLowerCase() == "windowsleft") ? $(document).scrollLeft()
+            : (typeof (position) == "string" && (position).toLowerCase() == "windowsright") ? $(document).scrollLeft() + $(window).width() - width
             : (typeof (position) == "object" && position != null) ? (position.left > 0 ? position.left : 0)
             : (obj.outerWidth() - width) / 2;
 

@@ -1,0 +1,65 @@
+<form name="submitForm" id="submitForm" enctype="multipart/form-data">
+    <div class="title">基础信息>添加团队成员</div>
+    <div class="content">
+        <div class="item">
+            <div class="item_left">姓名:</div>
+            <div class="item_right">
+                <input class="item_input" id="name" name="name" type="text" >
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">用户名:</div>
+            <div class="item_right">
+                <input class="item_input" id="username" name="username" type="text">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">职位头衔:</div>
+            <div class="item_right">
+                <input class="item_input" id="job" name="job" type="text">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">手机:</div>
+            <div class="item_right">
+                <input class="item_input" id="mobile" name="mobile" type="text">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">Email:</div>
+            <div class="item_right">
+                <input class="item_input" id="email" name="email" type="text">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">照片:</div>
+            <div class="item_right">
+                <div class="addQrCode" id="photo_btn">添加</div>
+                <input type="file" name="photo" id="photo" accept="image/*" multiple="multiple" style="display:none;"/>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">详细介绍:</div>
+            <div class="item_right about_content" id="team_content" style="margin-top: 10px;"></div>
+            <input type="hidden" name="detailed" id="detailed">
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="bottom" style="margin-top: 20px;">
+        <div class="item">
+            <div class="item_left"></div>
+            <div class="item_right" id="about_btn">
+                <span class="base_btn sumbit_btn">保存</span>
+                <span class="base_btn cancle_btn">返回</span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</form>

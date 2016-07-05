@@ -5,6 +5,11 @@ a:hover{ text-decoration:none;}
     padding: 15px 20px;
     text-align: left;
     color: #ccc;
+    user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    -webkit-user-select:none;
+    -o-user-select:none;
 }
 .tcdPageCode a{
     display: inline-block;
@@ -45,4 +50,12 @@ a:hover{ text-decoration:none;}
     border: 1px solid #bfbfbf;
     border-radius: 4px;
     vertical-align: middle;
+}
+.tcdPageCode .pageSize{
+    width: 50px;
+    text-align: center;
+    color: #666;
+}
+.tcdPageCode .detail{
+    color: #444;
 }

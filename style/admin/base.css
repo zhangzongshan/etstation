@@ -42,22 +42,6 @@
     display: none;
 }
 
-.sumbit_btn{
-    display: inline-block;
-    border-radius: 3px;
-    width: 120px;
-    height: 30px;
-    line-height: 30px;
-    color: #fff;
-    text-align: center;
-    background-color: #83be71;
-    cursor: pointer;
-
-}
-.sumbit_btn:hover{
-    background-color: #91d47d;
-}
-
 .item_input{
     margin-top: 10px;
     height: 30px;
@@ -138,4 +122,69 @@
 }
 .addQrCode:hover{
     border: 1px solid #53a4f6;
+}
+
+/*团队成员*/
+
+.search_container{
+    background-color: #f0f0f0;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    margin: 10px 0px;
+}
+.search_sumbit_btn{
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 5px 20px;
+    width: 100px;
+    height: 30px;
+    background-color: #478fd8;
+    color: #fff;
+    border-radius: 3px;
+    text-align: center;
+    cursor:pointer;
+}
+.search_sumbit_btn:hover{
+    background-color: #53a4f6;
+}
+
+.add_sumbit_btn{
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 5px 20px;
+    width: 120px;
+    height: 30px;
+    background-color: #83be71;
+    color: #fff;
+    border-radius: 3px;
+    text-align: center;
+    cursor:pointer;
+}
+.add_sumbit_btn:hover{
+    background-color: #91d47d;
+}
+
+.list_team_photo{
+    width: 100px;
+    height: 60px;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: contain;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: contain;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: contain;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: contain;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
 }

@@ -154,6 +154,9 @@
             }
             return o.toString();
         },
+        removeHtml: function (html) {
+            return $("<p>" + html + "</p>").text();
+        }
     }
 
     //格式化
@@ -337,7 +340,7 @@
          生成数据链接
          */
         createObjectURL: function (blob) {
-            if(blob){
+            if (blob) {
                 return window[window.webkitURL ? 'webkitURL' : 'URL']['createObjectURL'](blob);
                 this.resolveObjectURL(blob);
             }
@@ -486,13 +489,26 @@
                 return ""
             }
         },
-        uuid:function () {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        uuid: function () {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
                 return v.toString(16);
             });
+        },
+        htmlEncode: function (html) {
+            var temp = document.createElement("div");
+            (temp.textContent != null) ? (temp.textContent = html) : (temp.innerText = html);
+            var output = temp.innerHTML;
+            temp = null;
+            return output;
+        },
+        htmlDecode: function (text) {
+            var temp = document.createElement("div");
+            temp.innerHTML = text;
+            var output = temp.innerText || temp.textContent;
+            temp = null;
+            return output;
         }
-        
 
 
     }
@@ -585,8 +601,8 @@
          * @ str:字符串
          * @return{bool}
          * */
-        isContainCN:function (str) {
-            if(/.*[\u4e00-\u9fa5]+.*$/.test(str)){
+        isContainCN: function (str) {
+            if (/.*[\u4e00-\u9fa5]+.*$/.test(str)) {
                 return true;
             }
             return false;

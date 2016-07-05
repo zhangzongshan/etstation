@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         var width = (typeof (config.width) === 'number' && config.width > 0) ? config.width : 0;
         var height = (typeof (config.height) === 'number' && config.height > 0) ? config.height : 0;
         var background = (typeof (config.background) === 'string' && config.background != "") ? config.background : '';
-        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : '';
+        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : 'center';
         var msgClass = (typeof (config.msgClass) === 'string' && config.msgClass != "") ? config.msgClass : '';
         var zIndex = (typeof (config.zIndex) === 'number' && config.zIndex > 0) ? config.zIndex : common.fn.getmaxZindex() + 1;
 
@@ -57,14 +57,14 @@ define(function (require, exports, module) {
                 width: 0
                 , height: 0
                 , background: ''
-                , layout: 'center'
+                , layout: 'windowscenter'
                 , msgClass: ''
             };
         }
         var width = (typeof (config.width) === 'number' && config.width > 0) ? config.width : 0;
         var height = (typeof (config.height) === 'number' && config.height > 0) ? config.height : 0;
         var background = (typeof (config.background) === 'string' && config.background != "") ? config.background : '';
-        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : '';
+        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : 'windowscenter';
         var msgClass = (typeof (config.msgClass) === 'string' && config.msgClass != "") ? config.msgClass : '';
         var obj = (typeof config.obj === 'object' && config.obj != null) ? config.obj : $("body");
         var callback = (typeof config.callback === 'function') ? config.callback : null;
@@ -102,7 +102,7 @@ define(function (require, exports, module) {
                     dialog.Close();
                 }
             }]
-            , layout: layout !== '' ? layout : "center"
+            , layout: layout !== '' ? layout : "windowscenter"
             , background: background !== '' ? background : "rgba(255,255,255,.2)"
             , zIndex: zIndex
         });
@@ -116,14 +116,14 @@ define(function (require, exports, module) {
                 width: 0
                 , height: 0
                 , background: ''
-                , layout: 'center'
+                , layout: 'windowscenter'
                 , msgClass: ''
             };
         }
         var width = (typeof (config.width) === 'number' && config.width > 0) ? config.width : 0;
         var height = (typeof (config.height) === 'number' && config.height > 0) ? config.height : 0;
         var background = (typeof (config.background) === 'string' && config.background != "") ? config.background : '';
-        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : '';
+        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : 'windowscenter';
         var msgClass = (typeof (config.msgClass) === 'string' && config.msgClass != "") ? config.msgClass : '';
         var obj = (typeof config.obj === 'object' && config.obj != null) ? config.obj : $("body");
         var submit = (typeof config.submit === 'function') ? config.submit : null;
@@ -170,11 +170,17 @@ define(function (require, exports, module) {
                     dialog.Close();
                 }
             }]
-            , layout: layout !== '' ? layout : "center"
+            , layout: layout !== '' ? layout : ''
             , background: background !== '' ? background : "rgba(255,255,255,.2)"
             , zIndex: zIndex
         });
-        dialog.AutoSize();
+        dialog.AutoSize(function () {
+            // alert($("body").scrollTop());
+            // // dialog.SetLayOut({
+            // //     top:dialog.obj.scrollTop()
+            // //     ,left:100
+            // // });
+        });
         return dialog;
     }
     
@@ -185,14 +191,14 @@ define(function (require, exports, module) {
                 width: 0
                 , height: 0
                 , background: ''
-                , layout: 'center'
+                , layout: 'windowscenter'
                 , msgClass: ''
             };
         }
         var width = (typeof (config.width) === 'number' && config.width > 0) ? config.width : 0;
         var height = (typeof (config.height) === 'number' && config.height > 0) ? config.height : 0;
         var background = (typeof (config.background) === 'string' && config.background != "") ? config.background : '';
-        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : '';
+        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : 'windowscenter';
         var msgClass = (typeof (config.msgClass) === 'string' && config.msgClass != "") ? config.msgClass : '';
         var obj = (typeof config.obj === 'object' && config.obj != null) ? config.obj : $("body");
         var callback = (typeof config.callback === 'function') ? config.callback : null;
@@ -220,7 +226,7 @@ define(function (require, exports, module) {
                 , layout: ''
                 , addClass: ''
             }]
-            , layout: layout !== '' ? layout : "center"
+            , layout: layout !== '' ? layout : ''
             , background: background !== '' ? background : "rgba(255,255,255,.2)"
             , zIndex: zIndex
         });
