@@ -638,7 +638,85 @@ define(function (require, exports, module) {
         list: function (container) {
 
         },
-        cateInfo: function (container) {
+        cateInfo: function (container,data) {
+            DataLoad.GetFile("product_html",rootPath + "/html/admin/product/product_add.html",function (html) {
+                container.html(html);
+                var form = container.find("#submitForm");
+
+                var detailContent="";
+
+                form.find("#cate").select2({
+                    placeholder: {
+                        id: '-1', // the value of the option
+                        text: '请选择名牌...'
+                    }
+                    , data: []
+                });
+                form.find("#child_cate").select2({
+                    placeholder: {
+                        id: '-1', // the value of the option
+                        text: '选择分类...'
+                    }
+                    , data: []
+                });
+
+                product.selectInputData(form.find("#cate"), cateListApi, {
+                    name: null
+                    , current: 1
+                    , pageSize: 1000
+                }, "name", '请选择名牌...');
+
+                form.find("#cate").on('change', function () {
+                    product.selectInputData(form.find("#child_cate"), childCateListApi, {
+                        cate_id: form.find("#cate").val()
+                        , current: 1
+                        , pageSize: 1000
+                    }, "cate_name", '选择分类...');
+                });
+
+                form.find("#photo_btn").off('click');
+                form.find("#photo_btn").on('click',function () {
+                    form.find("#product_img").trigger("click");
+                });
+                form.find("#product_img").change(function () {
+                    var objUrl = common.fn.createObjectURL(this.files[0]);
+                    product.imgInputData(form.find(".product_img_container"),objUrl);
+                });
+
+                var htmlContent = ''
+                    + '<div class="editor" id="product_editor" name="product_editor" type="text/plain">'
+                    + '</div>';
+                form.find('#product_content').html(htmlContent);
+                
+                if (bdEditor !== null) {
+                    bdEditor.destroy();
+                    bdEditor = null;
+                }
+                bdEditor = UE.getEditor('product_editor', ueditorConfig.config);
+                bdEditor.ready(function () {
+                    bdEditor.setContent(detailContent);
+                    bdEditor.addListener('contentChange', function () {
+                        var content = bdEditor.getContent();
+                        form.find("#detail").val(content);
+                    });
+                });
+                
+            });
+        },
+        imgInputData:function (container,objUrl) {
+            var imgItem=container.find(".img_item");
+            var addImgItem=container.find("#photo_btn");
+            if(addImgItem.length>0){
+                if(objUrl!=null){
+                    var imgHtmlObj=$('<div class="product_img img_item"></div>');
+                    var innerHtmlObj=$('<div class="innerContent"></div><div class="innerInfo"><div class="innerItem icon-home"></div><div class="innerItem icon-trash"></div></div>');
+                    imgHtmlObj.append(innerHtmlObj);
+                    imgHtmlObj.css({
+                        "background-image": "url(" + objUrl + ")"
+                    });
+                    addImgItem.before(imgHtmlObj);
+                }
+            }
 
         },
         selectInputData:function (obj, url, parameter, selectType, placeholder_text) {
