@@ -70,7 +70,9 @@ define(function (require, exports, module) {
                 container.find('.login_btn').on('click', function () {
                     loginObj.sumbit(container);
                 });
-
+                common.fn.inputEnter(container,true,function () {
+                    loginObj.sumbit(container);
+                });
             });
         }
         , getCode: function (container) {

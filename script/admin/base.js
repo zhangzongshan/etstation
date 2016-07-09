@@ -22,6 +22,7 @@ define(function (require, exports, module) {
     var getTeamApi = apiRoot + '/api/commpanys/teamlist';
     var updateApi = apiRoot + '/api/commpanys/update';
     var updateTeamApi = apiRoot + '/api/commpanys/teamUpdate';
+    var delTeamApi = apiRoot + '/api/commpanys/del';
 
     var imageApi = apiRoot + '/api/Images';
 
@@ -391,8 +392,10 @@ define(function (require, exports, module) {
     var team = {
         errMessage: [],
         search: {
-            current: 1
-            , pageSize: 10
+            name: null
+            , mobile: null
+            , current: 1
+            , pageSize: 5
         },
         table: null,
         init: function (container) {
@@ -404,168 +407,212 @@ define(function (require, exports, module) {
                 spinkit.remove();
                 container.html(html);
 
-                container.find(".add_sumbit_btn").off('click');
-                container.find(".add_sumbit_btn").on('click', function () {
-                    team.add(container);
+                container.find(".search_sumbit_btn").off('click');
+                container.find(".search_sumbit_btn").on('click', function () {
+                    team.list(container);
                 });
 
+                container.find(".add_sumbit_btn").off('click');
+                container.find(".add_sumbit_btn").on('click', function () {
+                    team.userInfo(container);
+                });
+                common.fn.inputEnter(container, false, function () {
+                    team.list(container);
+                });
                 team.list(container);
             });
         },
         list: function (container) {
+            var name = container.find("#name").val();
+            var mobile = container.find("#mobile").val();
+            if (name != "") {
+                team.search.name = name;
+            }
+            else {
+                team.search.name = null;
+            }
+            if (mobile != "") {
+                team.search.mobile = mobile;
+            }
+            else {
+                team.search.mobile = null;
+            }
+
             var spinkit = SpinKit.Create({
                 color: '#1f548a'
             });
             DataLoad.GetData(null, getTeamApi, team.search, function (result) {
                 spinkit.remove();
-                if (result.status === "success") {
-                    var tabledata = [];
-                    var tableColumns = [
-                        {data: "teampic", class: "dt-center", width: "100px"}
-                        , {data: "info", class: "dt-left", width: "200px"}
-                        , {data: "detail", class: "dt-left"}
-                        , {data: "option", class: "dt-center", width: "120px"}
-                    ];
-
-                    if (result.resultObject != null && result.resultObject.data != null) {
-                        var listData = result.resultObject.data;
-                        $.each(listData, function (index, item) {
-                            var photo = item.photo;
-                            var username = item.username;
-                            var name = item.name;
-                            var email = item.email;
-                            var mobile = item.mobile;
-                            var job = item.job;
-                            var detailed = common.string.removeHtml(common.fn.htmlDecode(item.detailed));
-
-                            var orginData = {
-                                photo: photo
-                                , username: username
-                                , name: name
-                                , email: email
-                                , mobile: mobile
-                                , job: job
-                                , detailed: detailed
-                            };
-
-
-                            var teampic = '<div class="list_team_photo" style="background-image: url(' + imageApi + '?img=TeamImg/' + photo + ');"></div>'
-                            var info = '<div class="list_team_info">'
-                                + '<div class="list_team_info_item">' + common.string.subString(name + '(' + username + ')', 24, '...') + '</div>'
-                                + '<div class="list_team_info_item">' + job + '</div>'
-                                + '<div class="list_team_info_item">' + mobile + '</div>'
-                                + '</div>';
-                            var detailed = common.string.subString(detailed, 180, '...');
-                            var option = '<div class="list_team_option">'
-                                + '<span class="list_team_edit">编辑</span>'
-                                + '<span class="list_team_del">删除</span>'
-                                + '</div>';
-
-                            tabledata.push({
-                                teampic: teampic
-                                , info: info
-                                , detail: detailed
-                                , option: option
-                                , orginData: orginData
-                            });
-
-
-                            // pageCount: option.totalPage,//总页码数
-                            //     showCount: option.showCount,//每页显示数据
-                            //     current: option.currentPage,//当前页码
-                            //     totalResult: option.totalResult,//总记录数据
-                            //     input: option.option === true ? true : false,//是否显示页面输入框和详细信息
-                            //     backFn: option.callback//回调信息
-
-                            // page.createPage($(".tcdPageCode"), {
-                            //         totalPage: pagination.totalPage
-                            //         , currentPage: pagination.currentPage
-                            //         , showCount: pagination.showCount
-                            //         , totalResult: pagination.totalResult
-                            //     }, function (params) {
-                            //         account_audit_list.searchData.showCount = params.showCount;
-                            //         account_audit_list.searchData.currentPage = params.currentPage;
-                            //         account_audit_list.list(list_container_obj, containerObj);
-                            //     }
-                            // );
-
-                        });
-
-                        page.create({
-                            obj: container.find(".page_container")
-                            , pageSize: team.search.pageSize
-                            , current: team.search.current
-                            , totalPage: result.resultObject.totalPage
-                            , totalRecord: result.resultObject.totalRecord
-                            , input: true
-                            , callback: function (pageation) {
-                                team.search.pageSize = pageation.pageSize;
-                                team.search.current = pageation.current;
-
-                                team.list(container);
-                            }
-                        });
-                    }
-
-                    if (team.table != null) {
-                        team.table.destroy();
-                    }
-                    team.table = tables.init(container.find("#table_id"), tabledata, tableColumns, function () {
-                        //alert("aa");
-                    });
-                }
-                else {
-                    spinkit.remove();
-                    var errDialog = dialog.dialog(result.message, {
-                        width: 400
-                        , callback: function (notykit) {
-                            if (parseInt(result.code) <= -100005 && parseInt(result.code) >= -100011) {
-                                login.loginOut(null, function () {
-                                    index.init();
-                                })
-                            }
-                            errDialog.Close();
-                        }
-                    });
-                }
+                dialog.dataResult(result,function () {
+                    team.fillTable(result,container)
+                },function () {
+                    container.html("");
+                });
             }, true, 'post', 'json');
         },
-        add: function (container) {
-            DataLoad.GetFile("addteam_Html", rootPath + "/html/admin/base/team_add.html", function (html) {
-                container.html($(html));
+        fillTable:function (result,container) {
+            var tabledata = [];
+            var tableColumns = [
+                {data: "teampic", class: "dt-center", width: "100px"}
+                , {data: "info", class: "dt-left", width: "200px"}
+                , {data: "detail", class: "dt-left"}
+                , {data: "option", class: "dt-center", width: "120px"}
+            ];
+
+            if (result.resultObject != null && result.resultObject.data != null) {
+                var listData = result.resultObject.data;
+                $.each(listData, function (index, item) {
+                    var id = item.id;
+                    var photo = item.photo;
+                    var username = item.username;
+                    var name = item.name;
+                    var email = item.email;
+                    var mobile = item.mobile;
+                    var job = item.job;
+                    var detailed = common.string.removeHtml(common.fn.htmlDecode(item.detailed));
+
+                    var orginData = {
+                        id: id
+                        , photo: photo
+                        , username: username
+                        , name: name
+                        , email: email
+                        , mobile: mobile
+                        , job: job
+                        , detailed: common.fn.htmlDecode(item.detailed)
+                    };
 
 
-                container.find("#photo_btn").off("click");
-                container.find("#photo_btn").on("click", function () {
-                    container.find("#photo").trigger("click");
+                    var teampic = '<div class="list_team_photo" style="background-image: url(' + imageApi + '?img=TeamImg/' + photo + ');"></div>'
+                    var info = '<div class="list_team_info">'
+                        + '<div class="list_team_info_item">' + common.string.subString(name + '(' + username + ')', 24, '...') + '</div>'
+                        + '<div class="list_team_info_item" style="color: #888;font-size: 12px;">' + job + '</div>'
+                        + '<div class="list_team_info_item" style="color: #888;font-size: 12px;">' + mobile + '</div>'
+                        + '</div>';
+                    var detailed = common.string.subString(detailed, 180, '...');
+                    var option = '<div class="list_team_option">'
+                        + '<span class="list_edit">编辑</span>'
+                        + '<span class="list_del">删除</span>'
+                        + '</div>';
+
+                    tabledata.push({
+                        teampic: teampic
+                        , info: info
+                        , detail: detailed
+                        , option: option
+                        , orginData: orginData
+                    });
                 });
 
-                container.find("#photo").change(function () {
+                page.create({
+                    obj: container.find(".page_container")
+                    , pageSize: team.search.pageSize
+                    , current: team.search.current
+                    , totalPage: result.resultObject.totalPage
+                    , totalRecord: result.resultObject.totalRecord
+                    , input: true
+                    , defaultPageSize: 5
+                    , callback: function (pageation) {
+                        team.search.pageSize = pageation.pageSize;
+                        team.search.current = pageation.current;
+                        team.list(container);
+                    }
+                });
+            }
+            else {
+                container.find(".page_container").empty();
+            }
+
+            if (team.table != null) {
+                team.table.destroy();
+            }
+            team.table = tables.init(container.find("#table_id"), tabledata, tableColumns, function () {
+                container.find("tr .list_edit").off("click");
+                container.find("tr .list_edit").on("click", function () {
+                    var tr = $(this).parents("tr");
+                    var data = team.table.row(tr).data();
+                    team.userInfo(container, data);
+                });
+
+                container.find("tr .list_del").off("click");
+                container.find("tr .list_del").on("click", function () {
+                    var tr = $(this).parents("tr");
+                    var data = team.table.row(tr).data();
+                    team.del(container, data.orginData.id);
+                });
+            });
+        },
+        userInfo: function (container, data) {
+            DataLoad.GetFile("addteam_Html", rootPath + "/html/admin/base/team_add.html", function (html) {
+                container.html($(html));
+                var form = container.find("#submitForm");
+                var detailContent = "";
+                if (data != null) {
+                    var orginData = data.orginData;
+                    var id = orginData.id;
+                    var photo = orginData.photo;
+                    var username = orginData.username;
+                    var name = orginData.name;
+                    var email = orginData.email;
+                    var mobile = orginData.mobile;
+                    var job = orginData.job;
+                    var detailed = orginData.detailed;
+
+                    detailContent = detailed;
+
+                    form.find(".title").html(form.find(".title").html().replace("添加团队成员","修改团队成员"));
+
+                    form.append('<input type="hidden" id="id" name="id" value="' + id + '">');
+                    if (photo != "") {
+                        form.find("#photo_btn").css({
+                            "background-image": "url(" + imageApi + '?img=TeamImg/' + photo + ")"
+                        });
+                        form.find("#photo_btn").html("");
+                    }
+
+                    form.find("#name").val(name);
+                    form.find("#username").val(username);
+                    form.find("#email").val(email);
+                    form.find("#mobile").val(mobile);
+                    form.find("#job").val(job);
+                    form.find("#detailed").val(detailed);
+
+                }
+
+                form.find("#photo_btn").off("click");
+                form.find("#photo_btn").on("click", function () {
+                    form.find("#photo").trigger("click");
+                });
+
+                form.find("#photo").change(function () {
                     var objUrl = common.fn.createObjectURL(this.files[0]);
-                    container.find("#photo_btn").css({
-                        "background-image": "url(" + objUrl + ")"
-                    });
-                    container.find("#photo_btn").html("");
+                    if(objUrl!=null){
+                        form.find("#photo_btn").css({
+                            "background-image": "url(" + objUrl + ")"
+                        });
+                        form.find("#photo_btn").html("");
+                    }
                 });
 
                 var htmlContent = ''
                     + '<div class="editor" id="editor" name="editor" type="text/plain">'
                     + '</div>';
-                container.find('#team_content').html(htmlContent);
+                form.find('#team_content').html(htmlContent);
                 if (bdEditor !== null) {
                     bdEditor.destroy();
                     bdEditor = null;
                 }
                 bdEditor = UE.getEditor('editor', ueditorConfig.config);
                 bdEditor.ready(function () {
+                    bdEditor.setContent(detailContent);
                     bdEditor.addListener('contentChange', function () {
                         var content = bdEditor.getContent();
-                        container.find("#detailed").val(content);
+                        form.find("#detailed").val(content);
                     });
                 });
 
-                container.find(".sumbit_btn").off("click");
-                container.find(".sumbit_btn").on("click", function () {
+                form.find(".sumbit_btn").off("click");
+                form.find(".sumbit_btn").on("click", function () {
                     var confirmDialog = dialog.confirm("确定现在提交吗?", {
                         width: 400
                         , submit: function () {
@@ -575,8 +622,8 @@ define(function (require, exports, module) {
                     });
                 });
 
-                container.find(".cancle_btn").off("click");
-                container.find(".cancle_btn").on("click", function () {
+                form.find(".cancle_btn").off("click");
+                form.find(".cancle_btn").on("click", function () {
                     var confirmDialog = dialog.confirm("确定现在返回列表吗?<br>如果返回,数据将不保存.", {
                         width: 400
                         , submit: function () {
@@ -597,30 +644,15 @@ define(function (require, exports, module) {
                 });
                 DataLoad.PostForm(updateTeamApi, form, function (result) {
                     spinkit.remove();
-                    if (result.status === "success") {
-                        var infoDialog = dialog.notify("操作成功!", {
-                            width: 400
-                            , callback: function (notykit) {
-                                container.html("");
-                                team.init(container);
-                                infoDialog.Close();
-                            }
-                        });
-                    }
-                    else {
-                        var errDialog = dialog.dialog(result.message, {
-                            width: 400
-                            , callback: function (notykit) {
-                                if (parseInt(result.code) <= -100005 && parseInt(result.code) >= -100011) {
-                                    login.loginOut(null, function () {
-                                        container.html("");
-                                        index.init();
-                                    })
-                                }
-                                errDialog.Close();
-                            }
-                        });
-                    }
+                    dialog.dataResult(result,function () {
+                        container.html("");
+                        team.init(container);
+                    },function () {
+                        container.html("");
+                    },{
+                        success:'用户添加成功!'
+                        ,fail:''
+                    });
                 });
             }
 
@@ -673,6 +705,29 @@ define(function (require, exports, module) {
                 });
             }
             return verifyFlg;
+        },
+        del: function (container, id) {
+            var confirmDialog = dialog.confirm("确定删除吗??<br>如果删除,数据将无法恢复.", {
+                width: 400
+                , submit: function () {
+                    var spinkit = SpinKit.Create({
+                        color: '#1f548a'
+                    });
+                    DataLoad.GetData(null, delTeamApi, {id: id}, function (result) {
+                        spinkit.remove();
+                        dialog.dataResult(result,function () {
+                            team.list(container);
+                        },function () {
+                            container.html("");
+                            team.init(container);
+                        },{
+                            success:'用户删除成功!'
+                            ,fail:''
+                        });
+                    });
+                    confirmDialog.Close();
+                }
+            });
         }
     }
 

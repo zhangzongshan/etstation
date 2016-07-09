@@ -79,7 +79,9 @@ define(function (require, exports, module) {
                     , active: 'tabs_active'
                     , html: '<span>产品管理</span>'
                     , fn: function () {
-
+                        var product = require('../../script/admin/product');
+                        //不能直接使用 jquery 对象,因为重新加载以后不能定位到页面
+                        product.init('.admin_menu', '.admin_content');
                     }
                     , content: ''
                 }, {

@@ -281,3 +281,59 @@
     border: 1px solid #e5e5e5;
     border-radius: 3px;
 }
+
+/*列表按钮*/
+.list_edit{
+    display: inline-block;
+    min-width: 50px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #83be71;
+    border-radius: 3px;
+    text-align: center;
+    color: #fff;
+    font-size: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+    padding: 0px 5px;
+}
+.list_edit:hover{
+    background-color: #91d47d;
+}
+.list_del{
+    display: inline-block;
+    min-width: 50px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #a8b2bc;
+    border-radius: 3px;
+    text-align: center;
+    color: #fff;
+    font-size: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+    padding: 0px 5px;
+}
+.list_del:hover{
+    background-color: #bfcad5;
+}
+.list_cate{
+    display: inline-block;
+    min-width: 50px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #ddd;
+    border-radius: 3px;
+    text-align: center;
+    color: #fff;
+    font-size: 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+    padding: 0px 5px;
+}
+.list_cate:hover{
+    background-color: #eee;
+}
+.windows_title{
+    background-color: #f8f8f8;
+}

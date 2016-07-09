@@ -24,16 +24,7 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
         typeof define === 'function' && define.amd ? define(factory) :
             (global.validator = factory());
-}(this, function () {
-    'use strict';
-
-    var babelHelpers = {};
-    babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-        return typeof obj;
-    } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-    };
-    babelHelpers;
+}(this, function () { 'use strict';
 
     function assertString(input) {
         if (typeof input !== 'string') {
@@ -70,8 +61,14 @@
         return str === comparison;
     }
 
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+    } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+    };
+
     function toString(input) {
-        if ((typeof input === 'undefined' ? 'undefined' : babelHelpers.typeof(input)) === 'object' && input !== null) {
+        if ((typeof input === 'undefined' ? 'undefined' : _typeof(input)) === 'object' && input !== null) {
             if (typeof input.toString === 'function') {
                 input = input.toString();
             } else {
@@ -113,7 +110,7 @@
         assertString(str);
         var min = void 0;
         var max = void 0;
-        if ((typeof options === 'undefined' ? 'undefined' : babelHelpers.typeof(options)) === 'object') {
+        if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
             min = options.min || 0;
             max = options.max;
         } else {
@@ -172,12 +169,14 @@
     };
 
     /* eslint-disable max-len */
+    /* eslint-disable no-control-regex */
     var displayName = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\.\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\.\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\s]*<(.+)>$/i;
     var emailUserPart = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~]+$/i;
     var quotedEmailUser = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f]))*$/i;
     var emailUserUtf8Part = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i;
     var quotedEmailUserUtf8 = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*$/i;
     /* eslint-enable max-len */
+    /* eslint-enable no-control-regex */
 
     function isEmail(str, options) {
         assertString(str);
@@ -199,11 +198,11 @@
             user = user.replace(/\./g, '').toLowerCase();
         }
 
-        if (!isByteLength(user, {max: 64}) || !isByteLength(domain, {max: 256})) {
+        if (!isByteLength(user, { max: 64 }) || !isByteLength(domain, { max: 256 })) {
             return false;
         }
 
-        if (!isFDQN(domain, {require_tld: options.require_tld})) {
+        if (!isFDQN(domain, { require_tld: options.require_tld })) {
             return false;
         }
 
@@ -388,6 +387,7 @@
         'es-ES': /^[A-ZÁÉÍÑÓÚÜ]+$/i,
         'fr-FR': /^[A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
         'nl-NL': /^[A-ZÉËÏÓÖÜ]+$/i,
+        'hu-HU': /^[A-ZÁÉÍÓÖŐÚÜŰ]+$/i,
         'pl-PL': /^[A-ZĄĆĘŚŁŃÓŻŹ]+$/i,
         'pt-PT': /^[A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ]+$/i,
         'ru-RU': /^[А-ЯЁа-яё]+$/i,
@@ -401,6 +401,7 @@
         'de-DE': /^[0-9A-ZÄÖÜß]+$/i,
         'es-ES': /^[0-9A-ZÁÉÍÑÓÚÜ]+$/i,
         'fr-FR': /^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
+        'hu-HU': /^[0-9A-ZÁÉÍÓÖŐÚÜŰ]+$/i,
         'nl-NL': /^[0-9A-ZÉËÏÓÖÜ]+$/i,
         'pl-PL': /^[0-9A-ZĄĆĘŚŁŃÓŻŹ]+$/i,
         'pt-PT': /^[0-9A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ]+$/i,
@@ -463,7 +464,9 @@
         return str === str.toUpperCase();
     }
 
+    /* eslint-disable no-control-regex */
     var ascii = /^[\x00-\x7F]+$/;
+    /* eslint-enable no-control-regex */
 
     function isAscii(str) {
         assertString(str);
@@ -489,7 +492,9 @@
         return fullWidth.test(str) && halfWidth.test(str);
     }
 
+    /* eslint-disable no-control-regex */
     var multibyte = /[^\x00-\x7F]/;
+    /* eslint-enable no-control-regex */
 
     function isMultibyte(str) {
         assertString(str);
@@ -504,11 +509,21 @@
     }
 
     var int = /^(?:[-+]?(?:0|[1-9][0-9]*))$/;
+    var intLeadingZeroes = /^[-+]?[0-9]+$/;
 
     function isInt(str, options) {
         assertString(str);
         options = options || {};
-        return int.test(str) && (!options.hasOwnProperty('min') || str >= options.min) && (!options.hasOwnProperty('max') || str <= options.max);
+
+        // Get the regex to use for testing, based on whether
+        // leading zeroes are allowed or not.
+        var regex = options.hasOwnProperty('allow_leading_zeroes') && options.allow_leading_zeroes ? intLeadingZeroes : int;
+
+        // Check min/max
+        var minCheckPassed = !options.hasOwnProperty('min') || str >= options.min;
+        var maxCheckPassed = !options.hasOwnProperty('max') || str <= options.max;
+
+        return regex.test(str) && minCheckPassed && maxCheckPassed;
     }
 
     var float = /^(?:[-+]?(?:[0-9]+))?(?:\.[0-9]*)?(?:[eE][\+\-]?(?:[0-9]+))?$/;
@@ -552,9 +567,8 @@
         assertString(str);
         try {
             var obj = JSON.parse(str);
-            return !!obj && (typeof obj === 'undefined' ? 'undefined' : babelHelpers.typeof(obj)) === 'object';
-        } catch (e) {/* ignore */
-        }
+            return !!obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+        } catch (e) {/* ignore */}
         return false;
     }
 
@@ -568,7 +582,7 @@
         assertString(str);
         var min = void 0;
         var max = void 0;
-        if ((typeof options === 'undefined' ? 'undefined' : babelHelpers.typeof(options)) === 'object') {
+        if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
             min = options.min || 0;
             max = options.max;
         } else {
@@ -603,10 +617,10 @@
 
     /* eslint-disable max-len */
     // from http://goo.gl/0ejHHW
-    var iso8601 = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
+    var iso8601 = /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
     /* eslint-enable max-len */
 
-    function isISO8601(str) {
+    function isISO8601 (str) {
         assertString(str);
         return iso8601.test(str);
     }
@@ -725,7 +739,7 @@
                 }
             }
             return array.indexOf(str) >= 0;
-        } else if ((typeof options === 'undefined' ? 'undefined' : babelHelpers.typeof(options)) === 'object') {
+        } else if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
             return options.hasOwnProperty(str);
         } else if (options && typeof options.indexOf === 'function') {
             return options.indexOf(str) >= 0;
@@ -734,7 +748,7 @@
     }
 
     /* eslint-disable max-len */
-    var creditCard = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/;
+    var creditCard = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})|62[0-9]{14}$/;
     /* eslint-enable max-len */
 
     function isCreditCard(str) {
@@ -846,10 +860,12 @@
 
     /* eslint-disable max-len */
     var phones = {
+        'ar-DZ': /^(\+?213|0)(5|6|7)\d{8}$/,
         'ar-SY': /^(!?(\+?963)|0)?9\d{8}$/,
         'en-US': /^(\+?1)?[2-9]\d{2}[2-9](?!11)\d{6}$/,
         'cs-CZ': /^(\+?420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/,
         'de-DE': /^(\+?49[ \.\-])?([\(]{1}[0-9]{1,6}[\)])?([0-9 \.\-\/]{3,20})((x|ext|extension)[ ]?[0-9]{1,4})?$/,
+        'da-DK': /^(\+?45)?(\d{8})$/,
         'el-GR': /^(\+?30)?(69\d{8})$/,
         'en-AU': /^(\+?61|0)4\d{8}$/,
         'en-GB': /^(\+?44|0)7\d{9}$/,
@@ -861,9 +877,11 @@
         'es-ES': /^(\+?34)?(6\d{1}|7[1234])\d{7}$/,
         'fi-FI': /^(\+?358|0)\s?(4(0|1|2|4|5)?|50)\s?(\d\s?){4,8}\d$/,
         'fr-FR': /^(\+?33|0)[67]\d{8}$/,
+        'hu-HU': /^(\+?36)(20|30|70)\d{7}$/,
         'ms-MY': /^(\+?6?01){1}(([145]{1}(\-|\s)?\d{7,8})|([236789]{1}(\s|\-)?\d{7}))$/,
         'nb-NO': /^(\+?47)?[49]\d{7}$/,
         'nn-NO': /^(\+?47)?[49]\d{7}$/,
+        'pl-PL': /^(\+?48)? ?[5-8]\d ?\d{3} ?\d{2} ?\d{2}$/,
         'pt-BR': /^(\+?55|0)\-?[1-9]{2}\-?[2-9]{1}\d{3,4}\-?\d{4}$/,
         'pt-PT': /^(\+?351)?9[1236]\d{7}$/,
         'ru-RU': /^(\+?7|8)?9\d{9}$/,
@@ -873,6 +891,9 @@
         'zh-TW': /^(\+?886\-?|0)?9\d{8}$/
     };
     /* eslint-enable max-len */
+
+    // aliases
+    phones['en-CA'] = phones['en-US'];
 
     function isMobilePhone(str, locale) {
         assertString(str);
@@ -965,7 +986,7 @@
         return firstPaddingChar === -1 || firstPaddingChar === len - 1 || firstPaddingChar === len - 2 && str[len - 1] === '=';
     }
 
-    var dataURI = /^\s*data:([a-z]+\/[a-z0-9\-\+]+(;[a-z\-]+\=[a-z0-9\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i; // eslint-disable-line max-len
+    var dataURI = /^\s*data:([a-z]+\/[a-z0-9\-\+]+(;[a-z\-]+=[a-z0-9\-]+)?)?(;base64)?,[a-z0-9!\$&',\(\)\*\+,;=\-\._~:@\/\?%\s]*\s*$/i; // eslint-disable-line max-len
 
     function isDataURI(str) {
         assertString(str);
@@ -992,12 +1013,12 @@
 
     function escape(str) {
         assertString(str);
-        return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/\`/g, '&#96;');
+        return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;').replace(/`/g, '&#96;');
     }
 
     function unescape(str) {
         assertString(str);
-        return str.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '\/').replace(/&#96;/g, '\`');
+        return str.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#x2F;/g, '/').replace(/&#96;/g, '`');
     }
 
     function blacklist(str, chars) {
@@ -1057,66 +1078,36 @@
         return parts.join('@');
     }
 
-    var version = '5.2.0';
+    var version = '5.4.0';
 
     var validator = {
         version: version,
         toDate: toDate,
-        toFloat: toFloat,
-        toInt: toInt,
+        toFloat: toFloat, toInt: toInt,
         toBoolean: toBoolean,
-        equals: equals,
-        contains: contains,
-        matches: matches,
-        isEmail: isEmail,
-        isURL: isURL,
-        isMACAddress: isMACAddress,
-        isIP: isIP,
-        isFQDN: isFDQN,
+        equals: equals, contains: contains, matches: matches,
+        isEmail: isEmail, isURL: isURL, isMACAddress: isMACAddress, isIP: isIP, isFQDN: isFDQN,
         isBoolean: isBoolean,
-        isAlpha: isAlpha,
-        isAlphanumeric: isAlphanumeric,
-        isNumeric: isNumeric,
-        isLowercase: isLowercase,
-        isUppercase: isUppercase,
-        isAscii: isAscii,
-        isFullWidth: isFullWidth,
-        isHalfWidth: isHalfWidth,
-        isVariableWidth: isVariableWidth,
-        isMultibyte: isMultibyte,
-        isSurrogatePair: isSurrogatePair,
-        isInt: isInt,
-        isFloat: isFloat,
-        isDecimal: isDecimal,
-        isHexadecimal: isHexadecimal,
-        isDivisibleBy: isDivisibleBy,
+        isAlpha: isAlpha, isAlphanumeric: isAlphanumeric, isNumeric: isNumeric, isLowercase: isLowercase, isUppercase: isUppercase,
+        isAscii: isAscii, isFullWidth: isFullWidth, isHalfWidth: isHalfWidth, isVariableWidth: isVariableWidth,
+        isMultibyte: isMultibyte, isSurrogatePair: isSurrogatePair,
+        isInt: isInt, isFloat: isFloat, isDecimal: isDecimal, isHexadecimal: isHexadecimal, isDivisibleBy: isDivisibleBy,
         isHexColor: isHexColor,
         isJSON: isJSON,
         isNull: isNull,
-        isLength: isLength,
-        isByteLength: isByteLength,
-        isUUID: isUUID,
-        isMongoId: isMongoId,
-        isDate: isDate,
-        isAfter: isAfter,
-        isBefore: isBefore,
+        isLength: isLength, isByteLength: isByteLength,
+        isUUID: isUUID, isMongoId: isMongoId,
+        isDate: isDate, isAfter: isAfter, isBefore: isBefore,
         isIn: isIn,
         isCreditCard: isCreditCard,
-        isISIN: isISIN,
-        isISBN: isISBN,
+        isISIN: isISIN, isISBN: isISBN,
         isMobilePhone: isMobilePhone,
         isCurrency: isCurrency,
         isISO8601: isISO8601,
-        isBase64: isBase64,
-        isDataURI: isDataURI,
-        ltrim: ltrim,
-        rtrim: rtrim,
-        trim: trim,
-        escape: escape,
-        unescape: unescape,
-        stripLow: stripLow,
-        whitelist: whitelist,
-        blacklist: blacklist,
+        isBase64: isBase64, isDataURI: isDataURI,
+        ltrim: ltrim, rtrim: rtrim, trim: trim,
+        escape: escape, unescape: unescape, stripLow: stripLow,
+        whitelist: whitelist, blacklist: blacklist,
         isWhitelisted: isWhitelisted,
         normalizeEmail: normalizeEmail,
         toString: toString

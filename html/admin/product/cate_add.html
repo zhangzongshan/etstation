@@ -1,0 +1,44 @@
+<form name="submitForm" id="submitForm" enctype="multipart/form-data">
+    <div class="title">产品管理>添加分类</div>
+    <div class="content">
+        <div class="item">
+            <div class="item_left">品牌名称:</div>
+            <div class="item_right">
+                <input class="item_input" id="name" name="name" type="text" style="width: 200px;">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">品牌Logo:</div>
+            <div class="item_right">
+                <div class="logo_img" id="photo_btn">添加</div>
+                <input type="file" name="logo" id="logo" accept="image/*" multiple="multiple" style="display:none;"/>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">官方网站:</div>
+            <div class="item_right">
+                <input class="item_input" id="website" name="website" type="text" style="width: 300px;" placeholder="http://">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">详细介绍:</div>
+            <div class="item_right about_content" id="cate_content" style="margin-top: 10px;"></div>
+            <input type="hidden" name="detail" id="detail">
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="bottom" style="margin-top: 20px;">
+        <div class="item">
+            <div class="item_left"></div>
+            <div class="item_right" id="about_btn">
+                <span class="base_btn sumbit_btn">保存</span>
+                <span class="base_btn cancle_btn">返回</span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</form>
