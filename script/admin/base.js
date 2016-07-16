@@ -112,7 +112,7 @@ define(function (require, exports, module) {
                             bdEditor.destroy();
                             bdEditor = null;
                         }
-                        bdEditor = UE.getEditor('editor', ueditorConfig.config);
+                        bdEditor = UE.getEditor('editor', ueditorConfig.config());
                         bdEditor.ready(function () {
                             bdEditor.setContent(common.fn.htmlDecode(content));
                             bdEditor.addListener('contentChange', function () {
@@ -443,14 +443,14 @@ define(function (require, exports, module) {
             });
             DataLoad.GetData(null, getTeamApi, team.search, function (result) {
                 spinkit.remove();
-                dialog.dataResult(result,function () {
-                    team.fillTable(result,container)
-                },function () {
+                dialog.dataResult(result, function () {
+                    team.fillTable(result, container)
+                }, function () {
                     container.html("");
                 });
             }, true, 'post', 'json');
         },
-        fillTable:function (result,container) {
+        fillTable: function (result, container) {
             var tabledata = [];
             var tableColumns = [
                 {data: "teampic", class: "dt-center", width: "100px"}
@@ -560,7 +560,7 @@ define(function (require, exports, module) {
 
                     detailContent = detailed;
 
-                    form.find(".title").html(form.find(".title").html().replace("添加团队成员","修改团队成员"));
+                    form.find(".title").html(form.find(".title").html().replace("添加团队成员", "修改团队成员"));
 
                     form.append('<input type="hidden" id="id" name="id" value="' + id + '">');
                     if (photo != "") {
@@ -586,7 +586,7 @@ define(function (require, exports, module) {
 
                 form.find("#photo").change(function () {
                     var objUrl = common.fn.createObjectURL(this.files[0]);
-                    if(objUrl!=null){
+                    if (objUrl != null) {
                         form.find("#photo_btn").css({
                             "background-image": "url(" + objUrl + ")"
                         });
@@ -602,7 +602,7 @@ define(function (require, exports, module) {
                     bdEditor.destroy();
                     bdEditor = null;
                 }
-                bdEditor = UE.getEditor('editor', ueditorConfig.config);
+                bdEditor = UE.getEditor('editor', ueditorConfig.config());
                 bdEditor.ready(function () {
                     bdEditor.setContent(detailContent);
                     bdEditor.addListener('contentChange', function () {
@@ -644,20 +644,21 @@ define(function (require, exports, module) {
                 });
                 DataLoad.PostForm(updateTeamApi, form, function (result) {
                     spinkit.remove();
-                    dialog.dataResult(result,function () {
+                    dialog.dataResult(result, function () {
                         container.html("");
                         team.init(container);
-                    },function () {
+                    }, function () {
                         container.html("");
-                    },{
-                        success:'用户添加成功!'
-                        ,fail:''
+                    }, {
+                        success: '用户添加成功!'
+                        , fail: ''
                     });
                 });
             }
 
         },
         verify: function (container) {
+            this.errMessage = [];
             var verifyFlg = true;
             var username = container.find("#username").val();
             if (username === null || username === '') {
@@ -715,14 +716,14 @@ define(function (require, exports, module) {
                     });
                     DataLoad.GetData(null, delTeamApi, {id: id}, function (result) {
                         spinkit.remove();
-                        dialog.dataResult(result,function () {
+                        dialog.dataResult(result, function () {
                             team.list(container);
-                        },function () {
+                        }, function () {
                             container.html("");
                             team.init(container);
-                        },{
-                            success:'用户删除成功!'
-                            ,fail:''
+                        }, {
+                            success: '用户删除成功!'
+                            , fail: ''
                         });
                     });
                     confirmDialog.Close();

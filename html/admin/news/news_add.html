@@ -1,0 +1,71 @@
+<form name="submitForm" id="submitForm" enctype="multipart/form-data">
+    <div class="title">作品案例>添加</div>
+    <div class="content">
+        <div class="item">
+            <div class="item_left">标题:</div>
+            <div class="item_right">
+                <input class="item_input" id="title" name="title" type="text" style="width: 250px;">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">类别:</div>
+            <div class="item_right" style="padding-top:10px;">
+                <input type="radio" name="media_type" id="pic" value="pic" checked="checked"><label for="pic"><span class="radioClass">图片</span></label>
+                <input type="radio" name="media_type" id="video" value="video"><label for="video" class="radioClass"><span>视频</span></label>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left"></div>
+            <div class="item_right">
+                <div class="news_img_container">
+
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">详细内容:</div>
+            <div class="item_right about_content" id="news_content" style="margin-top: 10px;height: 300px;"></div>
+            <input type="hidden" name="content" id="content">
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">时间:</div>
+            <div class="item_right input-group">
+                <input type="text" class="item_input" id="times" name="times" readonly="true" placeholder="请选择时间...">
+                <div class="calendar"><span class="icon-calendar"></span></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">所在分类:</div>
+            <div class="item_right" style="padding-top: 10px;">
+                <select class="item_input" style="min-width: 250px;width: 250px;" name="cate" id="cate">
+                    <option value="0">所有分类</option>
+                </select>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="item">
+            <div class="item_left">发布状态:</div>
+            <div class="item_right" style="padding-top: 10px;">
+                <input type="radio" name="show" id="isShow" value="1" checked="checked"><label for="isShow"><span class="radioClass">发布</span></label>
+                <input type="radio" name="show" id="noShow" value="0"><label for="noShow"><span class="radioClass">草稿</span></label>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="bottom" style="margin-top: 20px;">
+        <div class="item">
+            <div class="item_left"></div>
+            <div class="item_right" id="about_btn">
+                <span class="base_btn sumbit_btn">保存</span>
+                <span class="base_btn cancle_btn">返回</span>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</form>

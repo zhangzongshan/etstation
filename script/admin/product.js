@@ -18,6 +18,7 @@ define(function (require, exports, module) {
     var index = require('../../script/admin/index');
     var baiduMap = require('../../script/admin/set_map_pointer');
     var tables = require('../public/tables_config');
+    var imgInput = require('../../_assets/js/module/imginput/imginput.min');
     //加载 select2
     require('../../_assets/js/public/select2-4.0.3/js/select2.full.min');
 
@@ -27,6 +28,9 @@ define(function (require, exports, module) {
     var childCateUpdateApi = apiRoot + '/api/cate/child/update';
     var childCateListApi = apiRoot + '/api/cate/child/list';
     var childDelCateApi = apiRoot + '/api/cate/child/del';
+    var productUpdateApi = apiRoot + '/api/product/update';
+    var productListApi = apiRoot + '/api/product/list';
+    var productDelApi = apiRoot + '/api/product/del';
     var imageApi = apiRoot + '/api/Images';
 
     var bdEditor = null;
@@ -234,7 +238,7 @@ define(function (require, exports, module) {
                     bdEditor.destroy();
                     bdEditor = null;
                 }
-                bdEditor = UE.getEditor('cate_editor', ueditorConfig.config);
+                bdEditor = UE.getEditor('cate_editor', ueditorConfig.config());
                 bdEditor.ready(function () {
                     bdEditor.setContent(detailContent);
                     bdEditor.addListener('contentChange', function () {
@@ -289,6 +293,7 @@ define(function (require, exports, module) {
             }
         },
         verify: function (container) {
+            this.errMessage = [];
             var verifyFlg = true;
             var name = container.find("#name").val();
             if (name === null || name === '') {
@@ -431,7 +436,6 @@ define(function (require, exports, module) {
                         , cate_name: cate_name
                         , cate_id: cate_id
                     };
-
 
                     var option = '<div class="list_cate_option">'
                         + '<span class="list_edit">编辑</span>'
@@ -636,14 +640,171 @@ define(function (require, exports, module) {
             });
         },
         list: function (container) {
-
+            var spinkit = SpinKit.Create({
+                color: '#1f548a'
+            });
+            var name = container.find("#name").val();
+            if (name != "") {
+                product.search.name = name;
+            }
+            else {
+                product.search.name = null;
+            }
+            var cate = container.find("#cate").val();
+            if (cate != "" && cate != "-1") {
+                product.search.cate = cate;
+            }
+            else {
+                product.search.cate = null;
+            }
+            var child_cate = container.find("#child_cate").val();
+            if (child_cate != null && child_cate != "-1" && child_cate != "") {
+                product.search.child_cate = child_cate;
+            }
+            else {
+                product.search.child_cate = null;
+            }
+            DataLoad.GetData(null, productListApi, product.search, function (result) {
+                spinkit.remove();
+                dialog.dataResult(result, function () {
+                    product.fillTable(result, container);
+                }, function () {
+                    container.html("");
+                });
+            }, true, 'post', 'json');
         },
-        cateInfo: function (container,data) {
-            DataLoad.GetFile("product_html",rootPath + "/html/admin/product/product_add.html",function (html) {
+        fillTable: function (result, container) {
+            var tabledata = [];
+            var tableColumns = [
+                {data: "pic", class: "dt-center", width: "100px"}
+                , {data: "info", class: "dt-left", width: "200px"}
+                , {data: "detail", class: "dt-left"}
+                , {data: "option", class: "dt-center", width: "180px"}
+            ];
+
+            if (result.resultObject != null && result.resultObject.data != null) {
+                var listData = result.resultObject.data;
+                $.each(listData, function (index, item) {
+                    var id = item.id;
+                    var pic = item.pic;
+                    var name = item.name;
+                    var pic_index = item.pic_index;
+                    var cate = item.cate;
+                    var cate_name = item.cate_name;
+                    var child_cate = item.child_cate;
+                    var child_cate_name = item.child_cate_name;
+                    var detail = common.string.removeHtml(common.fn.htmlDecode(item.detail));
+
+                    var orginData = {
+                        id: id
+                        , pic: pic
+                        , pic_index: pic_index
+                        , name: name
+                        , cate: cate
+                        , child_cate: child_cate
+                        , detail: common.fn.htmlDecode(item.detail)
+                    };
+                    var showPic = "";
+                    if (pic != "") {
+                        var arrPic = pic.split(',');
+                        if (pic_index != "") {
+                            showPic = arrPic[pic_index];
+                        } else {
+                            showPic = arrPic[0];
+                        }
+                    }
+
+                    var picInfo = '<div class="list_cate_logo" style="background-image: url(' + imageApi + '?img=ProductImg/' + showPic + ');"></div>'
+                    var info = '<div class="list_team_info">'
+                        + '<div class="list_team_info_item"><b>' + common.string.subString(name, 24, '...') + '</b></div>'
+                        + '<div class="list_team_info_item" style="color: #888;font-size: 12px;">'
+                        + '<div >品牌:<span class="herfItem">'+common.string.subString(cate_name, 20, '...')+'</span></div>'
+                        + '<div >类别:<span class="herfItem">'+common.string.subString(child_cate_name, 20, '...')+'</span></div>'
+                        + '</div>'
+                        + '</div>';
+                    var detail_str = common.string.subString(detail, 140, '...');
+                    var option = '<div class="list_cate_option">'
+                        + '<span class="list_edit">编辑</span>'
+                        + '<span class="list_del">删除</span>'
+                        + '</div>';
+
+                    tabledata.push({
+                        pic: picInfo
+                        , info: info
+                        , detail: detail_str
+                        , option: option
+                        , orginData: orginData
+                    });
+                });
+
+                page.create({
+                    obj: container.find(".page_container")
+                    , pageSize: product.search.pageSize
+                    , current: product.search.current
+                    , totalPage: result.resultObject.totalPage
+                    , totalRecord: result.resultObject.totalRecord
+                    , input: true
+                    , defaultPageSize: 5
+                    , callback: function (pageation) {
+                        product.search.pageSize = pageation.pageSize;
+                        product.search.current = pageation.current;
+                        product.list(container);
+                    }
+                });
+            }
+            else {
+                container.find(".page_container").empty();
+            }
+
+            if (product.table != null) {
+                product.table.destroy();
+            }
+            product.table = tables.init(container.find("#table_id"), tabledata, tableColumns, function () {
+
+                container.find(".list_edit").off("click");
+                container.find(".list_edit").on("click", function () {
+                    var tr = $(this).parents("tr");
+                    var data = product.table.row(tr).data();
+                    product.cateInfo(container, data);
+                });
+                container.find(".list_del").off("click");
+                container.find(".list_del").on("click", function () {
+                    var tr = $(this).parents("tr");
+                    var data = product.table.row(tr).data();
+                    product.del(container, data.orginData.id);
+                });
+            });
+        },
+        cateInfo: function (container, data) {
+            DataLoad.GetFile("product_html", rootPath + "/html/admin/product/product_add.html", function (html) {
                 container.html(html);
                 var form = container.find("#submitForm");
 
-                var detailContent="";
+                var detailContent = "";
+                var cate = "";
+                var child_cate = "";
+                var pic_index = 0;
+                var arrPic = [];
+                if (data != null) {
+                    var orginData = data.orginData;
+
+                    var id = orginData.id;
+                    var pic = orginData.pic;
+                    var name = orginData.name;
+                    pic_index = orginData.pic_index;
+                    cate = orginData.cate;
+                    child_cate = orginData.child_cate;
+                    var detail = orginData.detail;
+
+                    detailContent = detail;
+                    arrPic = pic.split(',');
+
+                    form.find(".title").html(form.find(".title").html().replace("添加产品", "修改产品信息"));
+
+                    form.append('<input type="hidden" id="id" name="id" value="' + id + '">');
+                    form.find("#name").val(name);
+                    form.find("#detail").val(detail);
+                }
 
                 form.find("#cate").select2({
                     placeholder: {
@@ -652,6 +813,8 @@ define(function (require, exports, module) {
                     }
                     , data: []
                 });
+
+
                 form.find("#child_cate").select2({
                     placeholder: {
                         id: '-1', // the value of the option
@@ -659,40 +822,73 @@ define(function (require, exports, module) {
                     }
                     , data: []
                 });
-
                 product.selectInputData(form.find("#cate"), cateListApi, {
                     name: null
                     , current: 1
                     , pageSize: 1000
-                }, "name", '请选择名牌...');
+                }, "name", '请选择名牌...', cate);
 
                 form.find("#cate").on('change', function () {
                     product.selectInputData(form.find("#child_cate"), childCateListApi, {
                         cate_id: form.find("#cate").val()
                         , current: 1
                         , pageSize: 1000
-                    }, "cate_name", '选择分类...');
+                    }, "cate_name", '选择分类...', child_cate);
                 });
 
-                form.find("#photo_btn").off('click');
-                form.find("#photo_btn").on('click',function () {
-                    form.find("#product_img").trigger("click");
-                });
-                form.find("#product_img").change(function () {
-                    var objUrl = common.fn.createObjectURL(this.files[0]);
-                    product.imgInputData(form.find(".product_img_container"),objUrl);
+                var picInput = imgInput.Create(arrPic, {
+                    obj: form.find('.product_img_container')
+                    , rootpath: imageApi + '?img=ProductImg/'
+                    , class: "logo_img"
+                    , height: 100
+                    , name: "productPic"
+                    , infoItem: {
+                        text: "<div></div>"
+                        , class: "innerInfo"
+                        , item: [{
+                            text: "<span class='icon-home'></span>"
+                            , class: "innerItem"
+                            , callback: function (imgObj) {
+                                if (imgObj.find('.innerActive').length < 1) {
+                                    imgObj.closest(".product_img_container").find(".icon-home").removeClass("innerActive");
+                                    imgObj.find('.icon-home').addClass("innerActive");
+                                }
+                                else {
+                                    imgObj.find('.icon-home').removeClass("innerActive");
+                                }
+                            }
+                        }, {
+                            text: "<span class='icon-trash'></span>"
+                            , class: "innerItem"
+                            , callback: function (imgObj) {
+                                var confirmDialog = dialog.confirm("确定删除该图片吗?", {
+                                    width: 400
+                                    , submit: function () {
+                                        confirmDialog.Close();
+                                        imgObj.remove();
+                                        picInput.redraw();
+                                    }
+                                });
+                            }
+                        }]
+                    }
+                    , callback: function () {
+                        if(form.find(".icon-home").length>pic_index){
+                            $(form.find(".icon-home")[pic_index]).addClass("innerActive");
+                        }
+                    }
                 });
 
                 var htmlContent = ''
                     + '<div class="editor" id="product_editor" name="product_editor" type="text/plain">'
                     + '</div>';
                 form.find('#product_content').html(htmlContent);
-                
+
                 if (bdEditor !== null) {
                     bdEditor.destroy();
                     bdEditor = null;
                 }
-                bdEditor = UE.getEditor('product_editor', ueditorConfig.config);
+                bdEditor = UE.getEditor('product_editor', ueditorConfig.config());
                 bdEditor.ready(function () {
                     bdEditor.setContent(detailContent);
                     bdEditor.addListener('contentChange', function () {
@@ -700,26 +896,40 @@ define(function (require, exports, module) {
                         form.find("#detail").val(content);
                     });
                 });
-                
+
+                form.find(".sumbit_btn").off("click");
+                form.find(".sumbit_btn").on("click", function () {
+                    var pic_index = 0;
+                    if (form.find(".innerActive").length > 0) {
+                        var pics = form.find(".innerActive").closest(".product_img_container").find(".icon-home");
+                        pic_index = pics.index(form.find(".innerActive"));
+                    }
+                    form.find("#pic_index").remove();
+                    form.append('<input type="hidden" name="pic_index" id="pic_index" value="' + pic_index + '">');
+                    var confirmDialog = dialog.confirm("确定现在提交吗?", {
+                        width: 400
+                        , submit: function () {
+                            product.sumbit(container, picInput);
+                            confirmDialog.Close();
+                        }
+                    });
+                });
+
+                form.find(".cancle_btn").off("click");
+                form.find(".cancle_btn").on("click", function () {
+                    var confirmDialog = dialog.confirm("确定现在返回列表吗?<br>如果返回,数据将不保存.", {
+                        width: 400
+                        , submit: function () {
+                            confirmDialog.Close();
+                            container.html("");
+                            product.init(container);
+                        }
+                    });
+                });
+
             });
         },
-        imgInputData:function (container,objUrl) {
-            var imgItem=container.find(".img_item");
-            var addImgItem=container.find("#photo_btn");
-            if(addImgItem.length>0){
-                if(objUrl!=null){
-                    var imgHtmlObj=$('<div class="product_img img_item"></div>');
-                    var innerHtmlObj=$('<div class="innerContent"></div><div class="innerInfo"><div class="innerItem icon-home"></div><div class="innerItem icon-trash"></div></div>');
-                    imgHtmlObj.append(innerHtmlObj);
-                    imgHtmlObj.css({
-                        "background-image": "url(" + objUrl + ")"
-                    });
-                    addImgItem.before(imgHtmlObj);
-                }
-            }
-
-        },
-        selectInputData:function (obj, url, parameter, selectType, placeholder_text) {
+        selectInputData: function (obj, url, parameter, selectType, placeholder_text, value) {
             obj.empty();
             DataLoad.GetData(null, url, parameter, function (result) {
                 var data = [{
@@ -732,7 +942,7 @@ define(function (require, exports, module) {
                         data.push({id: item.id, text: selectType === 'cate_name' ? item.cate_name : item.name})
                     });
                 }
-                obj.select2({
+                var selectObj = obj.select2({
                     placeholder: {
                         id: '-1', // the value of the option
                         text: placeholder_text
@@ -742,7 +952,104 @@ define(function (require, exports, module) {
                     , selectOnClose: false
                     , language: "zh-CN"
                 });
+                if (value != "" && value != null) {
+                    selectObj.val(value).trigger("change");
+                }
             }, true, 'post', 'json');
+        },
+        sumbit: function (container, picInput) {
+            if (this.verify(container, picInput)) {
+                container.find("#detail").val(common.fn.htmlEncode(container.find("#detail").val()));
+                var form = container.find("#submitForm");
+                var spinkit = SpinKit.Create({
+                    color: '#1f548a'
+                });
+                DataLoad.PostForm(productUpdateApi, form, function (result) {
+                    spinkit.remove();
+                    dialog.dataResult(result, function () {
+                        container.html("");
+                        product.init(container);
+                    }, function () {
+
+                    }, {
+                        success: container.find("#id").length > 0 ? '产品修改成功!' : '产品添加成功!'
+                        , fail: ''
+                    });
+                });
+            }
+        },
+        verify: function (container, picInput) {
+            this.errMessage = [];
+            var verifyFlg = true;
+            var name = container.find("#name").val();
+            if (name === null || name === '') {
+                this.errMessage.push({
+                    obj: container.find("#name")
+                    , message: "产品名称不能为空!"
+                });
+                verifyFlg = false;
+            }
+
+            var cate = container.find("#cate").val();
+            if (cate === '-1') {
+                this.errMessage.push({
+                    obj: container.find("#cate").closest(".item_right").find(".select2-container").first()
+                    , message: "必须选择一个品牌!"
+                });
+                verifyFlg = false;
+            }
+
+            var child_cate = container.find("#child_cate").val();
+            if (child_cate === '-1') {
+                this.errMessage.push({
+                    obj: container.find("#child_cate").closest(".item_right").find(".select2-container").first()
+                    , message: "必须选择一个分类!"
+                });
+                verifyFlg = false;
+            }
+
+            var productPic = picInput.getdata();
+            if (productPic.length == 0) {
+                this.errMessage.push({
+                    obj: container.find(":file")
+                    , message: "必须选择一个分类!"
+                });
+                verifyFlg = false;
+            }
+
+
+            if (!verifyFlg) {
+                dialog.err(this.errMessage, {
+                    width: 200
+                    , height: 20
+                    , msgClass: 'login_err'
+                    , layout: 'centerleft'
+                    , background: 'rgba(255,255,255,.8)'
+                });
+            }
+            return verifyFlg;
+        },
+        del: function (container, id) {
+            var confirmDialog = dialog.confirm("确定删除吗??<br>如果删除,数据将无法恢复.", {
+                width: 400
+                , submit: function () {
+                    var spinkit = SpinKit.Create({
+                        color: '#1f548a'
+                    });
+                    DataLoad.GetData(null, productDelApi, {id: id}, function (result) {
+                        spinkit.remove();
+                        dialog.dataResult(result, function () {
+                            product.list(container);
+                        }, function () {
+
+                        }, {
+                            success: '产品删除成功!'
+                            , fail: ''
+                        });
+                    });
+                    confirmDialog.Close();
+                }
+            });
         }
     }
 
@@ -753,7 +1060,7 @@ define(function (require, exports, module) {
                 , id: "prdouct_menu"
                 , autowidth: false
                 , container: $(content_container)
-                , showtabs: 'p_cate'
+                , showtabs: 'p_list'
                 , direct: 'Portrait'
                 , tabs: [{
                     id: 'p_cate'
@@ -778,13 +1085,11 @@ define(function (require, exports, module) {
         },
         load: function (content_container, case_type) {
             switch (case_type) {
-                case "p_cate":
-                {
+                case "p_cate": {
                     cate.init(content_container);
                     break;
                 }
-                case "p_list":
-                {
+                case "p_list": {
                     product.init(content_container);
                     break;
                 }

@@ -344,10 +344,11 @@
     height: 100%;
 }
 .innerInfo{
-    position: relative;
-    height: 30px;
+    top:65px;
+    width: 100%;
+    height: 35px;
     text-align: right;
-    top:-35px;
+    padding-right: 2px;
 }
 .innerItem{
     position: relative;
@@ -365,4 +366,38 @@
 }
 .innerActive{
     color: #ffc602;
+}
+
+.inputFile{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -100%;
+}
+.herfItem{
+    display: inline-block;
+    color: #444;
+}
+.radioClass{
+    padding: 0px 10px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+}
+.calendar{
+    margin-top: 10px;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    background-color: #a8b2bc;
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 2px;
+    margin-left: 2px;
+    cursor: pointer;
+}
+.calendar:hover{
+    background-color: #bfcad5;
+    color: #fff;
 }

@@ -23,7 +23,7 @@ define(function (require, exports, module) {
         _callback: null
         , validationCodeApi: apiRoot + '/api/ValidationCode'
         , loginApi: apiRoot + '/api/accounts/account/login'
-        ,loginOutApi:apiRoot + '/api/accounts/account/loginOut'
+        , loginOutApi: apiRoot + '/api/accounts/account/loginOut'
         , login: {
             username: null
             , password: null
@@ -70,7 +70,7 @@ define(function (require, exports, module) {
                 container.find('.login_btn').on('click', function () {
                     loginObj.sumbit(container);
                 });
-                common.fn.inputEnter(container,true,function () {
+                common.fn.inputEnter(container, true, function () {
                     loginObj.sumbit(container);
                 });
             });
@@ -115,6 +115,7 @@ define(function (require, exports, module) {
             }
         }
         , verify: function (container) {
+            this.errMessage = [];
             var verifyFlg = true;
             var username = this.login.username;
             if (username === null || username === '') {
@@ -172,7 +173,7 @@ define(function (require, exports, module) {
             }
             return verifyFlg;
         },
-        loginOut:function (container,callback) {
+        loginOut: function (container, callback) {
             DataLoad.GetData(null, loginObj.loginOutApi, null, function (result) {
                 common.fn.delstorage('sessionkey');
                 common.fn.delstorage('userinfo');
@@ -184,7 +185,7 @@ define(function (require, exports, module) {
                 else {
                     var errDialog = err.dialog(result.message, {
                         width: 400
-                        ,obj:container
+                        , obj: container
                         , callback: function (notykit) {
                             errDialog.Close();
                         }
@@ -196,6 +197,6 @@ define(function (require, exports, module) {
 
     return {
         login: loginObj.init
-        ,loginOut:loginObj.loginOut
+        , loginOut: loginObj.loginOut
     }
 });

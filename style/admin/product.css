@@ -73,8 +73,6 @@
 .logo_img{
     float: left;
     margin-right: 10px;
-    height: 100px;
-    line-height: 100px;
     width: 150px;
     border: 1px solid #97c4f2;
     text-align: center;
@@ -183,7 +181,7 @@
 }
 .product_img_container{
     width: 700px;
-    padding: 10px 0px 10px 25px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 3px;
 }

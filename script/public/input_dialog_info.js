@@ -5,9 +5,6 @@
 define(function (require, exports, module) {
 
     var scrollCtr = require('../../_assets/js/module/scrollcontrol/scrollcontrol');
-    var login = require('../admin/login');
-    var index = require('../../script/admin/index');
-
     function err(errObj, config) {
         if (!config) {
             config = {
@@ -293,6 +290,8 @@ define(function (require, exports, module) {
                 width: 400
                 , callback: function (notykit) {
                     if (parseInt(result.code) <= -100005 && parseInt(result.code) >= -100011) {
+                        var login = require('../admin/login');
+                        var index = require('../../script/admin/index');
                         login.loginOut(null, function () {
                             index.init();
                         });

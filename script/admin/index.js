@@ -90,7 +90,9 @@ define(function (require, exports, module) {
                     , active: 'tabs_active'
                     , html: '<span>动态信息</span>'
                     , fn: function () {
-
+                        var news = require('../../script/admin/news');
+                        //不能直接使用 jquery 对象,因为重新加载以后不能定位到页面
+                        news.init('.admin_menu', '.admin_content');
                     }
                     , content: ''
                 }, {

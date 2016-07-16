@@ -749,7 +749,6 @@
                 var hasNotykitObj = getArrJsonItem(notykitDate, "id", id);
                 var hasNotykitIndex = hasNotykitObj.index;
                 if (hasNotykitIndex != -1) {
-                    notykitDate.splice(hasNotykitIndex, hasNotykitIndex + 1);
                     obj.remove();
                 }
                 else {
@@ -759,7 +758,9 @@
         },
         destroyAll: function () {
             $.each(notykitDate, function (index, item) {
-                NotyKitObj.destroy(item.notykit);
+                if (item != null) {
+                    NotyKitObj.destroy(item.notykit);
+                }
             });
             notykitDate = [];
         }

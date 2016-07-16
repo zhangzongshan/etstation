@@ -45,6 +45,10 @@
     background-color: #478fd8;
     color:#fff;
     cursor: pointer;
+    border-right: 1px solid #185b9f;
+}
+.tabs_normal:hover{
+    background-color: #5a9ce0;
 }
 .tabs_active{
     height: 60px;
@@ -53,6 +57,7 @@
     background-color: #185b9f;
     color:#fff;
     cursor: pointer;
+    border-right: 1px solid #185b9f;
 }
 
 .user_container{
