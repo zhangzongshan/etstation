@@ -6,6 +6,7 @@ define(function (require, exports, module) {
 
     var scrollCtr = require('../../_assets/js/module/scrollcontrol/scrollcontrol');
     function err(errObj, config) {
+        NotyKit.Destroy();
         if (!config) {
             config = {
                 width: 0

@@ -711,7 +711,8 @@
                 });
             }
         },
-        close: function (notykit) {
+        close: function (notykit, clearDate) {
+            clearDate = (typeof clearDate === 'boolean' && clearDate === false) ? false : true;
             var id = notykit.id;
             var obj = $("#" + notykit.id);
             var callbackObj = (typeof notykit.callback === "object" && notykit.callback != null) ? notykit.callback : null;
@@ -731,7 +732,9 @@
                 var hasNotykitObj = getArrJsonItem(notykitDate, "id", id);
                 var hasNotykitIndex = hasNotykitObj.index;
                 if (hasNotykitIndex != -1) {
-                    notykitDate.splice(hasNotykitIndex, hasNotykitIndex + 1);
+                    if (clearDate) {
+                        notykitDate.splice(hasNotykitIndex, hasNotykitIndex + 1);
+                    }
                     obj.remove();
                     if (typeof afterCloseFn === "function") {
                         afterCloseFn(notykit);
@@ -742,24 +745,10 @@
                 }
             }
         },
-        destroy: function (notykit) {
-            var id = notykit.id;
-            var obj = $("#" + notykit.id);
-            if (obj.length > 0) {
-                var hasNotykitObj = getArrJsonItem(notykitDate, "id", id);
-                var hasNotykitIndex = hasNotykitObj.index;
-                if (hasNotykitIndex != -1) {
-                    obj.remove();
-                }
-                else {
-                    obj.remove();
-                }
-            }
-        },
         destroyAll: function () {
             $.each(notykitDate, function (index, item) {
                 if (item != null) {
-                    NotyKitObj.destroy(item.notykit);
+                    NotyKitObj.close(item.notykit, false);
                 }
             });
             notykitDate = [];

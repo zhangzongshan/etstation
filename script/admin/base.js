@@ -28,65 +28,7 @@ define(function (require, exports, module) {
 
     var bdEditor = null;
     DataLoad.Debug(true);
-    var baseObj = {
-        init: function (menu_container, content_container) {
-            var headTabsKit = new basetabsKit.Create({
-                obj: $(menu_container)
-                , id: "base_menu"
-                , autowidth: false
-                , container: $(content_container)
-                , showtabs: 'about'
-                , direct: 'Portrait'
-                , tabs: [{
-                    id: 'about'
-                    , normal: 'tabs_menu_normal'
-                    , active: 'tabs_menu_active'
-                    , html: '<span>关于我们</span>'
-                    , fn: function () {
-                        baseObj.load(content_container, 'about');
-                    },
-                    content: ''
-                }, {
-                    id: 'team'
-                    , normal: 'tabs_menu_normal'
-                    , active: 'tabs_menu_active'
-                    , html: '<span>团队成员</span>'
-                    , fn: function () {
-                        baseObj.load(content_container, 'team');
-                    }
-                    , content: ''
-                }, {
-                    id: 'link'
-                    , normal: 'tabs_menu_normal'
-                    , active: 'tabs_menu_active'
-                    , html: '<span>联系方式</span>'
-                    , fn: function () {
-                        baseObj.load(content_container, 'link');
-                    }
-                    , content: ''
-                }]
-            });
-        },
-        load: function (content_container, case_type) {
-            switch (case_type) {
-                case "about":
-                {
-                    about.init(content_container);
-                    break;
-                }
-                case "team":
-                {
-                    team.init(content_container);
-                    break;
-                }
-                case "link":
-                {
-                    link.init(content_container);
-                    break;
-                }
-            }
-        }
-    }
+
     var about = {
         sumbit_content: {
             about: null
@@ -628,6 +570,7 @@ define(function (require, exports, module) {
                         width: 400
                         , submit: function () {
                             confirmDialog.Close();
+                            NotyKit.Destroy();
                             container.html("");
                             team.init(container);
                         }
@@ -729,6 +672,67 @@ define(function (require, exports, module) {
                     confirmDialog.Close();
                 }
             });
+        }
+    }
+
+    var baseObj = {
+        init: function (menu_container, content_container) {
+            var headTabsKit = new basetabsKit.Create({
+                obj: $(menu_container)
+                , id: "base_menu"
+                , autowidth: false
+                , container: $(content_container)
+                , showtabs: 'about'
+                , direct: 'Portrait'
+                , tabs: [{
+                    id: 'about'
+                    , normal: 'tabs_menu_normal'
+                    , active: 'tabs_menu_active'
+                    , html: '<span>关于我们</span>'
+                    , fn: function () {
+                        baseObj.load(content_container, 'about');
+                    },
+                    content: ''
+                }, {
+                    id: 'team'
+                    , normal: 'tabs_menu_normal'
+                    , active: 'tabs_menu_active'
+                    , html: '<span>团队成员</span>'
+                    , fn: function () {
+                        baseObj.load(content_container, 'team');
+                    }
+                    , content: ''
+                }, {
+                    id: 'link'
+                    , normal: 'tabs_menu_normal'
+                    , active: 'tabs_menu_active'
+                    , html: '<span>联系方式</span>'
+                    , fn: function () {
+                        baseObj.load(content_container, 'link');
+                    }
+                    , content: ''
+                }]
+            });
+        },
+        load: function (content_container, case_type) {
+            NotyKit.Destroy();
+            switch (case_type) {
+                case "about":
+                {
+                    about.init(content_container);
+                    break;
+                }
+                case "team":
+                {
+                    team.init(content_container);
+                    break;
+                }
+                case "link":
+                {
+                    link.init(content_container);
+                    break;
+                }
+            }
         }
     }
 

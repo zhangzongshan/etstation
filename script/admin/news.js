@@ -31,6 +31,7 @@ define(function (require, exports, module) {
     var cateListApi = apiRoot + '/api/cate/list';
     var newsListApi = apiRoot + '/api/news/list';
     var newsUpdateApi = apiRoot + '/api/news/update';
+    var newsDelApi = apiRoot + '/api/news/del';
 
     var imageApi = apiRoot + '/api/Images';
 
@@ -67,7 +68,15 @@ define(function (require, exports, module) {
     }
 
     var news = {
+        search: {
+            title: null
+            , media_type: null
+            , cate: null
+            , current: 1
+            , pageSize: 5
+        },
         errMessage: [],
+        table: null,
         init: function (container) {
             container = $(container);
             var spinkit = SpinKit.Create({
@@ -110,7 +119,148 @@ define(function (require, exports, module) {
             });
         },
         list: function (container) {
+            var title = container.find("#title").val();
+            if (title != "") {
+                news.search.title = title;
+            }
+            else {
+                news.search.title = null;
+            }
+            var media_type = container.find("#media_type").val();
+            if (media_type === "all") {
+                news.search.media_type = null;
+            }
+            else if (media_type === "pic") {
+                news.search.media_type = "pic";
+            }
+            else {
+                news.search.media_type = "video";
+            }
 
+            var cate = container.find("#cate").val();
+            if (cate === "0") {
+                news.search.cate = null;
+            }
+            else {
+                news.search.cate = cate;
+            }
+
+            var spinkit = SpinKit.Create({
+                color: '#1f548a'
+            });
+            DataLoad.GetData(null, newsListApi, news.search, function (result) {
+                spinkit.remove();
+                dialog.dataResult(result, function () {
+                    news.fillTable(result, container)
+                }, function () {
+                    container.html("");
+                });
+            }, true, 'post', 'json');
+        },
+        fillTable: function (result, container) {
+            var tabledata = [];
+            var tableColumns = [
+                {data: "logopic", class: "dt-center", width: "100px"}
+                , {data: "info", class: "dt-left", width: "200px"}
+                , {data: "detail", class: "dt-left"}
+                , {data: "option", class: "dt-center", width: "180px"}
+            ];
+
+            if (result.resultObject != null && result.resultObject.data != null) {
+                var listData = result.resultObject.data;
+                $.each(listData, function (index, item) {
+                    var id = item.id;
+                    var title = item.title;
+                    var media_url = item.media_url;
+                    var media_type = item.media_type;
+                    var pic_index = item.pic_index;
+                    var isShow = item.isShow;
+                    var read_count = item.read_count;
+                    var times = item.times;
+                    var cate = item.cate;
+                    var cate_name = item.cate_name;
+                    var content = common.string.removeHtml(common.fn.htmlDecode(item.content));
+
+                    var orginData = {
+                        id: id
+                        , title: title
+                        , media_url: media_url
+                        , media_type: media_type
+                        , pic_index: pic_index
+                        , isShow: isShow
+                        , read_count: read_count
+                        , times: times
+                        , cate: cate
+                        , cate_name: cate_name
+                        , content: common.fn.htmlDecode(item.content)
+                    };
+                    var showPic = "";
+                    if (media_url != "") {
+                        var arrPic = media_url.split(',');
+                        if (pic_index != "") {
+                            showPic = arrPic[pic_index];
+                        } else {
+                            showPic = arrPic[0];
+                        }
+                    }
+
+                    var picInfo = '<div class="list_cate_logo" style="background-image: url(' + imageApi + '?img=NewsImg/' + showPic + ');"></div>'
+                    var info = '<div class="list_team_info">'
+                        + '<div class="list_team_info_item">' + common.string.subString(title, 24, '...') + '</div>'
+                        + '<div class="list_team_info_item" style="color: #888;font-size: 12px;">' + common.string.subString(cate_name, 30, '...') + '</div>'
+                        + '</div>';
+                    var content_str = common.string.subString(content, 140, '...');
+                    var option = '<div class="list_cate_option">'
+                        + '<span class="list_edit">编辑</span>'
+                        + '<span class="list_del">删除</span>'
+                        + '</div>';
+
+                    tabledata.push({
+                        logopic: picInfo
+                        , info: info
+                        , detail: content_str
+                        , option: option
+                        , orginData: orginData
+                    });
+                });
+
+                page.create({
+                    obj: container.find(".page_container")
+                    , pageSize: news.search.pageSize
+                    , current: news.search.current
+                    , totalPage: result.resultObject.totalPage
+                    , totalRecord: result.resultObject.totalRecord
+                    , input: true
+                    , defaultPageSize: 5
+                    , callback: function (pageation) {
+                        news.search.pageSize = pageation.pageSize;
+                        news.search.current = pageation.current;
+                        news.list(container);
+                    }
+                });
+            }
+            else {
+                container.find(".page_container").empty();
+            }
+
+            if (news.table != null) {
+                news.table.destroy();
+            }
+            news.table = tables.init(container.find("#table_id"), tabledata, tableColumns, function () {
+
+                container.find(".list_edit").off("click");
+                container.find(".list_edit").on("click", function () {
+                    var tr = $(this).parents("tr");
+                    var data = news.table.row(tr).data();
+                    news.cateInfo(container, data);
+                });
+                container.find(".list_del").off("click");
+                container.find(".list_del").on("click", function () {
+                    var tr = $(this).parents("tr");
+                    var data = news.table.row(tr).data();
+                    news.del(container, data.orginData.id);
+                });
+            });
         },
         cateInfo: function (container) {
             DataLoad.GetFile("product_html", rootPath + "/html/admin/news/news_add.html", function (html) {
@@ -184,6 +334,16 @@ define(function (require, exports, module) {
 
                 form.find(".sumbit_btn").off("click");
                 form.find(".sumbit_btn").on("click", function () {
+                    form.find("#pic_index").remove();
+                    var media_type = form.find("input[name='media_type']:checked").val();
+                    if (media_type === 'pic') {
+                        var pic_index = 0;
+                        if (form.find(".innerActive").length > 0) {
+                            var pics = form.find(".innerActive").closest(".news_img_container").find(".icon-home");
+                            pic_index = pics.index(form.find(".innerActive"));
+                        }
+                        form.append('<input type="hidden" name="pic_index" id="pic_index" value="' + pic_index + '">');
+                    }
                     var confirmDialog = dialog.confirm("确定现在提交吗?", {
                         width: 400
                         , submit: function () {
@@ -229,7 +389,7 @@ define(function (require, exports, module) {
                             , class: "innerItem"
                             , callback: function (imgObj) {
                                 if (imgObj.find('.innerActive').length < 1) {
-                                    imgObj.closest(".product_img_container").find(".icon-home").removeClass("innerActive");
+                                    imgObj.closest(".news_img_container").find(".icon-home").removeClass("innerActive");
                                     imgObj.find('.icon-home').addClass("innerActive");
                                 }
                                 else {
@@ -268,7 +428,6 @@ define(function (require, exports, module) {
                     + '    <input class="item_input" id="video_url" name="video_url" type="text" style="width: 350px;">'
                     + '</div>'
                     + '<div class="clear"></div>';
-
                 form.find(".news_img_container").html(videoHtml);
                 var videoPicInput = imgInput.Create(arrPic, {
                     obj: form.find('.video_pic')
@@ -326,6 +485,7 @@ define(function (require, exports, module) {
         },
         verify: function (container, mediaInput) {
             this.errMessage = [];
+
             var verifyFlg = true;
             var title = container.find("#title").val();
             if (title === null || title === '') {
@@ -384,6 +544,28 @@ define(function (require, exports, module) {
                 });
             }
             return verifyFlg;
+        },
+        del: function (container, id) {
+            var confirmDialog = dialog.confirm("确定删除吗??<br>如果删除,数据将无法恢复.", {
+                width: 400
+                , submit: function () {
+                    var spinkit = SpinKit.Create({
+                        color: '#1f548a'
+                    });
+                    DataLoad.GetData(null, newsDelApi, {id: id}, function (result) {
+                        spinkit.remove();
+                        dialog.dataResult(result, function () {
+                            news.list(container);
+                        }, function () {
+
+                        }, {
+                            success: '作品案例删除成功!'
+                            , fail: ''
+                        });
+                    });
+                    confirmDialog.Close();
+                }
+            });
         }
     };
 
@@ -439,6 +621,7 @@ define(function (require, exports, module) {
             });
         },
         load: function (content_container, case_type) {
+            NotyKit.Destroy();
             switch (case_type) {
                 case "news_p_list": {
                     news.init(content_container);

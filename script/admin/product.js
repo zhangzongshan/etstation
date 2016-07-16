@@ -264,6 +264,7 @@ define(function (require, exports, module) {
                         width: 400
                         , submit: function () {
                             confirmDialog.Close();
+                            NotyKit.Destroy();
                             container.html("");
                             cate.init(container);
                         }
@@ -921,6 +922,7 @@ define(function (require, exports, module) {
                         width: 400
                         , submit: function () {
                             confirmDialog.Close();
+                            NotyKit.Destroy();
                             container.html("");
                             product.init(container);
                         }
@@ -1084,6 +1086,7 @@ define(function (require, exports, module) {
             });
         },
         load: function (content_container, case_type) {
+            NotyKit.Destroy();
             switch (case_type) {
                 case "p_cate": {
                     cate.init(content_container);
