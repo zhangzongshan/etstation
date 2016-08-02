@@ -37,13 +37,13 @@ define(function (require, exports, module) {
             DataLoad.GetFile('Login_html', rootPath + 'html/admin/login/login.html', function (html) {
                 container.html(html);
                 container.css({
-                    'width': $(window).width() + 'px'
-                    , 'height': $(window).height() + 'px'
+                    'width': container.width() + 'px'
+                    , 'height': container.height() + 'px'
                 });
                 $(window).on("resize", function () {
                     container.css({
-                        'width': $(window).width() + 'px'
-                        , 'height': $(window).height() + 'px'
+                        'width': container.width() + 'px'
+                        , 'height': container.height() + 'px'
                     });
                 });
 
@@ -99,7 +99,7 @@ define(function (require, exports, module) {
                         common.fn.writestorage('sessionkey', result.resultObject.SessionKey.sessionkey);
                         common.fn.writestorage('userinfo', JSON.stringify(result.resultObject.Userinfo));
                         if (typeof loginObj._callback === 'function') {
-                            loginObj._callback();
+                            loginObj._callback(result.resultObject.Userinfo);
                         }
                     }
                     else {

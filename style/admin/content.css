@@ -401,3 +401,14 @@
     background-color: #bfcad5;
     color: #fff;
 }
+.paly{
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    font-size: 30px;
+    color: rgba(255,255,255,.8);
+    cursor: pointer;
+}
+.small_pic{
+
+}

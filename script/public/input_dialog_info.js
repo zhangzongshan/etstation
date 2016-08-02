@@ -5,6 +5,7 @@
 define(function (require, exports, module) {
 
     var scrollCtr = require('../../_assets/js/module/scrollcontrol/scrollcontrol');
+
     function err(errObj, config) {
         NotyKit.Destroy();
         if (!config) {
@@ -369,6 +370,88 @@ define(function (require, exports, module) {
         return dialog;
     }
 
+    function open_video(title, video_url, poster_url, config) {
+        if (!config) {
+            config = {
+                width: 640
+                , height: 420
+                , background: ''
+                , layout: 'windowscenter'
+                , msgClass: ''
+                , titleClass: ''
+            };
+        }
+        var width = (typeof (config.width) === 'number' && config.width > 0) ? config.width : 0;
+        var height = (typeof (config.height) === 'number' && config.height > 0) ? config.height : 0;
+        var background = (typeof (config.background) === 'string' && config.background != "") ? config.background : '';
+        var layout = (typeof (config.layout) === 'string' || typeof (config.layout) === 'object') ? config.layout : 'windowscenter';
+        var titleClass = (typeof (config.titleClass) === 'string' && config.titleClass != "") ? config.titleClass : '';
+        var msgClass = (typeof (config.msgClass) === 'string' && config.msgClass != "") ? config.msgClass : '';
+        var obj = (typeof config.obj === 'object' && config.obj != null) ? config.obj : $("body");
+        var zIndex = (typeof (config.zIndex) === 'number' && config.zIndex > 0) ? config.zIndex : common.fn.getmaxZindex() + 1;
+
+        var template = '<div class="config_container">'
+            + '<div class="config_title windows_title"></div>'
+            + '<div class="video_content"></div>'
+            + '</div>';
+
+        var dialog = NotyKit.Create({
+            obj: obj
+            , width: width !== 0 ? width : obj.width()
+            , height: height !== 0 ? height : obj.height()
+            , template: template
+            , title: {
+                container: '.config_title'
+                , text: title
+                , addClass: titleClass
+            }
+            , text: {
+                container: '.video_content'
+                ,
+                text: '<video controls poster="' + poster_url + '" src="' + video_url + '" width="100%" height="100%" autoplay></video>'
+                ,
+                addClass: msgClass
+            }
+            , closeItem: [{
+                container: '.config_title'
+                , closeWith: ['click']
+                , text: '<span class="icon-remove" style="margin-right: 10px;"></span>'//当 text 不为空时候下面配置生效
+                , layout: 'centerright'
+                , addClass: 'config_close'
+            }]
+            , layout: layout !== '' ? layout : ''
+            , background: background !== '' ? background : "rgba(255,255,255,.2)"
+            , zIndex: zIndex
+            , callback: {
+                onShow: function () {
+                    scrollCtr.disableScroll();
+                },
+                afterClose: function () {
+                    scrollCtr.enableScroll();
+                }
+            }
+        });
+        dialog.AutoSize();
+        var Media = dialog.notyKitObj.find('video')[0];
+
+        Media.addEventListener('play', function () {
+            dialog.AutoSize();
+        }, false);
+        Media.addEventListener('error', function () {
+            var height = $(Media).height();
+            var errObj = $('<div><div><span class="icon-remove-circle"></span></div><div style="color: #666;font-size: 20px;">视频发生错误!</div></div>');
+            errObj.css({
+                'height': height + 'px'
+                , 'padding-top': height/4 + 'px'
+                , 'font-size': height / 5 + 'px'
+                , 'color': '#ffc602'
+                , 'text-align': 'center'
+            });
+            $(Media).closest('.video_content').html(errObj);
+        }, false);
+        return dialog;
+    }
+
     return {
         err: err
         , dialog: dialog
@@ -376,5 +459,6 @@ define(function (require, exports, module) {
         , notify: notify
         , dataResult: dataResult
         , windows: open_windows
+        , video: open_video
     }
 });

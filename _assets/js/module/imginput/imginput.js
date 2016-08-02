@@ -25,21 +25,17 @@
         imgContainerObj.css({
             "position": "relative"
             ,
-            "float": "left"
-            ,
             "margin": oConfig._margin_top + "px " + oConfig._margin_right + "px " + oConfig._margin_bottom + "px " + oConfig._margin_left + "px"
             ,
             "height": oConfig._height + "px"
             ,
-            "line-height": oConfig._height + "px"
-            ,
             "width": oConfig._containerObj.width() / oConfig._count - (oConfig._margin_left + oConfig._margin_right) + "px"
             ,
-            "background-size": "contain"
+            "background-size": oConfig._backgroundSize
             ,
             "background-repeat": "no-repeat"
             ,
-            "background-position": "center center"
+            "background-position": oConfig._backgroundPosition
         });
         return imgContainerObj;
     }
@@ -90,8 +86,13 @@
                 thisImgContainerObj.css({
                     "background-image": "url(" + objUrl + ")"
                 });
-                var imgInfoObj = imgInfo(oConfig, thisImgContainerObj);
-                thisImgContainerObj.append(imgInfoObj);
+                if(thisImgContainerObj.find('.__imgInfoClass').length==0){
+                    var imgInfoObj = imgInfo(oConfig, thisImgContainerObj);
+                    thisImgContainerObj.append(imgInfoObj);
+                }
+                if (typeof(oConfig._changfn) === 'function') {
+                    oConfig._changfn();
+                }
             }
         });
 
@@ -132,7 +133,8 @@
                 var callback = (typeof item.callback === "function") ? item.callback : null;
 
                 if (text !== "") {
-                    var itemObj = $(text);
+                    var itemObj = $("<div></div>");
+                    itemObj.html(text);
                     if (item_class !== "") {
                         itemObj.addClass(item_class);
                     }
@@ -180,6 +182,8 @@
                 , bottom: 5
                 , left: 5
             }
+            , backgroundSize: "contain"
+            , backgroundPosition: "center center"
             , class: ""
             , name: "imgInput"//input 输入框 name标志,非常重要
             , accept: "image/*"//添加类别限制,默认为所有图片
@@ -208,6 +212,11 @@
                     }
                 }]
             },
+            //当图片改变时回调函数
+            changfn: function () {
+
+            },
+            //回调
             callback: function () {
 
             }
@@ -223,10 +232,12 @@
             var _name = (typeof config.name === 'string' && config.name != "") ? config.name : this.default.name;
             var _accept = (typeof config.accept === 'string' && config.accept != "") ? config.accept : this.default.accept;
             var _height = (typeof config.height === 'number' && config.height > 0) ? config.height : this.default.height;
-            var _margin_top = (typeof _margin.top === 'number' && _margin.top > 0) ? _margin.top : this.margin.top;
-            var _margin_right = (typeof _margin.right === 'number' && _margin.right > 0) ? _margin.right : this.margin.right;
-            var _margin_bottom = (typeof _margin.bottom === 'number' && _margin.bottom > 0) ? _margin.bottom : this.margin.bottom;
-            var _margin_left = (typeof _margin.left === 'number' && _margin.left > 0) ? _margin.left : this.margin.left;
+            var _margin_top = (typeof _margin.top === 'number' && _margin.top >= 0) ? _margin.top : this.default.margin.top;
+            var _margin_right = (typeof _margin.right === 'number' && _margin.right >= 0) ? _margin.right : this.default.margin.right;
+            var _margin_bottom = (typeof _margin.bottom === 'number' && _margin.bottom >= 0) ? _margin.bottom : this.default.margin.bottom;
+            var _margin_left = (typeof _margin.left === 'number' && _margin.left >= 0) ? _margin.left : this.default.margin.left;
+            var _backgroundSize = (typeof config.backgroundSize === 'string' && config.backgroundSize != "") ? config.backgroundSize : this.default.backgroundSize;
+            var _backgroundPosition = (typeof config.backgroundPosition === 'string' && config.backgroundPosition != "") ? config.backgroundPosition : this.default.backgroundPosition;
             var _total = (typeof config.total === 'number' && config.total > 0) ? config.total : this.default.total;
             var _addItem = (typeof config.addItem === 'object' && config.addItem != null) ? config.addItem : this.default.addItem;
             var _addItem_text = (_addItem.text != null && _addItem.text != "") ? _addItem.text : this.default.addItem.text;
@@ -235,6 +246,7 @@
             var _infoItem_text = (_infoItem.text != null && _infoItem.text != "") ? _infoItem.text : this.default.infoItem.text;
             var _infoItem_class = (_infoItem.class != null && _infoItem.class != "") ? _infoItem.class : this.default.infoItem.class;
             var _infoItem_item = (_infoItem.item != null && _infoItem.item != "") ? _infoItem.item : this.default.infoItem.item;
+            var _changfn = (typeof config.changfn === 'function' && config.changfn != null) ? config.changfn : this.default.changfn;
             var _callback = (typeof config.callback === 'function' && config.callback != null) ? config.callback : this.default.callback;
 
             var oConfig = {
@@ -250,6 +262,8 @@
                 , _margin_right: _margin_right
                 , _margin_bottom: _margin_bottom
                 , _margin_left: _margin_left
+                , _backgroundSize: _backgroundSize
+                , _backgroundPosition: _backgroundPosition
                 , _total: _total
                 , _addItem: _addItem
                 , _addItem_text: _addItem_text
@@ -257,6 +271,7 @@
                 , _infoItem_text: _infoItem_text
                 , _infoItem_class: _infoItem_class
                 , _infoItem_item: _infoItem_item
+                , _changfn: _changfn
                 , _callback: _callback
             };
 
@@ -267,7 +282,12 @@
 
             var imgDataArr = [];
 
-            data = isArray(data) ? data : [];
+            data = isArray(data)
+                ? data !== null
+                ? data : [] : [];
+            if (_total != -1 && data.length > _total) {
+                data = data.slice(0, _total);
+            }
 
             if (data.length > 0) {
                 $.each(data, function (index, item) {

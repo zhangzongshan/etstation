@@ -1014,7 +1014,7 @@ define(function (require, exports, module) {
             if (productPic.length == 0) {
                 this.errMessage.push({
                     obj: container.find(":file")
-                    , message: "必须选择一个分类!"
+                    , message: "必须添加产品图片!"
                 });
                 verifyFlg = false;
             }

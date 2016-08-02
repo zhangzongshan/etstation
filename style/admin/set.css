@@ -1,0 +1,79 @@
+.bg_tab{
+    margin-top: 10px;
+    height: 40px;
+}
+.tabs_bg_normal{
+    display: inline-block;
+    background-color: #f0f0f0;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px 5px 0px 0px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    margin-left: -1px;
+}
+.tabs_bg_active{
+    display: inline-block;
+    background-color: #478fd8;
+    border: 1px solid #478fd8;
+    border-radius: 5px 5px 0px 0px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.bg_content{
+    height: 500px;
+    border: 1px solid #ccc;
+}
+.add_bg_content{
+    text-align: center;
+    font-size: 20px;
+}
+.btn_info{
+    width: 20%;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 5px;
+    background-color: rgba(255,255,255,.8);
+    top:400px;
+    left: 40%;
+    display: inline-block;
+    text-align: center;
+}
+.btn_info_active{
+    width: 20%;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 5px;
+    background-color: rgba(131,190,113,.8);
+    top:400px;
+    left: 40%;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+}
+.btn_info_active:hover{
+    background-color: rgba(131,190,113,1);
+}
+.admin_login{
+    width: 100%;
+    height: 500px;
+}
+.admin_set{
+    width: 100%;
+}
+.user_img_container{
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+.user_img_container:hover{
+    border: 1px solid #478fd8;
+}

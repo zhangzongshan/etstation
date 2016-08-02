@@ -1,6 +1,6 @@
 // Avoid `console` errors in browsers that lack a console.
 //解决的console调试的时候报错
-var apiRoot = "http://192.168.0.11/EtsationApi";
+var apiRoot = "http://192.168.0.17/";
 (function () {
     var method;
     var noop = function () {

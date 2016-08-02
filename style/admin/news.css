@@ -185,3 +185,149 @@
     border: 1px solid #ddd;
     border-radius: 3px;
 }
+.link_img_container{
+    width: 700px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+.add_link_img{
+    margin-right: 10px;
+    width: 600px;
+    border: 1px solid #97c4f2;
+    text-align: center;
+    font-size: 20px;
+    color: #ccc;
+    /*padding-top: 80px;*/
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: contain;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: contain;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: contain;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: contain;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+
+.news_innerInfo{
+    top:65px;
+    width: 100%;
+    height: 35px;
+    text-align: right;
+    padding-right: 2px;
+}
+.news_innerItem{
+    border-radius: 2px;
+    background-color: rgba(0,0,0,.7);
+    color: #fff;
+    padding: 5px 10px;
+    margin-left: 1px;
+    font-size: 14px;
+    top:-100%;
+    cursor: pointer;
+    display: inline-block;
+}
+.news_innerItem:hover{
+    background-color: rgba(0,0,0,.8);
+}
+
+.link_innerInfo{
+    top:148px;
+    width: 100%;
+    height: 50px;
+    padding: 0px 10px;
+    border-top: 1px solid #97c4f2;
+    background-color: rgba(255,255,255,.9);
+    text-align: left;
+}
+.link_innerItem{
+    border-radius: 2px;
+    background-color: rgba(0,0,0,.7);
+    color: #fff;
+    padding: 5px 10px;
+    margin-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-block;
+}
+.link_innerItem:hover{
+    background-color: rgba(0,0,0,.8);
+}
+.link_input{
+    height: 50px;
+    font-size: 14px;
+    color: #444;
+    text-align: left;
+    display: inline-block;
+}
+.list_link_logo{
+    text-align: center;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: contain;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: contain;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: contain;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: contain;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+.small_pic{
+    width: 30px;
+    height: 20px;
+    display: inline-block;
+    margin-top: 80px;
+    margin-left: 2px;
+    border: 1px solid #3b4249;
+    border-radius: 2px;
+    background-color: #3b4249;
+    cursor: pointer;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -moz-background-size: contain;
+    -moz-background-repeat: no-repeat;
+    -moz-background-position: center center;
+
+    -ms-background-size: contain;
+    -ms-background-repeat: no-repeat;
+    -ms-background-position: center center;
+
+    -webkit-background-size: contain;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: center center;
+
+    -o-background-size: contain;
+    -o-background-repeat: no-repeat;
+    -o-background-position: center center;
+}
+.small_pic_select{
+    width: 40px;
+    height: 25px;
+    margin-top: 75px;
+}

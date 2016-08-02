@@ -23,7 +23,7 @@ define(function (require, exports, module) {
 
                 //设置用户信息
                 var user = JSON.parse(common.fn.getstorage('userinfo'));
-                var user_photo = user.photo != "" ? user.photo : rootPath + "/images/no_user_128.png";
+                var user_photo = user.photo != "" ? apiRoot + '/api/Images/?img=AdminImg/'+user.photo : rootPath + "/images/no_user_128.png";
                 var user_name = user.name;
                 var loginOut = '<span class="icon-signout signout">退出</span>'
 
@@ -101,7 +101,9 @@ define(function (require, exports, module) {
                     , active: 'tabs_active'
                     , html: '<span>设置</span>'
                     , fn: function () {
-
+                        var set = require('../../script/admin/set');
+                        //不能直接使用 jquery 对象,因为重新加载以后不能定位到页面
+                        set.init('.admin_menu', '.admin_content');
                     }
                     , content: ''
                 }]
@@ -155,6 +157,9 @@ define(function (require, exports, module) {
             headObj.init($('#head'));
         }
         else {
+            $('#content').css({
+                "height":$(window).height()+"px"
+            });
             login.login($('#content'), function (result) {
                 headObj.init($('#head'));
             });

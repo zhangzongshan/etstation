@@ -18,6 +18,22 @@
 }(function (require, exports, module) {
     var common = typeof exports !== 'undefined' ? exports : {};
 
+    function _corpses(pwdvalue) {
+        var maths_01,smalls_01,bigs_01;
+        var cat = /./g
+        var str = pwdvalue;
+        var sz = str.match(cat)
+        for (var i = 0; i < sz.length; i++) {
+            cat = /\d/;
+            maths_01 = cat.test(sz[i]);
+            cat = /[a-z]/;
+            smalls_01 = cat.test(sz[i]);
+            cat = /[A-Z]/;
+            bigs_01 = cat.test(sz[i]);
+            if (!maths_01 && !smalls_01 && !bigs_01) { return true; }
+        }
+        return false;
+    }
     //字符串处理
     exports.string = {
         /**
@@ -549,6 +565,51 @@
                     }
                 }
             });
+        },
+        /*
+        * 密码强度检测
+        * @pwdinputobj:密码输入对象
+        * */
+        checkPassword:function (pwdinputobj) {
+            var str = pwdinputobj.val();
+            var len = str.length;
+
+            var cat = /.{16}/g
+            if (len == 0) return 1;
+            if (len > 16) { pwdinputobj.val(str.match(cat)[0]); }
+            cat = /.*[\u4e00-\u9fa5]+.*$/
+            if (cat.test(str)) {
+                return -1;
+            }
+            cat = /\d/;
+            var maths = cat.test(str);
+            cat = /[a-z]/;
+            var smalls = cat.test(str);
+            cat = /[A-Z]/;
+            var bigs = cat.test(str);
+            var corps = _corpses(str);
+            var num = maths + smalls + bigs + corps;
+
+            if (len < 6) { return 1; }
+
+            if (len >= 6 && len <= 8) {
+                if (num == 1) return 1;
+                if (num == 2 || num == 3) return 2;
+                if (num == 4) return 3;
+            }
+
+            if (len > 8 && len <= 11) {
+                if (num == 1) return 2;
+                if (num == 2) return 3;
+                if (num == 3) return 4;
+                if (num == 4) return 5;
+            }
+
+            if (len > 11) {
+                if (num == 1) return 3;
+                if (num == 2) return 4;
+                if (num > 2) return 5;
+            }
         }
     }
 
