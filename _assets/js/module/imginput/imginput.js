@@ -45,7 +45,7 @@
     }
 
     function inputFile(oConfig) {
-        var inputFileObj = $('<input type="file" class="__inputFileClass" name="' + oConfig._name + '" accept="' + oConfig._accept + '" multiple="multiple"/>');
+        var inputFileObj = $('<input type="file" class="__inputFileClass" name="' + oConfig._name + '" />');
         inputFileObj.css({
             "position": "absolute"
             , "width": "100%"
@@ -56,42 +56,43 @@
             , "z-index": 10
             , "cursor": "pointer"
         });
-
+        //accept="' + oConfig._accept + '"
         inputFileObj.change(function () {
             var file = this.files[0];
             // var fileSize = file.size;
             // var fileName = file.name;
-            // var fileType = file.type;
+            var fileType = file.type;
+            if (file != null && fileType.indexOf("image/")!=-1) {
+                var objUrl = createObjectURL(file);
+                if (objUrl != null) {
+                    var thisImgContainerObj = $(this).closest(".__inputImgContainerClass");
+                    thisImgContainerObj.find('input:hidden').val("");
+                    if (thisImgContainerObj.find('.__addItemClass').length > 0) {
+                        thisImgContainerObj.find('.__addItemClass').remove();
 
-            var objUrl = createObjectURL(file);
-            if (objUrl != null) {
-                var thisImgContainerObj = $(this).closest(".__inputImgContainerClass");
-                thisImgContainerObj.find('input:hidden').val("");
-                if (thisImgContainerObj.find('.__addItemClass').length > 0) {
-                    thisImgContainerObj.find('.__addItemClass').remove();
+                        var currentTotal = oConfig._containerObj.find(".__inputImgContainerClass").length;
+                        if (oConfig._total === -1 || currentTotal < oConfig._total) {
+                            var additemObj = imgAdditem(oConfig);
+                            var imgContainerObj = imgContainer(oConfig);
+                            var inputFileObj = inputFile(oConfig);
+                            var inputTextObj = inputText(oConfig);
 
-                    var currentTotal = oConfig._containerObj.find(".__inputImgContainerClass").length;
-                    if (oConfig._total === -1 || currentTotal < oConfig._total) {
-                        var additemObj = imgAdditem(oConfig);
-                        var imgContainerObj = imgContainer(oConfig);
-                        var inputFileObj = inputFile(oConfig);
-                        var inputTextObj = inputText(oConfig);
-
-                        imgContainerObj.append(additemObj);
-                        imgContainerObj.append(inputFileObj);
-                        imgContainerObj.append(inputTextObj);
-                        thisImgContainerObj.after(imgContainerObj);
+                            imgContainerObj.append(additemObj);
+                            imgContainerObj.append(inputFileObj);
+                            imgContainerObj.append(inputTextObj);
+                            thisImgContainerObj.after(imgContainerObj);
+                        }
                     }
-                }
-                thisImgContainerObj.css({
-                    "background-image": "url(" + objUrl + ")"
-                });
-                if(thisImgContainerObj.find('.__imgInfoClass').length==0){
-                    var imgInfoObj = imgInfo(oConfig, thisImgContainerObj);
-                    thisImgContainerObj.append(imgInfoObj);
-                }
-                if (typeof(oConfig._changfn) === 'function') {
-                    oConfig._changfn();
+                    thisImgContainerObj.css({
+                        "background-image": "url(" + objUrl + ")"
+                    });
+                    if (thisImgContainerObj.find('.__imgInfoClass').length == 0) {
+                        var imgInfoObj = imgInfo(oConfig, thisImgContainerObj);
+                        thisImgContainerObj.append(imgInfoObj);
+                    }
+                    if (typeof(oConfig._changfn) === 'function') {
+                        oConfig._changfn();
+                    }
                 }
             }
         });

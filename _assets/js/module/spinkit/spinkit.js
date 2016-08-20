@@ -107,7 +107,7 @@
         }
         return maxZ;
     }
-    
+
     function getObjPosition(obj, position, width, height) {
         var _top = (typeof (position) == "string" && (position).toLowerCase() == "top") ? 0
             : (typeof (position) == "string" && (position).toLowerCase() == "center") ? (obj.outerHeight() - height) / 2
@@ -149,13 +149,14 @@
 
     var _html = '<div class="spinner_container">'
         + '    <div class="spinner"></div>'
+        + '    <div class="spinner_info"></div>'
         + '</div>';
 
     var _default = {
         spin: "circle"
         , container: $('body')
         , size: 40
-        , position: "center"
+        , position: "windowscenter"
         , background: "rgba(0,0,0,.1)"
         , color: "#999"
         , shade: true
@@ -225,6 +226,12 @@
                 "top": _top + "px"
                 , "left": _left + "px"
             });
+
+            $("#" + _id + " .spinner_info").css({
+                "top": _top + "px"
+                , "left": _left + "px"
+            });
+
         }
     }
 
@@ -240,6 +247,8 @@
         var _hexColor = hex2Rgb(_color).match(/RGB\((\S*)\)/)[1];
         var _shade = (typeof (configs.shade) != "undefined" && !configs.shade) ? false : _default.shade;
         var _zIndex = (typeof (configs.zIndex) === "number") ? configs.zIndex : _default.zIndex;
+        var _infoHtml = typeof configs.infoHtml === 'string' && configs.infoHtml !== '' ? configs.infoHtml : '';
+        var _infoClass = typeof configs.infoClass === 'string' && configs.infoClass !== '' ? configs.infoClass : '';
 
         var thisConfigs = {
             "id": _id
@@ -283,12 +292,8 @@
         });
 
         $('body').find("#" + _id).addClass('animated fadeIn');
-        $('body').find("#" + _id + " .spinner").css({
-            "width": _size + "px"
-            , "height": _size + "px"
-            , "position": "relative"
-            , "overflow": "hidden"
-        });
+
+
         var _spinnerHtml = "";
 
         if (typeof _spinObj === "string") {
@@ -322,6 +327,20 @@
             , "text-align": "center"
         });
 
+        $('body').find("#" + _id + " .spinner_info").css({
+            "width": _size + "px"
+            , "height": _size + "px"
+            , "position": "absolute"
+            , "text-align": "center"
+        });
+
+        if (_infoHtml != '') {
+            $('body').find("#" + _id + " .spinner_info").html(_infoHtml);
+        }
+        if (_infoClass != '') {
+            $('body').find("#" + _id + " .spinner_info").addClass(_infoClass);
+        }
+
         resize(_id);
 
         $(window).on("resize", function () {
@@ -346,6 +365,7 @@
             }
             , id: _id
             , obj: $('body').find("#" + _id)
+            , infoObj: $('body').find("#" + _id + " .spinner_info")
             , show: function (callback) {
                 this.obj.show();
                 if (typeof callback === "function") {

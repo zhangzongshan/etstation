@@ -1,6 +1,16 @@
 // Avoid `console` errors in browsers that lack a console.
 //解决的console调试的时候报错
-var apiRoot = "http://192.168.0.17/";
+var apiRoot = "http://192.168.0.31/EtsationApi";
+var apiPath = {
+    imageApi: apiRoot + '/api/Images'
+    , bgGetApi: apiRoot + '/api/bg/get'
+    , compangApi: apiRoot + '/api/commpanys/get'
+    , teamApi: apiRoot + '/api/commpanys/teamlist'
+    , cateListApi: apiRoot + '/api/cate/list'
+    , productListApi: apiRoot + '/api/product/list'
+    , newsListApi: apiRoot + '/api/news/list'
+    , linkListApi: apiRoot + '/api/link/list'
+};
 (function () {
     var method;
     var noop = function () {

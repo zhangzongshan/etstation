@@ -274,7 +274,7 @@ define(function (require, exports, module) {
                 container.find(".paly").on("click", function () {
                     var tr = $(this).parents("tr");
                     var data = news.table.row(tr).data();
-                    var video_url = data.orginData.media_type;
+                    var video_url = imageApi + '?img=NewsImg/' + data.orginData.media_type;
                     var poster_url = imageApi + '?img=NewsImg/' + (data.orginData.media_url).split(',')[0];
                     var title = data.orginData.title;
                     dialog.video(title, video_url, poster_url, {
@@ -352,6 +352,7 @@ define(function (require, exports, module) {
                 mediaInput = news.input_media_type(form, arrPic, pic_index, function () {
                     if (media_type !== 'pic') {
                         form.find("#video_url").val(media_type);
+                        form.find(".video_text").html(common.string.subString(media_type, 80, '...'));
                     }
                 });
 
@@ -502,12 +503,43 @@ define(function (require, exports, module) {
                 var videoHtml = ''
                     + '<div >视频封面:</div>'
                     + '<div class="video_pic"></div>'
-                    + '<div >视频地址:</div>'
+                    + '<div >视频文件:</div>'
                     + '<div >'
-                    + '    <input class="item_input" id="video_url" name="video_url" type="text" style="width: 350px;">'
+                    + '    <div class="video_bg" style="position: relative;">'
+                    + '    <div class="video_text"></div>'
+                    + '    <div class="video_info"><span class="glyphicon glyphicon-upload"></span></div>'
+                    + '    <input class="file_video_url" id="file_video_url" name="file_video_url" type="file" style="width: 100%; height: 100%">'
+                    + '    <input class="video_input" id="video_url" name="video_url" type="hidden">'
+                    + '</div>'
                     + '</div>'
                     + '<div class="clear"></div>';
+
                 form.find(".news_img_container").html(videoHtml);
+                form.find(".file_video_url").css({
+                    "opacity": "0"
+                });
+                form.find(".file_video_url").change(function () {
+
+                    var file = this.files[0];
+                    if (file != null) {
+                        if (file.type.indexOf("video/") != -1) {
+                            form.find(".video_text").html(file.name);
+                            form.find(".video_info").html("<span class='glyphicon glyphicon-ok-circle'></span>");
+                            form.find(".video_info").css({
+                                "background-color": "rgba(255,255,255,.2)"
+                                , "color": "#ccc"
+                            });
+                            form.find("#video_url").val("change");
+                        } else {
+                            form.find(".video_text").html("必须选择视频文件!");
+                            form.find(".video_info").html("<span class='glyphicon glyphicon-exclamation-sign'></span>");
+                            form.find(".video_info").css({
+                                "background-color": "rgba(255,255,255,.2)"
+                                , "color": "#ff0000"
+                            });
+                        }
+                    }
+                });
                 var videoPicInput = imgInput.Create(arrPic, {
                     obj: form.find('.video_pic')
                     , rootpath: imageApi + '?img=NewsImg/'
@@ -553,9 +585,10 @@ define(function (require, exports, module) {
                 var form = container.find("#submitForm");
                 var spinkit = SpinKit.Create({
                     color: '#1f548a'
+                    , zIndex: common.fn.getmaxZindex() + 100
+                    , infoClass: "onprogressClass"
                 });
                 DataLoad.PostForm(newsUpdateApi, form, function (result) {
-                    spinkit.remove();
                     dialog.dataResult(result, function () {
                         container.html("");
                         news.init(container);
@@ -565,6 +598,12 @@ define(function (require, exports, module) {
                         success: container.find("#id").length > 0 ? '修改成功!' : '添加成功!'
                         , fail: ''
                     });
+                }, function (event) {
+                    var pre = Math.floor(100 * event.loaded / event.total);
+                    if (pre == 100) {
+                        spinkit.remove();
+                    }
+                    spinkit.infoObj.html(pre + "/%");
                 });
             }
         },
@@ -604,18 +643,10 @@ define(function (require, exports, module) {
                 var video_url = container.find("#video_url").val();
                 if (video_url === '') {
                     this.errMessage.push({
-                        obj: container.find("#video_url")
+                        obj: container.find(".video_bg")
                         , message: "必须添加视频地址!"
                     });
                     verifyFlg = false;
-                } else {
-                    if (!validator.isURL(video_url, {protocols: ['http', 'https']})) {
-                        this.errMessage.push({
-                            obj: container.find("#video_url")
-                            , message: "视频地址格式不对!"
-                        });
-                        verifyFlg = false;
-                    }
                 }
             }
 
@@ -1063,9 +1094,9 @@ define(function (require, exports, module) {
                     var showPic = '';
                     if (pic != "") {
                         showPic = pic.split(",")[0];
-                        $.each(pic.split(","),function (index,item) {
-                            if(item!=""){
-                                picHtml+='<div class="small_pic" style="background-image: url(' + imageApi + '?img=LinkImg/' + item + ');"></div>'
+                        $.each(pic.split(","), function (index, item) {
+                            if (item != "") {
+                                picHtml += '<div class="small_pic" style="background-image: url(' + imageApi + '?img=LinkImg/' + item + ');"></div>'
                             }
                         });
                     }
@@ -1129,8 +1160,8 @@ define(function (require, exports, module) {
                 container.find(".small_pic").on("click", function () {
                     var tr = $(this).parents("tr");
                     tr.find(".small_pic").removeClass("small_pic_select");
-                    var background_img_url=$(this).css("background-image");
-                    $(this).closest(".list_link_logo").css("background-image",background_img_url);
+                    var background_img_url = $(this).css("background-image");
+                    $(this).closest(".list_link_logo").css("background-image", background_img_url);
                     $(this).addClass("small_pic_select");
                 });
             });
@@ -1251,9 +1282,10 @@ define(function (require, exports, module) {
                 var form = container.find("#submitForm");
                 var spinkit = SpinKit.Create({
                     color: '#1f548a'
+                    , zIndex: common.fn.getmaxZindex() + 100
+                    , infoClass: "onprogressClass"
                 });
                 DataLoad.PostForm(linkUpdateApi, form, function (result) {
-                    spinkit.remove();
                     dialog.dataResult(result, function () {
                         container.html("");
                         link.init(container);
@@ -1263,6 +1295,12 @@ define(function (require, exports, module) {
                         success: container.find("#id").length > 0 ? '修改成功!' : '添加成功!'
                         , fail: ''
                     });
+                }, function (event) {
+                    var pre = Math.floor(100 * event.loaded / event.total);
+                    if (pre == 100) {
+                        spinkit.remove();
+                    }
+                    spinkit.infoObj.html(pre + "/%");
                 });
             }
         },

@@ -965,9 +965,10 @@ define(function (require, exports, module) {
                 var form = container.find("#submitForm");
                 var spinkit = SpinKit.Create({
                     color: '#1f548a'
+                    , zIndex: common.fn.getmaxZindex() + 100
+                    , infoClass: "onprogressClass"
                 });
                 DataLoad.PostForm(productUpdateApi, form, function (result) {
-                    spinkit.remove();
                     dialog.dataResult(result, function () {
                         container.html("");
                         product.init(container);
@@ -977,6 +978,12 @@ define(function (require, exports, module) {
                         success: container.find("#id").length > 0 ? '产品修改成功!' : '产品添加成功!'
                         , fail: ''
                     });
+                }, function (event) {
+                    var pre = Math.floor(100 * event.loaded / event.total);
+                    if (pre == 100) {
+                        spinkit.remove();
+                    }
+                    spinkit.infoObj.html(pre + "/%");
                 });
             }
         },

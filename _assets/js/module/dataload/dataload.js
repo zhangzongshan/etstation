@@ -343,7 +343,7 @@
         }
     }
 
-    exports.PostForm=function (url,form,callback) {
+    exports.PostForm = function (url, form, callback, onprogress) {
         var sessionkey = getstorage("sessionkey");
         if (url.indexOf("?") !== -1) {
             url += "&sessionkey=" + sessionkey
@@ -351,15 +351,22 @@
         else {
             url += "?sessionkey=" + sessionkey
         }
-        var formData=new FormData(form[0]);
+        var formData = new FormData(form[0]);
         var options = {
             url: url,
             type: 'POST',
             dataType: 'json',
             data: formData,
-            contentType:false,
-            processData:false,
-            cache:false
+            contentType: false,
+            processData: false,
+            cache: false,
+            xhr: function () {
+                var xhr = jQuery.ajaxSettings.xhr();
+                if (typeof onprogress === 'function' && xhr.upload) {
+                    xhr.upload.addEventListener('progress', onprogress, false);
+                }
+                return xhr;
+            }
             , success: function (result, status, xhr) {
                 _callback(callback, result);
             }

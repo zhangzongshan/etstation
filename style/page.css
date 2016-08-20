@@ -1,0 +1,63 @@
+*{ margin:0; padding:0; list-style:none;}
+a{ text-decoration:none;}
+a:hover{ text-decoration:none;}
+a:visited{ text-decoration:none;}
+a:link{ text-decoration:none;}
+.tcdPageCode{
+    padding: 15px 20px;
+    text-align: left;
+    color: #ccc;
+    user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    -webkit-user-select:none;
+    -o-user-select:none;
+}
+.tcdPageCode a{
+    display: inline-block;
+    color: #ddd;
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 10px;
+    border: 1px solid #2b2b2b;
+    margin: 0 2px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+.tcdPageCode a:hover{
+    text-decoration: none;
+    border: 1px solid #ddd;
+}
+.tcdPageCode span.current{
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 10px;
+    margin: 0 2px;
+    color: #fff;
+    background-color: #e72026;
+    border: 1px solid #e72026;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+.tcdPageCode span.disabled{
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 5px;
+    margin: 0 2px;
+    color: #bfbfbf;
+    background: rgba(189,189,189,.2);
+    border: 1px solid rgba(189,189,189,.2);
+    border-radius: 4px;
+    vertical-align: middle;
+}
+.tcdPageCode .pageSize{
+    width: 50px;
+    text-align: center;
+    color: #666;
+}
+.tcdPageCode .detail{
+    color: #ccc;
+}
