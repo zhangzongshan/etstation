@@ -161,7 +161,7 @@
         }
     }
 
-    function getfile(id, url, callback) {
+    function getfile(id, url, callback, onprogress) {
         if (url != '') {
             var sessionkey = getstorage("sessionkey");
             if (url.indexOf("?") !== -1) {
@@ -170,18 +170,36 @@
             else {
                 url += "?sessionkey=" + sessionkey
             }
-            $.get(url, function (data) {
-                _callback(callback, data);
-                if (!debug) {
-                    if (id != '') {
-                        writeDataStorge(id, data);
+            $.ajax({
+                url: url
+                , type: 'GET'
+                , cache: false
+                , async: true
+                , crossDomain: true
+                , xhr: function () {
+                    var xhr = jQuery.ajaxSettings.xhr();
+                    if (typeof onprogress === 'function') {
+                        xhr.addEventListener('progress', onprogress, false);
                     }
+                    return xhr;
+                }
+                , success: function (result, status, xhr) {
+                    _callback(callback, data);
+                    if (!debug) {
+                        if (id != '') {
+                            writeDataStorge(id, data);
+                        }
+                    }
+                }
+                , error: function (xhr, status, error) {
+                    _callback(callback, error);
+                    console.log(error);
                 }
             });
         }
     }
 
-    function postfile(id, url, parameters, callback, async, type, dataType) {
+    function postfile(id, url, parameters, callback, async, type, dataType, onprogress) {
         if (url != '') {
             var sessionkey = getstorage("sessionkey");
             if (url.indexOf("?") !== -1) {
@@ -233,6 +251,14 @@
                 , data: pars
                 , async: async
                 , dataType: dataType
+                , crossDomain: true
+                , xhr: function () {
+                    var xhr = jQuery.ajaxSettings.xhr();
+                    if (typeof onprogress === 'function') {
+                        xhr.addEventListener('progress', onprogress, false);
+                    }
+                    return xhr;
+                }
                 , success: function (result, status, xhr) {
                     _callback(callback, result);
                     if (!debug) {
@@ -295,7 +321,7 @@
         }
     }
 
-    exports.GetFile = function (id, url, callback) {
+    exports.GetFile = function (id, url, callback, onprogress) {
         id = (typeof id === 'string' && id != '' && id != 'null') ? id : '';
         url = (typeof url === 'string' && url != '' && url != 'null') ? url : '';
         callback = (typeof callback === 'function' && callback != null) ? callback : null;
@@ -306,18 +332,18 @@
                     _callback(callback, dataObj);
                 }
                 else {
-                    getfile(id, url, callback);
+                    getfile(id, url, callback, onprogress);
                 }
             }
             else {
-                getfile(id, url, callback);
+                getfile(id, url, callback, onprogress);
             }
         } else {
-            getfile(id, url, callback);
+            getfile(id, url, callback, onprogress);
         }
     }
 
-    exports.GetData = function (id, url, parameters, callback, async, type, dataType) {
+    exports.GetData = function (id, url, parameters, callback, async, type, dataType, onprogress) {
         id = (typeof id === 'string' && id != '' && id != 'null') ? id : '';
         url = (typeof url === 'string' && url != '' && url != 'null') ? url : '';
         callback = (typeof callback === 'function' && callback != null) ? callback : null;
@@ -331,15 +357,15 @@
                     _callback(callback, dataObj);
                 }
                 else {
-                    postfile(id, url, parameters, callback, async, type, dataType);
+                    postfile(id, url, parameters, callback, async, type, dataType, onprogress);
                 }
             }
             else {
-                postfile(id, url, parameters, callback, async, type, dataType);
+                postfile(id, url, parameters, callback, async, type, dataType, onprogress);
             }
         }
         else {
-            postfile(id, url, parameters, callback, async, type, dataType);
+            postfile(id, url, parameters, callback, async, type, dataType, onprogress);
         }
     }
 
@@ -359,6 +385,7 @@
             data: formData,
             contentType: false,
             processData: false,
+            crossDomain: true,
             cache: false,
             xhr: function () {
                 var xhr = jQuery.ajaxSettings.xhr();

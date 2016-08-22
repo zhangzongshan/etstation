@@ -715,6 +715,44 @@
     -o-background-position: center center;
 }
 
+/*确认信息对话框*/
+.config_container{
+    background-color: #fff;
+    border: 1px solid #cbcaca;
+    border-radius: 5px;
+    -webkit-box-shadow:2px -2px 3px #a8b2bc;
+    -moz-box-shadow:2px -2px 3px #a8b2bc;
+    -ms-box-shadow:2px -2px 3px #a8b2bc;
+    -o-box-shadow:2px -2px 3px #a8b2bc;
+    box-shadow:2px -2px 3px #a8b2bc;
+    margin: 10px;
+    color: #888;
+}
+.config_title{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #cbcaca;
+    text-align: center;
+    font-size: 14px;
+}
+.config_close{
+    color: #a8b2bc;
+    font-size: 16px;
+    cursor: pointer;
+}
+.config_close:hover{
+    color: #1f548a;
+}
+.config_content{
+    width: 100%;
+    min-height: 100px;
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
 
 
 
