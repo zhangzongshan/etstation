@@ -173,7 +173,6 @@
             $.ajax({
                 url: url
                 , type: 'GET'
-                , cache: false
                 , async: true
                 , crossDomain: true
                 , xhr: function () {
@@ -184,16 +183,15 @@
                     return xhr;
                 }
                 , success: function (result, status, xhr) {
-                    _callback(callback, data);
+                    _callback(callback, result);
                     if (!debug) {
                         if (id != '') {
-                            writeDataStorge(id, data);
+                            writeDataStorge(id, result);
                         }
                     }
                 }
                 , error: function (xhr, status, error) {
                     _callback(callback, error);
-                    console.log(error);
                 }
             });
         }

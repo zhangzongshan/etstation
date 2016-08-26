@@ -15,7 +15,12 @@ html {
     background-color: #202020;
 }
 
-.clear{
+embed {
+    height: 0px;
+    width: 0px;
+}
+
+.clear {
     clear: both;
     width: 0px;
     height: 0px;
@@ -89,7 +94,6 @@ textarea {
     color: #000;
     padding: 0.2em 0;
 }
-
 
 /* ==========================================================================
    Helper classes
@@ -176,8 +180,8 @@ textarea {
 }
 
 @media print,
-       (min-resolution: 1.25dppx),
-       (min-resolution: 120dpi) {
+(min-resolution: 1.25dppx),
+(min-resolution: 120dpi) {
     /* Style adjustments for high resolution devices */
 }
 
@@ -194,8 +198,9 @@ textarea {
     *:first-letter,
     *:first-line {
         background: transparent !important;
-        color: #000 !important; /* Black prints faster:
-                                   http://www.sanbeiji.com/archives/953 */
+        color: #000 !important;
+        /* Black prints faster:
+                                          http://www.sanbeiji.com/archives/953 */
         box-shadow: none !important;
         text-shadow: none !important;
     }
@@ -217,7 +222,6 @@ textarea {
      * Don't show links that are fragment identifiers,
      * or use the `javascript:` pseudo protocol
      */
-
     a[href^="#"]:after,
     a[href^="javascript:"]:after {
         content: "";
@@ -233,7 +237,6 @@ textarea {
      * Printing Tables:
      * http://css-discuss.incutio.com/wiki/Printing_Tables
      */
-
     thead {
         display: table-header-group;
     }

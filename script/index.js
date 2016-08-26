@@ -11,12 +11,13 @@ define(function (require, exports, module) {
         , '_assets/js/public/swiper/swiper-3.3.1.min.css'
         , 'style/product/product.css'
         , 'style/news/news.css'
+        , 'style/check/check.css'
         , 'style/page.css'
     ]);
     var tabsKit = require('_assets/js/module/tabskit/tabskit');
     var swiper = require('_assets/js/public/swiper/swiper-3.3.1.jquery.min');
     var news = require("script/news");
-
+    var check = require("script/check");
     var indexBgImg, aboutBgImg, productBgImg, linkBgImg, product_innerBgImg, newsBgImg, checkBgImg;
 
     DataLoad.Debug(true);
@@ -80,6 +81,7 @@ define(function (require, exports, module) {
                 //$("html,body").animate({scrollTop:$("#content .product").offset().top},500);
                 $(this).closest('.menu').children().removeClass('active');
                 $(this).addClass('active');
+                contenObj.showCheck();
             });
 
             $("#head .link").off('click');
@@ -135,6 +137,12 @@ define(function (require, exports, module) {
             DataLoad.GetData(null, apiPath.compangApi, null, function (result) {
                 if (result.status === "success") {
                     var data = result.resultObject;
+                    var map = data.map;
+                    if (map.indexOf(",") != -1) {
+                        var mapData = map.split(',');
+                        lng = mapData[0];
+                        lat = mapData[1];
+                    }
                     var aboutContent = common.fn.htmlDecode(data.about);
                     DataLoad.GetFile('ContentHtml', 'html/content/index.html', function (html) {
                         if (html != '') {
@@ -306,6 +314,7 @@ define(function (require, exports, module) {
             $('#content').show();
             $('#product').hide();
             $('#news').hide();
+            $('#check').hide();
         },
         loadProduct: function (callback) {
             DataLoad.GetFile('ProductHtml', 'html/content/product.html', function (html) {
@@ -379,7 +388,6 @@ define(function (require, exports, module) {
                                     var swiperContent = "";
                                     $.each(picList, function (lIndex, lItem) {
                                         var picUrl = lItem;
-
                                         swiperContent += '<div class="swiper-slide">';
                                         swiperContent += '    <div class="swiper_img" style="background-image: url(' + apiPath.imageApi + '?img=ProductImg/' + picUrl + ')"></div>';
                                         swiperContent += '    <div class="swiper_text"></div>';
@@ -401,6 +409,7 @@ define(function (require, exports, module) {
         showProduct: function (productCate) {
             $('#content').hide();
             $('#news').hide();
+            $('#check').hide();
             var spinkit_Product = SpinKit.Create({
                 color: '#fff'
             });
@@ -418,8 +427,16 @@ define(function (require, exports, module) {
         showNews: function () {
             $('#content').hide();
             $('#product').hide();
+            $('#check').hide();
             $("html,body").animate({scrollTop: 0}, 100);
             this.loadNews();
+        }
+        , showCheck: function () {
+            $('#content').hide();
+            $('#product').hide();
+            $('#news').hide();
+            $("html,body").animate({scrollTop: 0}, 100);
+            this.loadCheck();
         }
         , productList: function (productCate, spinkit_Product) {
             spinkit_Product.remove();
@@ -449,11 +466,16 @@ define(function (require, exports, module) {
             container.show();
             news.init(container);
         }
+        , loadCheck: function () {
+            var container = $('#check');
+            container.show();
+            check.init(container, checkBgImg);
+        }
     }
 
-    function mapinit() {
+    function mapinit(lng, lat) {
         var map = new BMap.Map("link_map_content");
-        var point = new BMap.Point(120.17533, 30.285734);
+        var point = new BMap.Point(lng, lat);
         map.centerAndZoom(point, 16);
 
         map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件

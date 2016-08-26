@@ -325,6 +325,7 @@
 
 #content .product .product_cate .product_item{
     display: inline-block;
+    min-width: 240px;
     min-height: 180px;
     margin: 0 5px;
 }
@@ -752,7 +753,11 @@
     font-size: 14px;
     color: #666;
 }
-
+.onprogressClass{
+    line-height: 40px;
+    color: #fff;
+    font-size: 10px;
+}
 
 
 

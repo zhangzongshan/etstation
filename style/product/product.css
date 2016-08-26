@@ -1,13 +1,13 @@
 #product{
     display: none;
     width: 100%;
+    min-height: 500px;
     background-color: #000;
 }
 #product .product_title{
     width: 100%;
     height: 270px;
 
-    background-image:url('../../images/big_bg/product_title.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;

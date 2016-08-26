@@ -3,6 +3,7 @@
 var apiRoot = "http://192.168.0.31/EtsationApi";
 var apiPath = {
     imageApi: apiRoot + '/api/Images'
+    , videoApi: apiRoot + '/api/Video'
     , bgGetApi: apiRoot + '/api/bg/get'
     , compangApi: apiRoot + '/api/commpanys/get'
     , teamApi: apiRoot + '/api/commpanys/teamlist'
@@ -10,6 +11,7 @@ var apiPath = {
     , productListApi: apiRoot + '/api/product/list'
     , newsListApi: apiRoot + '/api/news/list'
     , linkListApi: apiRoot + '/api/link/list'
+    , questionListApi: apiRoot + '/api/question/list'
 };
 (function () {
     var method;
@@ -76,7 +78,7 @@ var apiPath = {
             , 'validator': rootpath + '_assets/js/public/validator/validator-5.2.0.min.js'//验证
             , 'common': rootpath + '_assets/js/module/common/common.js'//加载通用函数
             , 'basil': rootpath + '_assets/js/public/basil/basil.js'//数据统一储存
-            , 'noty': rootpath + '_assets/js/module/notykit/notykit.min.js'//对话框
+            , 'noty': rootpath + '_assets/js/module/notykit/notykit.js'//对话框
             , 'dataload': rootpath + '_assets/js/module/dataload/dataload.js'//数据请求
             , 'seajs': rootpath + '_assets/js/frame/seajs/sea.js'//
             , 'seajs-css': rootpath + '_assets/js/frame/seajs/seajs-css.js'//

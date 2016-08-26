@@ -19,7 +19,7 @@
     var common = typeof exports !== 'undefined' ? exports : {};
 
     function _corpses(pwdvalue) {
-        var maths_01,smalls_01,bigs_01;
+        var maths_01, smalls_01, bigs_01;
         var cat = /./g
         var str = pwdvalue;
         var sz = str.match(cat)
@@ -30,10 +30,13 @@
             smalls_01 = cat.test(sz[i]);
             cat = /[A-Z]/;
             bigs_01 = cat.test(sz[i]);
-            if (!maths_01 && !smalls_01 && !bigs_01) { return true; }
+            if (!maths_01 && !smalls_01 && !bigs_01) {
+                return true;
+            }
         }
         return false;
     }
+
     //字符串处理
     exports.string = {
         /**
@@ -377,8 +380,8 @@
          * @return:{index,item}
          * */
         getArrJsonItem: function (obj, key, value) {
-            obj = (isArray(obj) && obj.length > 0) ? obj
-                : (!isArray(obj)) ? obj : null;
+            obj = (exports.is.isArray(obj) && obj.length > 0) ? obj
+                : (!exports.is.isArray(obj)) ? obj : null;
             var k = (typeof (key) == "string" && key != "") ? key : null;
             var v = (typeof (value) != "undefined") ? value : null;
             if (typeof (obj) == "object" && obj != null && k != null) {
@@ -567,16 +570,18 @@
             });
         },
         /*
-        * 密码强度检测
-        * @pwdinputobj:密码输入对象
-        * */
-        checkPassword:function (pwdinputobj) {
+         * 密码强度检测
+         * @pwdinputobj:密码输入对象
+         * */
+        checkPassword: function (pwdinputobj) {
             var str = pwdinputobj.val();
             var len = str.length;
 
             var cat = /.{16}/g
             if (len == 0) return 1;
-            if (len > 16) { pwdinputobj.val(str.match(cat)[0]); }
+            if (len > 16) {
+                pwdinputobj.val(str.match(cat)[0]);
+            }
             cat = /.*[\u4e00-\u9fa5]+.*$/
             if (cat.test(str)) {
                 return -1;
@@ -590,7 +595,9 @@
             var corps = _corpses(str);
             var num = maths + smalls + bigs + corps;
 
-            if (len < 6) { return 1; }
+            if (len < 6) {
+                return 1;
+            }
 
             if (len >= 6 && len <= 8) {
                 if (num == 1) return 1;

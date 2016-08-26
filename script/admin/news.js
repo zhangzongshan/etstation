@@ -40,6 +40,7 @@ define(function (require, exports, module) {
     var linkDelApi = apiRoot + '/api/link/del';
 
     var imageApi = apiRoot + '/api/Images';
+    var videoApi = apiRoot + '/api/Video';
 
     var bdEditor = null;
 
@@ -274,7 +275,7 @@ define(function (require, exports, module) {
                 container.find(".paly").on("click", function () {
                     var tr = $(this).parents("tr");
                     var data = news.table.row(tr).data();
-                    var video_url = imageApi + '?img=NewsImg/' + data.orginData.media_type;
+                    var video_url = videoApi + '?img=NewsImg/' + data.orginData.media_type;
                     var poster_url = imageApi + '?img=NewsImg/' + (data.orginData.media_url).split(',')[0];
                     var title = data.orginData.title;
                     dialog.video(title, video_url, poster_url, {
@@ -1229,6 +1230,7 @@ define(function (require, exports, module) {
                     }
                     , callback: function () {
                         if (herf_url != "") {
+                            herf_url = herf_url == null ? "" : herf_url;
                             var arrHerf = herf_url.split(",");
                             $.each(arrHerf, function (index, item) {
                                 if (item != "") {
